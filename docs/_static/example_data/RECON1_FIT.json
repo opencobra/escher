@@ -1,0 +1,2008 @@
+[
+  {
+    "map_name": "RECON1.Glycolysis TCA PPP",
+    "map_id": "3f685e1b934e33e5471b1a56540bbabe",
+    "map_description": "\nLast Modified Tue Jun 18 2024 10:43:50 GMT+0100 (Irish Standard Time)",
+    "homepage": "https://escher.github.io",
+    "schema": "https://escher.github.io/escher/jsonschema/1-0-0#"
+  },
+  {
+    "reactions": {
+      "1955635": {
+        "name": "Hexokinase (D-glucose:ATP)",
+        "bigg_id": "HEX1",
+        "reversibility": false,
+        "label_x": 340.5098876953125,
+        "label_y": 1548.43017578125,
+        "gene_reaction_rule": "3098_AT3 or 80201_AT1 or 2645_AT3 or 3098_AT4 or 3099_AT1 or 2645_AT2 or 3098_AT5 or 2645_AT1 or 3098_AT1 or 3101_AT1 or 3098_AT2",
+        "genes": [
+          {
+            "bigg_id": "3098_AT4",
+            "name": "HK1"
+          },
+          {
+            "bigg_id": "80201_AT1",
+            "name": "HKDC1"
+          },
+          {
+            "bigg_id": "3099_AT1",
+            "name": "HK2"
+          },
+          {
+            "bigg_id": "3098_AT1",
+            "name": "HK1"
+          },
+          {
+            "bigg_id": "3101_AT1",
+            "name": "HK3"
+          },
+          {
+            "bigg_id": "3098_AT2",
+            "name": "HK1"
+          },
+          {
+            "bigg_id": "2645_AT3",
+            "name": "GCK"
+          },
+          {
+            "bigg_id": "2645_AT1",
+            "name": "GCK"
+          },
+          {
+            "bigg_id": "2645_AT2",
+            "name": "GCK"
+          },
+          {
+            "bigg_id": "3098_AT5",
+            "name": "HK1"
+          },
+          {
+            "bigg_id": "3098_AT3",
+            "name": "HK1"
+          }
+        ],
+        "metabolites": [
+          {
+            "coefficient": 1,
+            "bigg_id": "g6p_c"
+          },
+          {
+            "coefficient": 1,
+            "bigg_id": "adp_c"
+          },
+          {
+            "coefficient": 1,
+            "bigg_id": "h_c"
+          },
+          {
+            "coefficient": -1,
+            "bigg_id": "glc__D_c"
+          },
+          {
+            "coefficient": -1,
+            "bigg_id": "atp_c"
+          }
+        ],
+        "segments": {
+          "226": {
+            "from_node_id": "1955694",
+            "to_node_id": "1955696",
+            "b1": null,
+            "b2": null
+          },
+          "227": {
+            "from_node_id": "1955696",
+            "to_node_id": "1955695",
+            "b1": null,
+            "b2": null
+          },
+          "228": {
+            "from_node_id": "1955534",
+            "to_node_id": "1955694",
+            "b1": {
+              "y": 1585,
+              "x": 234.80797594797352
+            },
+            "b2": {
+              "y": 1585,
+              "x": 280.44239278439204
+            }
+          },
+          "229": {
+            "from_node_id": "1955535",
+            "to_node_id": "1955694",
+            "b1": {
+              "y": 1585,
+              "x": 203.49870467190607
+            },
+            "b2": {
+              "y": 1585,
+              "x": 271.04961140157184
+            }
+          },
+          "230": {
+            "from_node_id": "1955695",
+            "to_node_id": "1955536",
+            "b1": {
+              "y": 1585,
+              "x": 534.5502525245369
+            },
+            "b2": {
+              "y": 1585,
+              "x": 638.5008417484561
+            }
+          },
+          "231": {
+            "from_node_id": "1955695",
+            "to_node_id": "1955537",
+            "b1": {
+              "y": 1585,
+              "x": 514.6520790198311
+            },
+            "b2": {
+              "y": 1585,
+              "x": 572.1735967327705
+            }
+          },
+          "232": {
+            "from_node_id": "1955695",
+            "to_node_id": "1955538",
+            "b1": {
+              "y": 1585,
+              "x": 510.40220576310315
+            },
+            "b2": {
+              "y": 1585,
+              "x": 558.0073525436773
+            }
+          }
+        }
+      },
+      "1955638": {
+        "name": "Phosphofructokinase",
+        "bigg_id": "PFK",
+        "reversibility": false,
+        "label_x": 1250,
+        "label_y": 1575,
+        "gene_reaction_rule": "5214_AT1 or 5211_AT2 or (5214_AT1 and 5211_AT1) or (5214_AT1 and 5213_AT1) or 5213_AT1 or (5214_AT1 and 5211_AT2) or 5211_AT1 or (5211_AT1 and 5213_AT1) or (5213_AT1 and 5211_AT2)",
+        "genes": [
+          {
+            "bigg_id": "5214_AT1",
+            "name": "PFKP"
+          },
+          {
+            "bigg_id": "5213_AT1",
+            "name": "PFKM"
+          },
+          {
+            "bigg_id": "5211_AT2",
+            "name": "PFKL"
+          },
+          {
+            "bigg_id": "5211_AT1",
+            "name": "PFKL"
+          }
+        ],
+        "metabolites": [
+          {
+            "coefficient": 1,
+            "bigg_id": "h_c"
+          },
+          {
+            "coefficient": -1,
+            "bigg_id": "atp_c"
+          },
+          {
+            "coefficient": 1,
+            "bigg_id": "fdp_c"
+          },
+          {
+            "coefficient": 1,
+            "bigg_id": "adp_c"
+          },
+          {
+            "coefficient": -1,
+            "bigg_id": "f6p_c"
+          }
+        ],
+        "segments": {
+          "247": {
+            "from_node_id": "1955703",
+            "to_node_id": "1955704",
+            "b1": null,
+            "b2": null
+          },
+          "248": {
+            "from_node_id": "1955704",
+            "to_node_id": "1955705",
+            "b1": null,
+            "b2": null
+          },
+          "249": {
+            "from_node_id": "1955545",
+            "to_node_id": "1955703",
+            "b1": {
+              "y": 1585,
+              "x": 1110
+            },
+            "b2": {
+              "y": 1585,
+              "x": 1187
+            }
+          },
+          "250": {
+            "from_node_id": "1955546",
+            "to_node_id": "1955703",
+            "b1": {
+              "y": 1585,
+              "x": 1156.9028526793802
+            },
+            "b2": {
+              "y": 1585,
+              "x": 1201.070855803814
+            }
+          },
+          "251": {
+            "from_node_id": "1955705",
+            "to_node_id": "1955547",
+            "b1": {
+              "y": 1585,
+              "x": 1303.5
+            },
+            "b2": {
+              "y": 1585,
+              "x": 1405
+            }
+          },
+          "252": {
+            "from_node_id": "1955705",
+            "to_node_id": "1955548",
+            "b1": {
+              "y": 1585,
+              "x": 1277.700635581809
+            },
+            "b2": {
+              "y": 1585,
+              "x": 1319.0021186060296
+            }
+          },
+          "253": {
+            "from_node_id": "1955705",
+            "to_node_id": "1955549",
+            "b1": {
+              "y": 1585,
+              "x": 1289.8590438560916
+            },
+            "b2": {
+              "y": 1585,
+              "x": 1359.530146186972
+            }
+          }
+        }
+      },
+      "1955646": {
+        "name": "Fructose-bisphosphate aldolase",
+        "bigg_id": "FBA",
+        "reversibility": true,
+        "label_x": 1690,
+        "label_y": 1575,
+        "gene_reaction_rule": "226_AT2 or 226_AT1 or 226_AT3 or 230_AT1 or 229_AT1",
+        "genes": [
+          {
+            "bigg_id": "226_AT1",
+            "name": "ALDOA"
+          },
+          {
+            "bigg_id": "230_AT1",
+            "name": "ALDOC"
+          },
+          {
+            "bigg_id": "226_AT3",
+            "name": "ALDOA"
+          },
+          {
+            "bigg_id": "226_AT2",
+            "name": "ALDOA"
+          },
+          {
+            "bigg_id": "229_AT1",
+            "name": "ALDOB"
+          }
+        ],
+        "metabolites": [
+          {
+            "coefficient": 1,
+            "bigg_id": "g3p_c"
+          },
+          {
+            "coefficient": 1,
+            "bigg_id": "dhap_c"
+          },
+          {
+            "coefficient": -1,
+            "bigg_id": "fdp_c"
+          }
+        ],
+        "segments": {
+          "52": {
+            "from_node_id": "1955547",
+            "to_node_id": "1955724",
+            "b1": {
+              "y": 1585,
+              "x": 1569.5
+            },
+            "b2": {
+              "y": 1585,
+              "x": 1615
+            }
+          },
+          "53": {
+            "from_node_id": "1955724",
+            "to_node_id": "1955725",
+            "b1": null,
+            "b2": null
+          },
+          "54": {
+            "from_node_id": "1955725",
+            "to_node_id": "1955521",
+            "b1": {
+              "y": 1585,
+              "x": 1843
+            },
+            "b2": {
+              "y": 1585,
+              "x": 1920
+            }
+          },
+          "55": {
+            "from_node_id": "1955725",
+            "to_node_id": "1955570",
+            "b1": {
+              "y": 1585,
+              "x": 1832.5
+            },
+            "b2": {
+              "y": 1585,
+              "x": 1885
+            }
+          }
+        }
+      },
+      "1955651": {
+        "name": "Glucose-6-phosphate isomerase",
+        "bigg_id": "PGI",
+        "reversibility": true,
+        "label_x": 860.2987670898438,
+        "label_y": 1556.60546875,
+        "gene_reaction_rule": "2821_AT1",
+        "genes": [
+          {
+            "bigg_id": "2821_AT1",
+            "name": "GPI"
+          }
+        ],
+        "metabolites": [
+          {
+            "coefficient": -1,
+            "bigg_id": "g6p_c"
+          },
+          {
+            "coefficient": 1,
+            "bigg_id": "f6p_c"
+          }
+        ],
+        "segments": {
+          "79": {
+            "from_node_id": "1955536",
+            "to_node_id": "1955736",
+            "b1": {
+              "y": 1584.15,
+              "x": 832.0574096679687
+            },
+            "b2": {
+              "y": 1584.5,
+              "x": 835
+            }
+          },
+          "80": {
+            "from_node_id": "1955736",
+            "to_node_id": "1955545",
+            "b1": {
+              "y": 1585,
+              "x": 900.55
+            },
+            "b2": {
+              "y": 1585,
+              "x": 941.5
+            }
+          }
+        }
+      },
+      "1955657": {
+        "name": "Triose-phosphate isomerase",
+        "bigg_id": "TPI",
+        "reversibility": true,
+        "label_x": 1961.82470703125,
+        "label_y": 1677.9202880859375,
+        "gene_reaction_rule": "7167_AT1 or 286016_AT1",
+        "genes": [
+          {
+            "bigg_id": "286016_AT1",
+            "name": "None"
+          },
+          {
+            "bigg_id": "7167_AT1",
+            "name": "TPI1"
+          }
+        ],
+        "metabolites": [
+          {
+            "coefficient": 1,
+            "bigg_id": "g3p_c"
+          },
+          {
+            "coefficient": -1,
+            "bigg_id": "dhap_c"
+          }
+        ],
+        "segments": {
+          "267": {
+            "from_node_id": "1955570",
+            "to_node_id": "1955751",
+            "b1": {
+              "y": 1696,
+              "x": 1909
+            },
+            "b2": {
+              "y": 1675,
+              "x": 1930
+            }
+          },
+          "268": {
+            "from_node_id": "1955751",
+            "to_node_id": "1955521",
+            "b1": {
+              "y": 1636,
+              "x": 1970.5
+            },
+            "b2": {
+              "y": 1615,
+              "x": 1995
+            }
+          }
+        }
+      },
+      "1955665": {
+        "name": "Glucose transport  uniport ",
+        "bigg_id": "GLCt1",
+        "reversibility": true,
+        "label_x": -26.02406597137451,
+        "label_y": 1495.087646484375,
+        "gene_reaction_rule": "66035_AT1 or 6517_AT1 or 56606_AT1 or 154091_AT1 or 6513_AT1 or 11182_AT1 or 29988_AT1 or 6514_AT1 or 155184_AT1 or 56606_AT2 or 144195_AT1 or 6515_AT1 or 81031_AT1",
+        "genes": [
+          {
+            "bigg_id": "56606_AT2",
+            "name": "SLC2A9"
+          },
+          {
+            "bigg_id": "6515_AT1",
+            "name": "SLC2A3"
+          },
+          {
+            "bigg_id": "81031_AT1",
+            "name": "SLC2A10"
+          },
+          {
+            "bigg_id": "56606_AT1",
+            "name": "SLC2A9"
+          },
+          {
+            "bigg_id": "155184_AT1",
+            "name": "SLC2A7"
+          },
+          {
+            "bigg_id": "29988_AT1",
+            "name": "SLC2A8"
+          },
+          {
+            "bigg_id": "154091_AT1",
+            "name": "SLC2A12"
+          },
+          {
+            "bigg_id": "11182_AT1",
+            "name": "SLC2A6"
+          },
+          {
+            "bigg_id": "66035_AT1",
+            "name": "SLC2A11"
+          },
+          {
+            "bigg_id": "6514_AT1",
+            "name": "SLC2A2"
+          },
+          {
+            "bigg_id": "6513_AT1",
+            "name": "SLC2A1"
+          },
+          {
+            "bigg_id": "144195_AT1",
+            "name": "SLC2A14"
+          },
+          {
+            "bigg_id": "6517_AT1",
+            "name": "SLC2A4"
+          }
+        ],
+        "metabolites": [
+          {
+            "coefficient": -1,
+            "bigg_id": "glc__D_e"
+          },
+          {
+            "coefficient": 1,
+            "bigg_id": "glc__D_c"
+          }
+        ],
+        "segments": {
+          "113": {
+            "from_node_id": "1955612",
+            "to_node_id": "1955770",
+            "b1": {
+              "y": 1463.008056640625,
+              "x": 105
+            },
+            "b2": {
+              "y": 1451,
+              "x": 105
+            }
+          },
+          "114": {
+            "from_node_id": "1955770",
+            "to_node_id": "1955535",
+            "b1": {
+              "y": 1513.45,
+              "x": 105.3
+            },
+            "b2": {
+              "y": 1542.5,
+              "x": 106
+            }
+          }
+        }
+      },
+      "1956133": {
+        "name": "Glucose 6-phosphate dehydrogenase",
+        "bigg_id": "G6PDH2r",
+        "reversibility": true,
+        "label_x": 800,
+        "label_y": 1350,
+        "gene_reaction_rule": "2539_AT1",
+        "genes": [
+          {
+            "bigg_id": "2539_AT1",
+            "name": "G6PD"
+          }
+        ],
+        "metabolites": [
+          {
+            "coefficient": -1,
+            "bigg_id": "g6p_c"
+          },
+          {
+            "coefficient": -1,
+            "bigg_id": "nadp_c"
+          },
+          {
+            "coefficient": 1,
+            "bigg_id": "h_c"
+          },
+          {
+            "coefficient": 1,
+            "bigg_id": "nadph_c"
+          },
+          {
+            "coefficient": 1,
+            "bigg_id": "6pgl_c"
+          }
+        ],
+        "segments": {
+          "151": {
+            "from_node_id": "1956092",
+            "to_node_id": "1956093",
+            "b1": null,
+            "b2": null
+          },
+          "152": {
+            "from_node_id": "1956093",
+            "to_node_id": "1956094",
+            "b1": null,
+            "b2": null
+          },
+          "153": {
+            "from_node_id": "1955536",
+            "to_node_id": "1956092",
+            "b1": {
+              "y": 1482.0110288155158,
+              "x": 790
+            },
+            "b2": {
+              "y": 1410.6033086446548,
+              "x": 790
+            }
+          },
+          "154": {
+            "from_node_id": "1956047",
+            "to_node_id": "1956092",
+            "b1": {
+              "y": 1432.2015325445527,
+              "x": 790
+            },
+            "b2": {
+              "y": 1395.660459763366,
+              "x": 790
+            }
+          },
+          "155": {
+            "from_node_id": "1956094",
+            "to_node_id": "1956085",
+            "b1": {
+              "y": 1320.5,
+              "x": 790
+            },
+            "b2": {
+              "y": 1275,
+              "x": 790
+            }
+          },
+          "156": {
+            "from_node_id": "1956094",
+            "to_node_id": "1956051",
+            "b1": {
+              "y": 1324.339540236634,
+              "x": 790
+            },
+            "b2": {
+              "y": 1287.7984674554473,
+              "x": 790
+            }
+          },
+          "157": {
+            "from_node_id": "1956094",
+            "to_node_id": "1956061",
+            "b1": {
+              "y": 1320.7906272877015,
+              "x": 790
+            },
+            "b2": {
+              "y": 1275.9687576256715,
+              "x": 790
+            }
+          }
+        }
+      },
+      "1956140": {
+        "name": "Phosphogluconate dehydrogenase",
+        "bigg_id": "GND",
+        "reversibility": false,
+        "label_x": 800,
+        "label_y": 760,
+        "gene_reaction_rule": "5226_AT1",
+        "genes": [
+          {
+            "bigg_id": "5226_AT1",
+            "name": "PGD"
+          }
+        ],
+        "metabolites": [
+          {
+            "coefficient": 1,
+            "bigg_id": "nadph_c"
+          },
+          {
+            "coefficient": -1,
+            "bigg_id": "nadp_c"
+          },
+          {
+            "coefficient": 1,
+            "bigg_id": "co2_c"
+          },
+          {
+            "coefficient": 1,
+            "bigg_id": "ru5p__D_c"
+          },
+          {
+            "coefficient": -1,
+            "bigg_id": "6pgc_c"
+          }
+        ],
+        "segments": {
+          "158": {
+            "from_node_id": "1956095",
+            "to_node_id": "1956096",
+            "b1": null,
+            "b2": null
+          },
+          "159": {
+            "from_node_id": "1956096",
+            "to_node_id": "1956097",
+            "b1": null,
+            "b2": null
+          },
+          "160": {
+            "from_node_id": "1956056",
+            "to_node_id": "1956095",
+            "b1": {
+              "y": 865,
+              "x": 790
+            },
+            "b2": {
+              "y": 812.5,
+              "x": 790
+            }
+          },
+          "161": {
+            "from_node_id": "1956045",
+            "to_node_id": "1956095",
+            "b1": {
+              "y": 842.2015325445527,
+              "x": 790
+            },
+            "b2": {
+              "y": 805.6604597633658,
+              "x": 790
+            }
+          },
+          "162": {
+            "from_node_id": "1956097",
+            "to_node_id": "1956050",
+            "b1": {
+              "y": 734.3395402366342,
+              "x": 790
+            },
+            "b2": {
+              "y": 697.7984674554473,
+              "x": 790
+            }
+          },
+          "163": {
+            "from_node_id": "1956097",
+            "to_node_id": "1956039",
+            "b1": {
+              "y": 730.7906272877015,
+              "x": 790
+            },
+            "b2": {
+              "y": 685.9687576256715,
+              "x": 790
+            }
+          },
+          "164": {
+            "from_node_id": "1956097",
+            "to_node_id": "1956065",
+            "b1": {
+              "y": 705,
+              "x": 790
+            },
+            "b2": {
+              "y": 600,
+              "x": 790
+            }
+          }
+        }
+      },
+      "1956147": {
+        "name": "6-phosphogluconolactonase",
+        "bigg_id": "PGL",
+        "reversibility": false,
+        "label_x": 800,
+        "label_y": 1030,
+        "gene_reaction_rule": "25796_AT1",
+        "genes": [
+          {
+            "bigg_id": "25796_AT1",
+            "name": "PGLS"
+          }
+        ],
+        "metabolites": [
+          {
+            "coefficient": -1,
+            "bigg_id": "h2o_c"
+          },
+          {
+            "coefficient": 1,
+            "bigg_id": "6pgc_c"
+          },
+          {
+            "coefficient": 1,
+            "bigg_id": "h_c"
+          },
+          {
+            "coefficient": -1,
+            "bigg_id": "6pgl_c"
+          }
+        ],
+        "segments": {
+          "165": {
+            "from_node_id": "1956098",
+            "to_node_id": "1956099",
+            "b1": null,
+            "b2": null
+          },
+          "166": {
+            "from_node_id": "1956099",
+            "to_node_id": "1956100",
+            "b1": null,
+            "b2": null
+          },
+          "167": {
+            "from_node_id": "1956085",
+            "to_node_id": "1956098",
+            "b1": {
+              "y": 1135,
+              "x": 790
+            },
+            "b2": {
+              "y": 1082.5,
+              "x": 790
+            }
+          },
+          "168": {
+            "from_node_id": "1956052",
+            "to_node_id": "1956098",
+            "b1": {
+              "y": 1112.2015325445527,
+              "x": 790
+            },
+            "b2": {
+              "y": 1075.660459763366,
+              "x": 790
+            }
+          },
+          "169": {
+            "from_node_id": "1956100",
+            "to_node_id": "1956056",
+            "b1": {
+              "y": 1008,
+              "x": 790
+            },
+            "b2": {
+              "y": 980,
+              "x": 790
+            }
+          },
+          "170": {
+            "from_node_id": "1956100",
+            "to_node_id": "1956059",
+            "b1": {
+              "y": 1004.3395402366342,
+              "x": 790
+            },
+            "b2": {
+              "y": 967.7984674554473,
+              "x": 790
+            }
+          }
+        }
+      },
+      "1956153": {
+        "name": "Phosphopentomutase",
+        "bigg_id": "PPM",
+        "reversibility": true,
+        "label_x": 1099.9609375,
+        "label_y": 294.7470703125,
+        "gene_reaction_rule": "5236_AT1",
+        "genes": [
+          {
+            "bigg_id": "5236_AT1",
+            "name": "PGM1"
+          }
+        ],
+        "metabolites": [
+          {
+            "coefficient": -1,
+            "bigg_id": "r1p_c"
+          },
+          {
+            "coefficient": 1,
+            "bigg_id": "r5p_c"
+          }
+        ],
+        "segments": {
+          "171": {
+            "from_node_id": "1956086",
+            "to_node_id": "1956101",
+            "b1": {
+              "y": 310,
+              "x": 1245
+            },
+            "b2": {
+              "y": 310,
+              "x": 1210
+            }
+          },
+          "172": {
+            "from_node_id": "1956101",
+            "to_node_id": "1956042",
+            "b1": {
+              "y": 310,
+              "x": 1128.5
+            },
+            "b2": {
+              "y": 310,
+              "x": 1055
+            }
+          }
+        }
+      },
+      "1956156": {
+        "name": "Phosphoribosylpyrophosphate synthetase",
+        "bigg_id": "PRPPS",
+        "reversibility": true,
+        "label_x": 960,
+        "label_y": 150,
+        "gene_reaction_rule": "221823_AT2 or 5631_AT1 or 221823_AT1 or 5634_AT1",
+        "genes": [
+          {
+            "bigg_id": "221823_AT1",
+            "name": "PRPS1L1"
+          },
+          {
+            "bigg_id": "5634_AT1",
+            "name": "PRPS2"
+          },
+          {
+            "bigg_id": "5631_AT1",
+            "name": "PRPS1"
+          },
+          {
+            "bigg_id": "221823_AT2",
+            "name": "PRPS1L1"
+          }
+        ],
+        "metabolites": [
+          {
+            "coefficient": 1,
+            "bigg_id": "amp_c"
+          },
+          {
+            "coefficient": 1,
+            "bigg_id": "h_c"
+          },
+          {
+            "coefficient": 1,
+            "bigg_id": "prpp_c"
+          },
+          {
+            "coefficient": -1,
+            "bigg_id": "atp_c"
+          },
+          {
+            "coefficient": -1,
+            "bigg_id": "r5p_c"
+          }
+        ],
+        "segments": {
+          "173": {
+            "from_node_id": "1956102",
+            "to_node_id": "1956103",
+            "b1": null,
+            "b2": null
+          },
+          "174": {
+            "from_node_id": "1956103",
+            "to_node_id": "1956104",
+            "b1": null,
+            "b2": null
+          },
+          "175": {
+            "from_node_id": "1956046",
+            "to_node_id": "1956102",
+            "b1": {
+              "y": 232.20153254455275,
+              "x": 950
+            },
+            "b2": {
+              "y": 195.66045976336582,
+              "x": 950
+            }
+          },
+          "176": {
+            "from_node_id": "1956042",
+            "to_node_id": "1956102",
+            "b1": {
+              "y": 245,
+              "x": 950
+            },
+            "b2": {
+              "y": 199.5,
+              "x": 950
+            }
+          },
+          "177": {
+            "from_node_id": "1956104",
+            "to_node_id": "1956054",
+            "b1": {
+              "y": 124.33954023663418,
+              "x": 950
+            },
+            "b2": {
+              "y": 87.79846745544725,
+              "x": 950
+            }
+          },
+          "178": {
+            "from_node_id": "1956104",
+            "to_node_id": "1956068",
+            "b1": {
+              "y": 120.79062728770145,
+              "x": 950
+            },
+            "b2": {
+              "y": 75.96875762567151,
+              "x": 950
+            }
+          },
+          "179": {
+            "from_node_id": "1956104",
+            "to_node_id": "1956055",
+            "b1": {
+              "y": 120.5,
+              "x": 950
+            },
+            "b2": {
+              "y": 75,
+              "x": 950
+            }
+          }
+        }
+      },
+      "1956163": {
+        "name": "Ribulose 5-phosphate 3-epimerase",
+        "bigg_id": "RPE",
+        "reversibility": true,
+        "label_x": 871,
+        "label_y": 511,
+        "gene_reaction_rule": "6120_AT1 or 6120_AT2",
+        "genes": [
+          {
+            "bigg_id": "6120_AT1",
+            "name": "RPE"
+          },
+          {
+            "bigg_id": "6120_AT2",
+            "name": "RPE"
+          }
+        ],
+        "metabolites": [
+          {
+            "coefficient": -1,
+            "bigg_id": "ru5p__D_c"
+          },
+          {
+            "coefficient": 1,
+            "bigg_id": "xu5p__D_c"
+          }
+        ],
+        "segments": {
+          "180": {
+            "from_node_id": "1956065",
+            "to_node_id": "1956105",
+            "b1": {
+              "y": 460.65,
+              "x": 800.65
+            },
+            "b2": {
+              "y": 485.5,
+              "x": 825.5
+            }
+          },
+          "181": {
+            "from_node_id": "1956105",
+            "to_node_id": "1956078",
+            "b1": {
+              "y": 532.85,
+              "x": 872.85
+            },
+            "b2": {
+              "y": 560.5,
+              "x": 900.5
+            }
+          }
+        }
+      },
+      "1956166": {
+        "name": "Ribose-5-phosphate isomerase",
+        "bigg_id": "RPI",
+        "reversibility": true,
+        "label_x": 799.1732177734375,
+        "label_y": 355.5717468261719,
+        "gene_reaction_rule": "22934_AT1",
+        "genes": [
+          {
+            "bigg_id": "22934_AT1",
+            "name": "RPIA"
+          }
+        ],
+        "metabolites": [
+          {
+            "coefficient": 1,
+            "bigg_id": "ru5p__D_c"
+          },
+          {
+            "coefficient": -1,
+            "bigg_id": "r5p_c"
+          }
+        ],
+        "segments": {
+          "182": {
+            "from_node_id": "1956042",
+            "to_node_id": "1956106",
+            "b1": {
+              "y": 320.35,
+              "x": 936.65
+            },
+            "b2": {
+              "y": 344.5,
+              "x": 905.5
+            }
+          },
+          "183": {
+            "from_node_id": "1956106",
+            "to_node_id": "1956065",
+            "b1": {
+              "y": 389.65,
+              "x": 850.35
+            },
+            "b2": {
+              "y": 414.5,
+              "x": 825.5
+            }
+          }
+        }
+      },
+      "1956168": {
+        "name": "Transaldolase",
+        "bigg_id": "TALA",
+        "reversibility": true,
+        "label_x": 1390,
+        "label_y": 770,
+        "gene_reaction_rule": "6888_AT1",
+        "genes": [
+          {
+            "bigg_id": "6888_AT1",
+            "name": "TALDO1"
+          }
+        ],
+        "metabolites": [
+          {
+            "coefficient": 1,
+            "bigg_id": "e4p_c"
+          },
+          {
+            "coefficient": -1,
+            "bigg_id": "s7p_c"
+          },
+          {
+            "coefficient": 1,
+            "bigg_id": "f6p_c"
+          },
+          {
+            "coefficient": -1,
+            "bigg_id": "g3p_c"
+          }
+        ],
+        "segments": {
+          "184": {
+            "from_node_id": "1956107",
+            "to_node_id": "1956108",
+            "b1": null,
+            "b2": null
+          },
+          "185": {
+            "from_node_id": "1956108",
+            "to_node_id": "1956109",
+            "b1": null,
+            "b2": null
+          },
+          "186": {
+            "from_node_id": "1956084",
+            "to_node_id": "1956107",
+            "b1": {
+              "y": 663.8230796916432,
+              "x": 1380
+            },
+            "b2": {
+              "y": 731.1469239074929,
+              "x": 1380
+            }
+          },
+          "187": {
+            "from_node_id": "1956074",
+            "to_node_id": "1956107",
+            "b1": {
+              "y": 559.4382887986842,
+              "x": 1380
+            },
+            "b2": {
+              "y": 699.8314866396053,
+              "x": 1380
+            }
+          },
+          "188": {
+            "from_node_id": "1956109",
+            "to_node_id": "1956081",
+            "b1": {
+              "y": 822.8965062837106,
+              "x": 1380
+            },
+            "b2": {
+              "y": 876.3216876123687,
+              "x": 1380
+            }
+          },
+          "189": {
+            "from_node_id": "1956109",
+            "to_node_id": "1955545",
+            "b1": {
+              "y": 930.820726568843,
+              "x": 1380
+            },
+            "b2": {
+              "y": 1236.06908856281,
+              "x": 1380
+            }
+          }
+        }
+      },
+      "1956175": {
+        "name": "Transketolase",
+        "bigg_id": "TKT1",
+        "reversibility": true,
+        "label_x": 1180,
+        "label_y": 400,
+        "gene_reaction_rule": "7086_AT1 or 84076_AT1 or 8277_AT1",
+        "genes": [
+          {
+            "bigg_id": "8277_AT1",
+            "name": "TKTL1"
+          },
+          {
+            "bigg_id": "84076_AT1",
+            "name": "TKTL2"
+          },
+          {
+            "bigg_id": "7086_AT1",
+            "name": "TKT"
+          }
+        ],
+        "metabolites": [
+          {
+            "coefficient": 1,
+            "bigg_id": "g3p_c"
+          },
+          {
+            "coefficient": -1,
+            "bigg_id": "r5p_c"
+          },
+          {
+            "coefficient": -1,
+            "bigg_id": "xu5p__D_c"
+          },
+          {
+            "coefficient": 1,
+            "bigg_id": "s7p_c"
+          }
+        ],
+        "segments": {
+          "190": {
+            "from_node_id": "1956110",
+            "to_node_id": "1956111",
+            "b1": null,
+            "b2": null
+          },
+          "191": {
+            "from_node_id": "1956111",
+            "to_node_id": "1956112",
+            "b1": null,
+            "b2": null
+          },
+          "192": {
+            "from_node_id": "1956042",
+            "to_node_id": "1956110",
+            "b1": {
+              "y": 410,
+              "x": 1038.1966011250106
+            },
+            "b2": {
+              "y": 410,
+              "x": 1116.4589803375031
+            }
+          },
+          "193": {
+            "from_node_id": "1956078",
+            "to_node_id": "1956110",
+            "b1": {
+              "y": 410,
+              "x": 1008.401977414937
+            },
+            "b2": {
+              "y": 410,
+              "x": 1107.5205932244812
+            }
+          },
+          "194": {
+            "from_node_id": "1956112",
+            "to_node_id": "1956084",
+            "b1": {
+              "y": 410,
+              "x": 1220.886890422961
+            },
+            "b2": {
+              "y": 410,
+              "x": 1292.95630140987
+            }
+          },
+          "195": {
+            "from_node_id": "1956112",
+            "to_node_id": "1956074",
+            "b1": {
+              "y": 410,
+              "x": 1215.1445819213604
+            },
+            "b2": {
+              "y": 410,
+              "x": 1273.815273071201
+            }
+          }
+        }
+      },
+      "1956182": {
+        "name": "Transketolase",
+        "bigg_id": "TKT2",
+        "reversibility": true,
+        "label_x": 1054,
+        "label_y": 824,
+        "gene_reaction_rule": "7086_AT1 or 84076_AT1 or 8277_AT1",
+        "genes": [
+          {
+            "bigg_id": "8277_AT1",
+            "name": "TKTL1"
+          },
+          {
+            "bigg_id": "84076_AT1",
+            "name": "TKTL2"
+          },
+          {
+            "bigg_id": "7086_AT1",
+            "name": "TKT"
+          }
+        ],
+        "metabolites": [
+          {
+            "coefficient": -1,
+            "bigg_id": "xu5p__D_c"
+          },
+          {
+            "coefficient": -1,
+            "bigg_id": "e4p_c"
+          },
+          {
+            "coefficient": 1,
+            "bigg_id": "f6p_c"
+          },
+          {
+            "coefficient": 1,
+            "bigg_id": "g3p_c"
+          }
+        ],
+        "segments": {
+          "196": {
+            "from_node_id": "1956113",
+            "to_node_id": "1956114",
+            "b1": null,
+            "b2": null
+          },
+          "197": {
+            "from_node_id": "1956114",
+            "to_node_id": "1956115",
+            "b1": null,
+            "b2": null
+          },
+          "198": {
+            "from_node_id": "1956073",
+            "to_node_id": "1956113",
+            "b1": {
+              "y": 783.0879423494165,
+              "x": 993.0879423494165
+            },
+            "b2": {
+              "y": 808.926382704825,
+              "x": 1018.926382704825
+            }
+          },
+          "199": {
+            "from_node_id": "1956078",
+            "to_node_id": "1956113",
+            "b1": {
+              "y": 735.961318430142,
+              "x": 945.961318430142
+            },
+            "b2": {
+              "y": 794.7883955290426,
+              "x": 1004.7883955290426
+            }
+          },
+          "200": {
+            "from_node_id": "1956115",
+            "to_node_id": "1955545",
+            "b1": {
+              "y": 926.4123475608274,
+              "x": 1136.4123475608274
+            },
+            "b2": {
+              "y": 1109.3744918694247,
+              "x": 1319.3744918694247
+            }
+          },
+          "201": {
+            "from_node_id": "1956115",
+            "to_node_id": "1956084",
+            "b1": {
+              "y": 884.801698330376,
+              "x": 1094.801698330376
+            },
+            "b2": {
+              "y": 970.67232776792,
+              "x": 1180.67232776792
+            }
+          }
+        }
+      }
+    },
+    "nodes": {
+      "1955521": {
+        "node_type": "metabolite",
+        "x": 2030,
+        "y": 1585,
+        "bigg_id": "g3p_c",
+        "name": "Glyceraldehyde 3-phosphate",
+        "label_x": 2020,
+        "label_y": 1555,
+        "node_is_primary": true
+      },
+      "1955534": {
+        "node_type": "metabolite",
+        "x": 230,
+        "y": 1475,
+        "bigg_id": "atp_c",
+        "name": "ATP",
+        "label_x": 240,
+        "label_y": 1455,
+        "node_is_primary": false
+      },
+      "1955535": {
+        "node_type": "metabolite",
+        "x": 107,
+        "y": 1584,
+        "bigg_id": "glc__D_c",
+        "name": "D-Glucose",
+        "label_x": -11.32284164428711,
+        "label_y": 1626.262939453125,
+        "node_is_primary": true
+      },
+      "1955536": {
+        "node_type": "metabolite",
+        "x": 787,
+        "y": 1584,
+        "bigg_id": "g6p_c",
+        "name": "D-Glucose 6-phosphate",
+        "label_x": 755.1753540039062,
+        "label_y": 1635.3148193359375,
+        "node_is_primary": true
+      },
+      "1955537": {
+        "node_type": "metabolite",
+        "x": 633,
+        "y": 1504,
+        "bigg_id": "h_c",
+        "name": "H+",
+        "label_x": 634,
+        "label_y": 1483,
+        "node_is_primary": false
+      },
+      "1955538": {
+        "node_type": "metabolite",
+        "x": 570,
+        "y": 1475,
+        "bigg_id": "adp_c",
+        "name": "ADP",
+        "label_x": 560,
+        "label_y": 1455,
+        "node_is_primary": false
+      },
+      "1955545": {
+        "node_type": "metabolite",
+        "x": 1000,
+        "y": 1585,
+        "bigg_id": "f6p_c",
+        "name": "D-Fructose 6-phosphate",
+        "label_x": 989.7808837890625,
+        "label_y": 1640.4383544921875,
+        "node_is_primary": true
+      },
+      "1955546": {
+        "node_type": "metabolite",
+        "x": 1150,
+        "y": 1690,
+        "bigg_id": "atp_c",
+        "name": "ATP",
+        "label_x": 1140,
+        "label_y": 1700,
+        "node_is_primary": false
+      },
+      "1955547": {
+        "node_type": "metabolite",
+        "x": 1550,
+        "y": 1585,
+        "bigg_id": "fdp_c",
+        "name": "D-Fructose 1,6-bisphosphate",
+        "label_x": 1570,
+        "label_y": 1565,
+        "node_is_primary": true
+      },
+      "1955548": {
+        "node_type": "metabolite",
+        "x": 1330,
+        "y": 1680,
+        "bigg_id": "h_c",
+        "name": "H+",
+        "label_x": 1330,
+        "label_y": 1660,
+        "node_is_primary": false
+      },
+      "1955549": {
+        "node_type": "metabolite",
+        "x": 1440,
+        "y": 1670,
+        "bigg_id": "adp_c",
+        "name": "ADP",
+        "label_x": 1450,
+        "label_y": 1670,
+        "node_is_primary": false
+      },
+      "1955570": {
+        "node_type": "metabolite",
+        "x": 1900,
+        "y": 1705,
+        "bigg_id": "dhap_c",
+        "name": "Dihydroxyacetone phosphate",
+        "label_x": 1788.246826171875,
+        "label_y": 1735.6573486328125,
+        "node_is_primary": true
+      },
+      "1955612": {
+        "node_type": "metabolite",
+        "x": 105,
+        "y": 1401,
+        "bigg_id": "glc__D_e",
+        "name": "D-Glucose",
+        "label_x": 135,
+        "label_y": 1401,
+        "node_is_primary": true
+      },
+      "1955694": {
+        "node_type": "multimarker",
+        "x": 300,
+        "y": 1585
+      },
+      "1955695": {
+        "node_type": "multimarker",
+        "x": 490,
+        "y": 1585
+      },
+      "1955696": {
+        "node_type": "midmarker",
+        "x": 400,
+        "y": 1585
+      },
+      "1955703": {
+        "node_type": "multimarker",
+        "x": 1220,
+        "y": 1585
+      },
+      "1955704": {
+        "node_type": "midmarker",
+        "x": 1240,
+        "y": 1585
+      },
+      "1955705": {
+        "node_type": "multimarker",
+        "x": 1260,
+        "y": 1585
+      },
+      "1955724": {
+        "node_type": "midmarker",
+        "x": 1680,
+        "y": 1585
+      },
+      "1955725": {
+        "node_type": "multimarker",
+        "x": 1810,
+        "y": 1585
+      },
+      "1955736": {
+        "node_type": "midmarker",
+        "x": 883,
+        "y": 1585
+      },
+      "1955751": {
+        "node_type": "midmarker",
+        "x": 1960,
+        "y": 1645
+      },
+      "1955770": {
+        "node_type": "midmarker",
+        "x": 105,
+        "y": 1501
+      },
+      "1956039": {
+        "node_type": "metabolite",
+        "x": 690,
+        "y": 670,
+        "bigg_id": "nadph_c",
+        "name": "Nicotinamide adenine dinucleotide phosphate - reduced",
+        "label_x": 586.2030639648438,
+        "label_y": 665.912353515625,
+        "node_is_primary": false
+      },
+      "1956042": {
+        "node_type": "metabolite",
+        "x": 950,
+        "y": 310,
+        "bigg_id": "r5p_c",
+        "name": "Alpha-D-Ribose 5-phosphate",
+        "label_x": 978.6135864257812,
+        "label_y": 275.9123229980469,
+        "node_is_primary": true
+      },
+      "1956045": {
+        "node_type": "metabolite",
+        "x": 690,
+        "y": 820,
+        "bigg_id": "nadp_c",
+        "name": "Nicotinamide adenine dinucleotide phosphate",
+        "label_x": 596.4222412109375,
+        "label_y": 820,
+        "node_is_primary": false
+      },
+      "1956046": {
+        "node_type": "metabolite",
+        "x": 850,
+        "y": 210,
+        "bigg_id": "atp_c",
+        "name": "ATP",
+        "label_x": 764.5975341796875,
+        "label_y": 212.0438232421875,
+        "node_is_primary": false
+      },
+      "1956047": {
+        "node_type": "metabolite",
+        "x": 690,
+        "y": 1410,
+        "bigg_id": "nadp_c",
+        "name": "Nicotinamide adenine dinucleotide phosphate",
+        "label_x": 614.8167114257812,
+        "label_y": 1383.4302978515625,
+        "node_is_primary": false
+      },
+      "1956050": {
+        "node_type": "metabolite",
+        "x": 690,
+        "y": 720,
+        "bigg_id": "co2_c",
+        "name": "CO2",
+        "label_x": 600.5098876953125,
+        "label_y": 726.1315307617188,
+        "node_is_primary": false
+      },
+      "1956051": {
+        "node_type": "metabolite",
+        "x": 690,
+        "y": 1310,
+        "bigg_id": "h_c",
+        "name": "H+",
+        "label_x": 616.8605346679688,
+        "label_y": 1307.9561767578125,
+        "node_is_primary": false
+      },
+      "1956052": {
+        "node_type": "metabolite",
+        "x": 690,
+        "y": 1090,
+        "bigg_id": "h2o_c",
+        "name": "H2O",
+        "label_x": 608.6851806640625,
+        "label_y": 1090,
+        "node_is_primary": false
+      },
+      "1956054": {
+        "node_type": "metabolite",
+        "x": 850,
+        "y": 110,
+        "bigg_id": "amp_c",
+        "name": "AMP",
+        "label_x": 754.37841796875,
+        "label_y": 120.21913146972656,
+        "node_is_primary": false
+      },
+      "1956055": {
+        "node_type": "metabolite",
+        "x": 950,
+        "y": 10,
+        "bigg_id": "prpp_c",
+        "name": "5-Phospho-alpha-D-ribose 1-diphosphate",
+        "label_x": 993.5777587890625,
+        "label_y": 5.912345707416534,
+        "node_is_primary": true
+      },
+      "1956056": {
+        "node_type": "metabolite",
+        "x": 790,
+        "y": 940,
+        "bigg_id": "6pgc_c",
+        "name": "6-Phospho-D-gluconate",
+        "label_x": 819.27099609375,
+        "label_y": 940,
+        "node_is_primary": true
+      },
+      "1956059": {
+        "node_type": "metabolite",
+        "x": 690,
+        "y": 990,
+        "bigg_id": "h_c",
+        "name": "H+",
+        "label_x": 622.9920043945312,
+        "label_y": 990,
+        "node_is_primary": false
+      },
+      "1956061": {
+        "node_type": "metabolite",
+        "x": 690,
+        "y": 1260,
+        "bigg_id": "nadph_c",
+        "name": "Nicotinamide adenine dinucleotide phosphate - reduced",
+        "label_x": 590.290771484375,
+        "label_y": 1255.912353515625,
+        "node_is_primary": false
+      },
+      "1956065": {
+        "node_type": "metabolite",
+        "x": 790,
+        "y": 450,
+        "bigg_id": "ru5p__D_c",
+        "name": "D-Ribulose 5-phosphate",
+        "label_x": 657.8086547851562,
+        "label_y": 439.7808837890625,
+        "node_is_primary": true
+      },
+      "1956068": {
+        "node_type": "metabolite",
+        "x": 850,
+        "y": 60,
+        "bigg_id": "h_c",
+        "name": "H+",
+        "label_x": 780.9481811523438,
+        "label_y": 51.82469177246094,
+        "node_is_primary": false
+      },
+      "1956073": {
+        "node_type": "metabolite",
+        "x": 930,
+        "y": 790,
+        "bigg_id": "e4p_c",
+        "name": "D-Erythrose 4-phosphate",
+        "label_x": 908.07958984375,
+        "label_y": 836.4462890625,
+        "node_is_primary": true
+      },
+      "1956074": {
+        "node_type": "metabolite",
+        "x": 1350,
+        "y": 360,
+        "bigg_id": "s7p_c",
+        "name": "Sedoheptulose 7-phosphate",
+        "label_x": 1390.87646484375,
+        "label_y": 369.56170654296875,
+        "node_is_primary": true
+      },
+      "1956078": {
+        "node_type": "metabolite",
+        "x": 940,
+        "y": 600,
+        "bigg_id": "xu5p__D_c",
+        "name": "D-Xylulose 5-phosphate",
+        "label_x": 974.1832885742188,
+        "label_y": 616.912353515625,
+        "node_is_primary": true
+      },
+      "1956081": {
+        "node_type": "metabolite",
+        "x": 1460,
+        "y": 930,
+        "bigg_id": "e4p_c",
+        "name": "D-Erythrose 4-phosphate",
+        "label_x": 1490,
+        "label_y": 940,
+        "node_is_primary": true
+      },
+      "1956084": {
+        "node_type": "metabolite",
+        "x": 1290,
+        "y": 590,
+        "bigg_id": "g3p_c",
+        "name": "Glyceraldehyde 3-phosphate",
+        "label_x": 1201.195068359375,
+        "label_y": 583.5617065429688,
+        "node_is_primary": true
+      },
+      "1956085": {
+        "node_type": "metabolite",
+        "x": 790,
+        "y": 1210,
+        "bigg_id": "6pgl_c",
+        "name": "6-phospho-D-glucono-1,5-lactone",
+        "label_x": 827.4462890625,
+        "label_y": 1203.8685302734375,
+        "node_is_primary": true
+      },
+      "1956086": {
+        "node_type": "metabolite",
+        "x": 1260,
+        "y": 310,
+        "bigg_id": "r1p_c",
+        "name": "Alpha-D-Ribose 1-phosphate",
+        "label_x": 1260,
+        "label_y": 280,
+        "node_is_primary": true
+      },
+      "1956092": {
+        "node_type": "multimarker",
+        "x": 790,
+        "y": 1380
+      },
+      "1956093": {
+        "node_type": "midmarker",
+        "x": 790,
+        "y": 1360
+      },
+      "1956094": {
+        "node_type": "multimarker",
+        "x": 790,
+        "y": 1340
+      },
+      "1956095": {
+        "node_type": "multimarker",
+        "x": 790,
+        "y": 790
+      },
+      "1956096": {
+        "node_type": "midmarker",
+        "x": 790,
+        "y": 770
+      },
+      "1956097": {
+        "node_type": "multimarker",
+        "x": 790,
+        "y": 750
+      },
+      "1956098": {
+        "node_type": "multimarker",
+        "x": 790,
+        "y": 1060
+      },
+      "1956099": {
+        "node_type": "midmarker",
+        "x": 790,
+        "y": 1040
+      },
+      "1956100": {
+        "node_type": "multimarker",
+        "x": 790,
+        "y": 1020
+      },
+      "1956101": {
+        "node_type": "midmarker",
+        "x": 1160,
+        "y": 310
+      },
+      "1956102": {
+        "node_type": "multimarker",
+        "x": 950,
+        "y": 180
+      },
+      "1956103": {
+        "node_type": "midmarker",
+        "x": 950,
+        "y": 160
+      },
+      "1956104": {
+        "node_type": "multimarker",
+        "x": 950,
+        "y": 140
+      },
+      "1956105": {
+        "node_type": "midmarker",
+        "x": 861,
+        "y": 521
+      },
+      "1956106": {
+        "node_type": "midmarker",
+        "x": 861,
+        "y": 379
+      },
+      "1956107": {
+        "node_type": "multimarker",
+        "x": 1380,
+        "y": 760
+      },
+      "1956108": {
+        "node_type": "midmarker",
+        "x": 1380,
+        "y": 780
+      },
+      "1956109": {
+        "node_type": "multimarker",
+        "x": 1380,
+        "y": 800
+      },
+      "1956110": {
+        "node_type": "multimarker",
+        "x": 1150,
+        "y": 410
+      },
+      "1956111": {
+        "node_type": "midmarker",
+        "x": 1170,
+        "y": 410
+      },
+      "1956112": {
+        "node_type": "multimarker",
+        "x": 1190,
+        "y": 410
+      },
+      "1956113": {
+        "node_type": "multimarker",
+        "x": 1030,
+        "y": 820
+      },
+      "1956114": {
+        "node_type": "midmarker",
+        "x": 1044,
+        "y": 834
+      },
+      "1956115": {
+        "node_type": "multimarker",
+        "x": 1058,
+        "y": 848
+      }
+    },
+    "text_labels": {
+      "2582425": {
+        "x": 1703.81103515625,
+        "y": 1215.316650390625,
+        "text": "Glycolysis"
+      },
+      "2582426": {
+        "x": 1445.9482421875,
+        "y": 499.2958679199219,
+        "text": "Pentose Phosphate Pathway"
+      }
+    },
+    "canvas": {
+      "x": -246,
+      "y": -336.05,
+      "width": 2800,
+      "height": 2500
+    }
+  }
+]
