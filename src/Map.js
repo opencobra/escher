@@ -456,6 +456,78 @@ export default class Map {
     var reaction_subset = utils.object_slice_for_ids_ref(this.reactions,
                                                          reaction_ids)
 
+    const needAnimation = true;
+    if (needAnimation) {
+      const svg = document.querySelector('svg').querySelector("g#reactions");
+      const fuses = svg.querySelectorAll('path.segment');
+      function createParticle (fuse, point) {
+        // Create a new circle element
+        const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+        // Prepend the element to the SVG
+        fuse.parentNode.append(circle);
+        // Set the coordinates of that circle
+        circle.setAttribute('cx', point.x);
+        circle.setAttribute('cy', point.y);
+        // Define a random radius for each circle
+        circle.setAttribute('r', (Math.random() * 2) + 0.2);
+        // Define a random color
+        circle.setAttribute('fill', gsap.utils.random(['#ff0000', '#ff5a00', '#ff9a00', '#ffce00', '#ffe808']));
+
+        // Animate the circle
+        gsap.to(circle, {
+          // Random cx based on its current position
+          cx: '+=random(-10,10)',
+          // Random cy based on its current position
+          cy: '+=random(-10,10)',
+          // Fade out
+          opacity: 0,
+          // Random duration for each circle
+          duration: 'random(4, 6)',
+          yoyo: true,
+          // Prevent gsap from rounding the cx & cy values
+          autoRound: false,
+          // Once the animation is complete
+          onComplete: () => {
+            // Remove the SVG element from its parent
+            fuse.parentNode.removeChild(circle);
+          }
+        });
+      }
+
+      fuses.forEach(fuse => {
+        // Create an object that gsap can animate
+        const val = { distance: 0 };
+        // Create a tween
+        gsap.to(val, {
+          // Animate from distance 0 to the total distance
+          distance: fuse.getTotalLength(),
+          // Loop the animation
+          repeat: -1,
+          // Wait 1sec before repeating
+          repeatDelay: 0,
+          // Make the animation lasts 5 seconds
+          duration: 5,
+          // Function call on each frame of the animation
+          onUpdate: () => {
+            // Query a point at the new distance value
+            const point = fuse.getPointAtLength(val.distance);
+            createParticle(fuse, point);
+          }
+        });
+
+        /* Animate the fuse to reduce it */
+        // fuse.setAttribute('stroke-dasharray', fuse.getTotalLength());
+        // fuse.setAttribute('stroke-dashoffset', fuse.getTotalLength() * 2);
+        // gsap.to(fuse, {
+        //   strokeDashoffset: fuse.getTotalLength(),
+        //   duration: 5,
+        //   repeat: 1,
+        //   // Wait 1sec before repeating
+        //   repeatDelay: 1
+        // });
+      })
+    }
+
     // function to update reactions
     var update_fn = function(sel) {
       return this.draw.update_reaction(sel, this.scale, this.cobra_model,
