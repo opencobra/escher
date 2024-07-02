@@ -9,7 +9,7 @@ import KeyManager from './KeyManager'
 import Canvas from './Canvas'
 import * as dataStyles from './dataStyles'
 import SearchIndex from './SearchIndex'
-
+import { gsap } from "gsap";
 import bacon from 'baconjs'
 import _ from 'underscore'
 import { select as d3Select } from 'd3-selection'
@@ -469,9 +469,9 @@ export default class Map {
         circle.setAttribute('cx', point.x);
         circle.setAttribute('cy', point.y);
         // Define a random radius for each circle
-        circle.setAttribute('r', (Math.random() * 2) + 0.2);
+        circle.setAttribute('r', (Math.random() * 4) + 0.2);
         // Define a random color
-        circle.setAttribute('fill', gsap.utils.random(['#ff0000', '#ff5a00', '#ff9a00', '#ffce00', '#ffe808']));
+        circle.setAttribute('fill', gsap.utils.random([ '#00FF00']));
 
         // Animate the circle
         gsap.to(circle, {
@@ -483,7 +483,6 @@ export default class Map {
           opacity: 0,
           // Random duration for each circle
           duration: 'random(4, 6)',
-          yoyo: true,
           // Prevent gsap from rounding the cx & cy values
           autoRound: false,
           // Once the animation is complete
@@ -511,6 +510,9 @@ export default class Map {
           onUpdate: () => {
             // Query a point at the new distance value
             const point = fuse.getPointAtLength(val.distance);
+            if (fuse.parentNode.attributes['id'].value === 's268') {
+              // console.log(fuse.parentNode.querySelectorAll('circle').length, 'circle.length');
+            }
             createParticle(fuse, point);
           }
         });
