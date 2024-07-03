@@ -460,73 +460,16 @@ export default class Map {
     if (needAnimation) {
       const svg = document.querySelector('svg').querySelector("g#reactions");
       const fuses = svg.querySelectorAll('path.segment');
-      function createParticle (fuse, point) {
-        // Create a new circle element
-        const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
-        // Prepend the element to the SVG
-        fuse.parentNode.append(circle);
-        // Set the coordinates of that circle
-        circle.setAttribute('cx', point.x);
-        circle.setAttribute('cy', point.y);
-        // Define a random radius for each circle
-        circle.setAttribute('r', (Math.random() * 4) + 0.2);
-        // Define a random color
-        circle.setAttribute('fill', gsap.utils.random([ '#00FF00']));
-
-        // Animate the circle
-        gsap.to(circle, {
-          // Random cx based on its current position
-          cx: '+=random(-10,10)',
-          // Random cy based on its current position
-          cy: '+=random(-10,10)',
-          // Fade out
-          opacity: 0,
-          // Random duration for each circle
-          duration: 'random(4, 6)',
-          // Prevent gsap from rounding the cx & cy values
-          autoRound: false,
-          // Once the animation is complete
-          onComplete: () => {
-            // Remove the SVG element from its parent
-            fuse.parentNode.removeChild(circle);
-          }
-        });
-      }
-
       fuses.forEach(fuse => {
-        // Create an object that gsap can animate
-        const val = { distance: 0 };
-        // Create a tween
-        gsap.to(val, {
-          // Animate from distance 0 to the total distance
-          distance: fuse.getTotalLength(),
-          // Loop the animation
-          repeat: -1,
-          // Wait 1sec before repeating
-          repeatDelay: 0,
-          // Make the animation lasts 5 seconds
-          duration: 5,
-          // Function call on each frame of the animation
-          onUpdate: () => {
-            // Query a point at the new distance value
-            const point = fuse.getPointAtLength(val.distance);
-            if (fuse.parentNode.attributes['id'].value === 's268') {
-              // console.log(fuse.parentNode.querySelectorAll('circle').length, 'circle.length');
-            }
-            createParticle(fuse, point);
-          }
-        });
-
-        /* Animate the fuse to reduce it */
-        // fuse.setAttribute('stroke-dasharray', fuse.getTotalLength());
-        // fuse.setAttribute('stroke-dashoffset', fuse.getTotalLength() * 2);
-        // gsap.to(fuse, {
-        //   strokeDashoffset: fuse.getTotalLength(),
-        //   duration: 5,
-        //   repeat: 1,
-        //   // Wait 1sec before repeating
-        //   repeatDelay: 1
-        // });
+        if (!!fuse.getAttribute('data-flux')) {
+          fuse.setAttribute('stroke-dasharray', '12,12');
+          gsap.to(fuse, {
+            strokeDashoffset: -fuse.getTotalLength() * 2,
+            repeat: -1,
+            ease: "none",
+            duration: 6
+          });
+        }
       })
     }
 

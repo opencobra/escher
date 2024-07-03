@@ -402,7 +402,7 @@ function update_segment (update_selection, scale, cobra_model,
       }
       if (should_color) {
         var f = d.data
-        return f === null ? no_data_color : "#C8C8C8"
+        return f === null ? no_data_color : scale.reaction_color(f)
       }
       return null
     })
@@ -413,6 +413,9 @@ function update_segment (update_selection, scale, cobra_model,
       } else {
         return null
       }
+    })
+    .attr('data-flux', function (d) {
+      return d.data
     })
     .attr('pointer-events', 'visibleStroke')
     .on('mouseover', objectMouseover)
@@ -503,7 +506,7 @@ function update_segment (update_selection, scale, cobra_model,
         if (d.show_arrowhead_flux) {
           // show the flux
           var f = d.data
-          return f === null ? no_data_color : "#C8C8C8"
+          return f === null ? no_data_color : scale.reaction_color(f)
         } else {
           // if the arrowhead is not filled because it is reversed
           return '#FFFFFF'
@@ -515,7 +518,7 @@ function update_segment (update_selection, scale, cobra_model,
       if (should_color) {
         // show the flux color in the stroke whether or not the fill is present
         var f = d.data
-        return f===null ? no_data_color : "#C8C8C8"
+        return f===null ? no_data_color : scale.reaction_color(f)
       }
       // default stroke color
       return null
@@ -591,7 +594,7 @@ function update_segment (update_selection, scale, cobra_model,
       if (should_color) {
         // show the flux color
         var f = d.data
-        return f === null ? no_data_color : "#C8C8C8"
+        return f === null ? no_data_color : scale.reaction_color(f)
       }
       // default segment color
       return null
