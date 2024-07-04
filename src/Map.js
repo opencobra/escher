@@ -456,30 +456,6 @@ export default class Map {
     var reaction_subset = utils.object_slice_for_ids_ref(this.reactions,
                                                          reaction_ids)
 
-    const svg = document.querySelector('svg').querySelector("g#reactions");
-    const fuses = svg.querySelectorAll('path.segment');
-    if (this.settings.get("show_reaction_data_animation")) {
-      fuses.forEach(fuse => {
-        if (!!fuse.getAttribute('data-flux')) {
-          fuse.setAttribute('stroke-dasharray', '12,12');
-          fuse.animation = gsap.to(fuse, {
-            strokeDashoffset: -fuse.getTotalLength() * 2,
-            repeat: -1,
-            ease: "none",
-            duration: 6
-          });
-        }
-      })
-    }else {
-      fuses.forEach(fuse => {
-        fuse.removeAttribute('stroke-dasharray');
-        if (fuse.animation) {
-          fuse.animation.kill(); // Stop the animation
-          fuse.animation = null; // Clean up the reference
-        }
-      })
-    }
-
     // function to update reactions
     var update_fn = function(sel) {
       return this.draw.update_reaction(sel, this.scale, this.cobra_model,

@@ -30,6 +30,7 @@
 
 var utils = require('./utils')
 var dataStyles = require('./dataStyles')
+const { gsap } = require('gsap')
 var CallbackManager = require('./CallbackManager').default
 var d3_format = require('d3-format').format
 
@@ -318,7 +319,9 @@ function update_segment (update_selection, scale, cobra_model,
   const hide_secondary_metabolites = this.settings.get('hide_secondary_metabolites')
   const primary_r = this.settings.get('primary_metabolite_radius')
   const secondary_r = this.settings.get('secondary_metabolite_radius')
-
+  // show the reaction data animation 
+  const show_reaction_data_animation = this.settings.get('show_reaction_data_animation')
+  
   const objectMouseover = this.behavior.reactionObjectMouseover
   const objectMouseout = this.behavior.reactionObjectMouseout
 
@@ -414,8 +417,23 @@ function update_segment (update_selection, scale, cobra_model,
         return null
       }
     })
-    .attr('data-flux', function (d) {
-      return d.data
+    .each(function (d, i, nodes) {
+      const node = nodes[0]
+      if (show_reaction_data_animation && d.data) {
+        node.setAttribute('stroke-dasharray', '12,12');
+        node.animation = gsap.to(node, {
+          strokeDashoffset: -node.getTotalLength() * 2,
+          repeat: -1,
+          ease: "none",
+          duration: 6
+        });
+      }else {
+        node.removeAttribute('stroke-dasharray');
+        if (node.animation) {
+          node.animation.kill(); // Stop the animation
+          node.animation = null; // Clean up the reference
+        }
+      }
     })
     .attr('pointer-events', 'visibleStroke')
     .on('mouseover', objectMouseover)
