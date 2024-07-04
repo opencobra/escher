@@ -15,6 +15,7 @@ window.builder = new Builder( // eslint-disable-line no-new
     fill_screen: true,
     never_ask_before_quit: true,
     scroll_behavior: 'zoom',
-    reaction_data
+    reaction_data,
+    show_reaction_data_animation: true
   }
 )
