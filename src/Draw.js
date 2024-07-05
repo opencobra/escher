@@ -423,9 +423,10 @@ function update_segment (update_selection, scale, cobra_model,
         var f = d.data
         const velocity = scale.reaction_animation_duration(f)
         const node_length = node.getTotalLength()
+        const direction = d.data_string.startsWith("-") ? 1 : -1;
         node.setAttribute('stroke-dasharray', '12, 12');
         node.animation = gsap.to(node, {
-          strokeDashoffset: -node_length * 2,
+          strokeDashoffset: direction * node_length * 2,
           repeat: -1,
           ease: "none",
           duration: velocity * node_length / 100
