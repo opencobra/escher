@@ -9,7 +9,7 @@ import KeyManager from './KeyManager'
 import Canvas from './Canvas'
 import * as dataStyles from './dataStyles'
 import SearchIndex from './SearchIndex'
-import { gsap } from "gsap";
+
 import bacon from 'baconjs'
 import _ from 'underscore'
 import { select as d3Select } from 'd3-selection'
