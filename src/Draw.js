@@ -430,7 +430,7 @@ function update_segment (update_selection, scale, cobra_model,
 
       if (show_reaction_data_animation && has_data_on_reactions && d.data) {
         // Check if the animation is already running and the velocity has changed
-        if (node.animation.data !== velocity) {
+        if (node.animation && node.animation.data !== velocity) {
           kill_node_animation(node)
         }
         const node_length = node.getTotalLength()
