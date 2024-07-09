@@ -419,17 +419,25 @@ function update_segment (update_selection, scale, cobra_model,
     })
     .each(function (d, i, nodes) {
       const node = nodes[0]
+      var f = d.data
+      const velocity = scale.reaction_animation_duration(f)
       if (show_reaction_data_animation && has_data_on_reactions && d.data) {
-        var f = d.data
-        const velocity = scale.reaction_animation_duration(f)
+        // Check if the animation is already running and the velocity has changed
+        if (node.animation && node.animation.data !== velocity) {
+          node.animation.kill(); // Stop the animation
+          node.animation = null; // Clean up the reference
+        }
         const node_length = node.getTotalLength()
         const direction = d.data_string.startsWith("-") ? 1 : -1;
-        node.setAttribute('stroke-dasharray', '12, 12');
+        node.setAttribute('stroke-dasharray', `${scale.reaction_size(f), scale.reaction_size(f)}` );
         node.animation = gsap.to(node, {
           strokeDashoffset: direction * node_length * 2,
           repeat: -1,
           ease: "none",
-          duration: velocity * node_length / 100
+          // insure the animation restarts if the velocity changes
+          immediateRender: true,
+          duration: velocity * node_length / 100,
+          data: velocity
         });
       }else {
         node.removeAttribute('stroke-dasharray');
