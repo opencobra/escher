@@ -421,11 +421,17 @@ function update_segment (update_selection, scale, cobra_model,
       const node = nodes[0]
       var f = d.data
       const velocity = scale.reaction_animation_duration(f)
-      if (show_reaction_data_animation && has_data_on_reactions && d.data) {
-        // Check if the animation is already running and the velocity has changed
-        if (node.animation && node.animation.data !== velocity) {
+      const kill_node_animation = (node) => {
+        if (node.animation) {
           node.animation.kill(); // Stop the animation
           node.animation = null; // Clean up the reference
+        }
+      }
+
+      if (show_reaction_data_animation && has_data_on_reactions && d.data) {
+        // Check if the animation is already running and the velocity has changed
+        if (node.animation.data !== velocity) {
+          kill_node_animation(node)
         }
         const node_length = node.getTotalLength()
         const direction = d.data_string.startsWith("-") ? 1 : -1;
@@ -441,10 +447,7 @@ function update_segment (update_selection, scale, cobra_model,
         });
       }else {
         node.removeAttribute('stroke-dasharray');
-        if (node.animation) {
-          node.animation.kill(); // Stop the animation
-          node.animation = null; // Clean up the reference
-        }
+        kill_node_animation(node)
       }
     })
     .attr('pointer-events', 'visibleStroke')
