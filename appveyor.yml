@@ -1,43 +1,27 @@
-# AppVeyor configuration file for a Python project
 version: 1.0.{build}
 image: Visual Studio 2019  # Choose an environment that includes Python 3.10
 
 environment:
   matrix:
-    - PYTHON: "C:\\Python310-x64"
-
-# Cache Python packages to speed up builds
-cache:
-  - '%PYTHON%\\Lib\\site-packages'
-
-init:
-  # Display Python version
-  - ECHO %PYTHON%
-  - '%PYTHON%\\python.exe --version'
+    - python: 'C:\\Python37-x64'
 
 install:
-  # Install dependencies
+  # Add python to PATH
   - 'SET PATH=%PYTHON%;%PYTHON%\\Scripts;%PATH%'
-  - cd py  # Change to the directory with your code
-  - '%PYTHON%\\python.exe -m pip install --upgrade pip'
-  - '%PYTHON%\\python.exe -m pip install pytest'  # Example: Install pytest
-  - '%PYTHON%\\python.exe -m pip install -r requirements.txt'  # Assuming you have a requirements.txt
-  - cd .. # Go back to the root directory
+  - python --version
+  # Install python packages
+  - python -m pip install --upgrade pip
+  - cd py
+  - python -m pip install -r requirements.txt
+  - python -m pip install -e .
+  - cd ..
 
-build_script:
-  # Add build script here if needed
-  - ECHO "Build step (if necessary)"
+build: off
 
 test_script:
-  # Navigate to the directory containing tests and run them
-  - cd py  # Change to the directory with your code
-  - '%PYTHON%\\python.exe -m pytest'  # Assuming your tests are in the 'tests' directory
-  - cd .. # Go back to the root directory
+  - cd py
+  - python -m pytest
+  - cd ..
 
 artifacts:
-  # Specify artifacts to collect
-  - path: 'py\\dist\\*'
-
-on_finish:
-  # Script that runs after the build process is done
-  - ECHO "Build and test process finished."
+  - path: py\dist\*
