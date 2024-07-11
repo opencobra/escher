@@ -6,8 +6,15 @@ install:
   # Add python to PATH
   - 'SET PATH=%PYTHON%;%PYTHON%\\Scripts;%PATH%'
   - python --version
+
+  # Download Python 3.10 installer
+  - ps: iex ((New-Object Net.WebClient).DownloadString('https://www.python.org/ftp/python/3.10.0/python-3.10.0-amd64.exe'))
+
   # Install Python 3.10
-  - ps: Install-Product python 3.10 x64
+  - Start-Process python-3.10.0-amd64.exe -ArgumentList "/quiet InstallAllUsers=1 PrependPath=1" -Wait
+
+  # Verify installation
+  - python --version
 
   # Install python packages
   - python -m pip install --upgrade pip
