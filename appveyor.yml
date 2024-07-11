@@ -14,12 +14,10 @@ install:
   - python -m pip install pytest
   - cd py
   - python -m pip install -r requirements.txt
-  - cd ..
 
 build: off
 
 test_script:
-  - cd py
   - python -m pytest
   - cd ..
 
