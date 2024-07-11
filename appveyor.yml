@@ -1,34 +1,40 @@
+# AppVeyor configuration file for a Python project
+version: 1.0.{build}
+image: Visual Studio 2019  # Choose an environment that includes Python 3.10
+
 environment:
   matrix:
-    - python: 'C:\\Python310-x64'
+    - PYTHON: "C:\\Python310-x64"
+
+# Cache Python packages to speed up builds
+cache:
+  - '%PYTHON%\\Lib\\site-packages'
+
+init:
+  # Display Python version
+  - ECHO %PYTHON%
+  - '%PYTHON%\\python.exe --version'
 
 install:
-  # Add python to PATH
+  # Install dependencies
   - 'SET PATH=%PYTHON%;%PYTHON%\\Scripts;%PATH%'
-  - python --version
+  - '%PYTHON%\\python.exe -m pip install --upgrade pip'
+  - '%PYTHON%\\python.exe -m pip install pytest'  # Example: Install pytest
+  - '%PYTHON%\\python.exe -m pip install -r requirements.txt'  # Assuming you have a requirements.txt
 
-  # Download Python 3.10 installer
-  - ps: iex ((New-Object Net.WebClient).DownloadString('https://www.python.org/ftp/python/3.10.0/python-3.10.0-amd64.exe'))
-
-  # Install Python 3.10
-  - Start-Process python-3.10.0-amd64.exe -ArgumentList "/quiet InstallAllUsers=1 PrependPath=1" -Wait
-
-  # Verify installation
-  - python --version
-
-  # Install python packages
-  - python -m pip install --upgrade pip
-  - cd py
-  - python -m pip install -e .
-  - cd ..
-
-build: off
+build_script:
+  # Add build script here if needed
+  - ECHO "Build step (if necessary)"
 
 test_script:
-  - cd py
-  - python --version
-  - python -m pytest
-  - cd ..
+  # Navigate to the directory containing tests and run them
+  - cd project_directory  # Change to the directory with your code
+  - '%PYTHON%\\python.exe -m pytest tests'  # Assuming your tests are in the 'tests' directory
 
 artifacts:
-  - path: py\dist\*
+  # Specify artifacts to collect
+  - path: 'project_directory\\dist\\*'
+
+on_finish:
+  # Script that runs after the build process is done
+  - ECHO "Build and test process finished."
