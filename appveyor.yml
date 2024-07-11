@@ -31,7 +31,8 @@ build_script:
 test_script:
   # Navigate to the directory containing tests and run them
   - cd py  # Change to the directory with your code
-  - '%PYTHON%\\python.exe -m pytest tests'  # Assuming your tests are in the 'tests' directory
+  - '%PYTHON%\\python.exe -m pytest'  # Assuming your tests are in the 'tests' directory
+  - cd .. # Go back to the root directory
 
 artifacts:
   # Specify artifacts to collect
