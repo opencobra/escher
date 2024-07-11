@@ -3,7 +3,7 @@ image: Visual Studio 2019  # Choose an environment that includes Python 3.10
 
 environment:
   matrix:
-    - python: 'C:\\Python37-x64'
+    - python: 'C:\\Python310-x64'
 
 install:
   # Add python to PATH
