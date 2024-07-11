@@ -18,9 +18,11 @@ init:
 install:
   # Install dependencies
   - 'SET PATH=%PYTHON%;%PYTHON%\\Scripts;%PATH%'
+  - cd py  # Change to the directory with your code
   - '%PYTHON%\\python.exe -m pip install --upgrade pip'
   - '%PYTHON%\\python.exe -m pip install pytest'  # Example: Install pytest
   - '%PYTHON%\\python.exe -m pip install -r requirements.txt'  # Assuming you have a requirements.txt
+  - cd .. # Go back to the root directory
 
 build_script:
   # Add build script here if needed
@@ -28,12 +30,12 @@ build_script:
 
 test_script:
   # Navigate to the directory containing tests and run them
-  - cd project_directory  # Change to the directory with your code
+  - cd py  # Change to the directory with your code
   - '%PYTHON%\\python.exe -m pytest tests'  # Assuming your tests are in the 'tests' directory
 
 artifacts:
   # Specify artifacts to collect
-  - path: 'project_directory\\dist\\*'
+  - path: 'py\\dist\\*'
 
 on_finish:
   # Script that runs after the build process is done
