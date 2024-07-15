@@ -92,7 +92,9 @@ class SettingsMenu extends Component {
                       <input
                         type='radio'
                         name='identifiers'
-                        onClick={() => { settings.set('identifiers_on_map', 'bigg_id') }}
+                        onClick={() => {
+                          settings.set('identifiers_on_map', 'bigg_id')
+                        }}
                         checked={settings.get('identifiers_on_map') === 'bigg_id'}
                       />
                       ID&apos;s
@@ -101,7 +103,9 @@ class SettingsMenu extends Component {
                       <input
                         type='radio'
                         name='identifiers'
-                        onClick={() => { settings.set('identifiers_on_map', 'name') }}
+                        onClick={() => {
+                          settings.set('identifiers_on_map', 'name')
+                        }}
                         checked={settings.get('identifiers_on_map') === 'name'}
                       />
                       Descriptive names
@@ -122,6 +126,16 @@ class SettingsMenu extends Component {
                   checked={settings.get('scroll_behavior') === 'zoom'}
                 />
                 Scroll to zoom (instead of scroll to pan)
+              </label>
+              <label title="If checked, then show the animation when reaction data is loaded.">
+                <input
+                  type="checkbox"
+                  onClick={() => {
+                    settings.set('show_reaction_data_animation', !settings.get('show_reaction_data_animation'))
+                  }}
+                  checked={settings.get('show_reaction_data_animation')}
+                />
+                Show reaction data animation
               </label>
               <label title='If checked, then only the primary metabolites will be displayed.'>
                 <input
@@ -148,8 +162,8 @@ class SettingsMenu extends Component {
                     )
                   }
                   checked={settings.get('show_gene_reaction_rules')}
-                  />
-                  Show gene reaction rules
+                />
+                Show gene reaction rules
               </label>
               <label title='If checked, hide all reaction, gene, and metabolite labels'>
                 <input
@@ -177,7 +191,8 @@ class SettingsMenu extends Component {
                 />
                 Allow duplicate reactions
               </label>
-              <label title='If checked, then highlight in red all the reactions on the map that are not present in the loaded model.'>
+              <label
+                title='If checked, then highlight in red all the reactions on the map that are not present in the loaded model.'>
                 <input
                   type='checkbox'
                   onClick={() => {
@@ -206,31 +221,33 @@ class SettingsMenu extends Component {
               <table style={{marginTop: '5px'}}>
                 <tr title='Determines over which elements tooltips will display for reactions, metabolites, and genes'>
                   <td>
-                      Show tooltips over:
+                    Show tooltips over:
                   </td>
-                  <td className='singleLine' >
-                    <label className='tooltipOption' title='If checked, tooltips will display over the gene, reaction, and metabolite labels'>
+                  <td className='singleLine'>
+                    <label className='tooltipOption'
+                           title='If checked, tooltips will display over the gene, reaction, and metabolite labels'>
                       <input
                         type='checkbox'
                         onClick={() => {
                           const type = 'label'
                           const newEnableTooltips = _.contains(enableTooltips, type)
-                                                  ? _.filter(enableTooltips, x => x !== type)
-                                                  : [...enableTooltips, type]
+                            ? _.filter(enableTooltips, x => x !== type)
+                            : [...enableTooltips, type]
                           settings.set('enable_tooltips', newEnableTooltips)
                         }}
                         checked={_.contains(enableTooltips, 'label')}
                       />
                       Labels
                     </label>
-                    <label className='tooltipOption' title='If checked, tooltips will display over the reaction line segments and metabolite circles'>
+                    <label className='tooltipOption'
+                           title='If checked, tooltips will display over the reaction line segments and metabolite circles'>
                       <input
                         type='checkbox'
                         onClick={() => {
                           const type = 'object'
                           const newEnableTooltips = _.contains(enableTooltips, type)
-                                                  ? _.filter(enableTooltips, x => x !== type)
-                                                  : [...enableTooltips, type]
+                            ? _.filter(enableTooltips, x => x !== type)
+                            : [...enableTooltips, type]
                           settings.set('enable_tooltips', newEnableTooltips)
                         }}
                         checked={_.contains(enableTooltips, 'object')}
@@ -244,7 +261,7 @@ class SettingsMenu extends Component {
             <div className='settingsTip' style={{marginTop: '16px'}}>
               <i>Tip: To increase map performance, turn off text boxes (i.e. labels and gene reaction rules).</i>
             </div>
-            <hr />
+            <hr/>
             <div className='scaleTitle'>
               <div className='title'>
                 Reactions
