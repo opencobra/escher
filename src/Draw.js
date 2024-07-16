@@ -307,7 +307,7 @@ function create_segment (enter_selection) {
  * @return {}
  */
 function update_segment (update_selection, scale, cobra_model,
-  drawn_nodes, defs, has_data_on_reactions) {
+                         drawn_nodes, defs, has_data_on_reactions) {
 
   // define the function to handle the animation of the reaction data
   function handleAnimation(entries, observer) {
