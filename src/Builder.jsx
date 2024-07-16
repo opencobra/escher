@@ -36,6 +36,7 @@ import './Builder.css'
 // uploaded to NPM.
 // eslint-disable-next-line import/no-webpack-loader-syntax
 import builderEmbed from '!!raw-loader!./Builder-embed.css'
+import { process_reaction_data } from './utils'
 
 class Builder {
   constructor (mapData, modelData, embeddedCss, selection, options) {
@@ -849,31 +850,7 @@ class Builder {
    * For documentation of this function, see docs/javascript_api.rst.
    */
   set_reaction_data (data) { // eslint-disable-line camelcase
-
-    // filter the data which is less than threshold
-    const processObject = (arr) => {
-      const obj = arr[0];
-      const threshold = Math.pow(10, -6);  // define threshold
-
-      // call the function for each key in the object
-      for (let key in obj) {
-        if (obj.hasOwnProperty(key)) {
-          let value = obj[key];
-
-          // check if value is an object, if it is, call the function again
-          if (typeof value === 'object' && value !== null) {
-            processObject(value);
-          } else if (typeof value === 'number' && value < threshold) {
-            // if value is a number and less than threshold, set it to 0
-            obj[key] = 0;
-          }
-        }
-      }
-
-      return [obj];
-    }
-
-    const filteredData = data ? processObject(data) : data;
+    const filteredData = data ? process_reaction_data(data) : data;
 
     this.settings.set('reaction_data', filteredData)
 
