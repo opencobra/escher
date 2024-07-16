@@ -255,7 +255,20 @@ class MenuBar extends Component {
             type='settings'
           />
         </Dropdown>
-        <a className='helpButton' target='#' href='https://escher.readthedocs.org'>?</a>
+        <div className="switch-container">
+          <label className="switch tooltip">
+            <input type="checkbox"
+                   onClick={() => {
+                     this.props.settings.set('show_reaction_data_animation', !this.props.settings.get('show_reaction_data_animation'))
+                     this.props.settings.acceptChanges()
+                   }}
+                   checked={this.props.settings.get('show_reaction_data_animation')}
+            />
+            <span className="slider"></span>
+            <span className="tooltiptext">If checked, then show the animation when reaction data is loaded.</span>
+          </label>
+        </div>
+        <a className="helpButton" target="#" href='https://escher.readthedocs.org'>?</a>
       </ul>
     )
   }
