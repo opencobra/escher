@@ -322,6 +322,8 @@ function update_segment (update_selection, scale, cobra_model,
         if (has_data_on_reactions && show_reaction_data_animation && dataBindByD3.data) {
           const fluxData = dataBindByD3.data;
           const velocity = scale.reaction_animation_duration(fluxData);
+          const strokeDash = scale.reaction_size(fluxData) * 2;
+          const strokeDashArray = `${strokeDash}, ${strokeDash}`;
           // Check if the animation is already running and the velocity has changed
           if (node.animation && node.animation.data !== velocity) {
             node.animation.kill()
@@ -331,7 +333,7 @@ function update_segment (update_selection, scale, cobra_model,
           if(!node.animation) {
             const node_length = node.getTotalLength();
             const direction = dataBindByD3.data_string.startsWith("-") ? 1 : -1;
-            node.setAttribute("stroke-dasharray", `${scale.reaction_size(fluxData)}, ${scale.reaction_size(fluxData)}`);
+            node.setAttribute("stroke-dasharray", strokeDashArray);
             node.animation = gsap.to(node, {
               strokeDashoffset: direction * node_length * 2,
               repeat: -1,
@@ -342,7 +344,7 @@ function update_segment (update_selection, scale, cobra_model,
               data: velocity
             });
           }else {
-            node.setAttribute("stroke-dasharray", `${scale.reaction_size(fluxData)}, ${scale.reaction_size(fluxData)}`);
+            node.setAttribute("stroke-dasharray", strokeDashArray);
             node.animation.play(); // show the animation
           }
         }
@@ -446,6 +448,7 @@ function update_segment (update_selection, scale, cobra_model,
       curve += (end.x + ',' + end.y)
       return curve
     })
+    .style('stroke-linecap', 'round')
     .style('stroke', function(d) {
       var reaction_id = this.parentNode.parentNode.__data__.bigg_id
       var show_missing = (highlight_missing &&
