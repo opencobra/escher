@@ -3,10 +3,10 @@
 source .venv/bin/activate
 nvm use
 (update version in package.json)
-npm run clean
-npm install
-npm run build
-npm run copy # for docs to build
+yarn clean
+yarn install
+yarn build
+yarn copy # for docs to build
 git commit -m "version change"
 git tag <version>
 git push
