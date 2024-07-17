@@ -1010,9 +1010,8 @@ function get_window (node) {
 }
 
 // filter the data which is less than threshold
-function process_reaction_data (arr) {
+function process_reaction_data (arr, threshold = 0) {
   const obj = arr[0];
-  const threshold = Math.pow(10, -6);  // define threshold
 
   // call the function for each key in the object
   for (let key in obj) {

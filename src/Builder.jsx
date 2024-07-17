@@ -36,7 +36,6 @@ import './Builder.css'
 // uploaded to NPM.
 // eslint-disable-next-line import/no-webpack-loader-syntax
 import builderEmbed from '!!raw-loader!./Builder-embed.css'
-import { process_reaction_data } from './utils'
 
 class Builder {
   constructor (mapData, modelData, embeddedCss, selection, options) {
@@ -115,6 +114,7 @@ class Builder {
       reaction_no_data_color: '#dcdcdc',
       reaction_no_data_size: 8,
       show_reaction_data_animation: false,
+      reaction_data_threshold: Math.pow(10, -6),
       // gene
       gene_data: null,
       and_method_in_gene_reaction_rule: 'mean',
@@ -182,6 +182,12 @@ class Builder {
     // this.options and this.settings used to have different functions, but now
     // they are aliases
     this.settings = new Settings(optionsWithDefaults, conditional)
+
+    // Filter the reaction data according to the threshold
+    const _reaction_data = this.settings.get("reaction_data")
+    const _reaction_data_threshold = this.settings.get("reaction_data_threshold")
+    const filteredReactionData = _reaction_data ? utils.process_reaction_data(_reaction_data, _reaction_data_threshold) :_reaction_data
+    this.settings.set("reaction_data", filteredReactionData)
 
     // Warn if full/fill screen options conflict
     if (this.settings.get('fill_screen') && this.settings.get('full_screen_button')) {
@@ -850,7 +856,9 @@ class Builder {
    * For documentation of this function, see docs/javascript_api.rst.
    */
   set_reaction_data (data) { // eslint-disable-line camelcase
-    const filteredData = data ? process_reaction_data(data) : data;
+    // filter data
+    const _reaction_data_threshold = this.settings.get("reaction_data_threshold")
+    const filteredData = data ? utils.process_reaction_data(data, _reaction_data_threshold) : data;
 
     this.settings.set('reaction_data', filteredData)
 
