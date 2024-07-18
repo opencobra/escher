@@ -315,6 +315,27 @@ function update_segment (update_selection, scale, cobra_model,
     entries.forEach(entry => {
       // get the node
       const node = entry.target;
+      const pause_animation = (node) => {
+        if (node.animation) {
+          node.removeAttribute("stroke-dasharray");
+          node.animation.pause(); // stop the animation
+        }
+      }
+
+      const create_animation = (node, dataBindByD3, velocity) => {
+        const node_length = node.getTotalLength();
+        const direction = dataBindByD3.data_string.startsWith("-") ? 1 : -1;
+        node.animation = gsap.to(node, {
+          strokeDashoffset: direction * node_length * 2,
+          repeat: -1,
+          ease: "none",
+          // insure the animation restarts if the velocity changes
+          immediateRender: true,
+          duration: velocity * node_length / 100,
+          data: velocity
+        });
+      }
+
       // check if the element is in the viewport
       if (entry.isIntersecting) {
         // show the animation when the element is in the viewport
@@ -331,29 +352,19 @@ function update_segment (update_selection, scale, cobra_model,
           }
 
           if(!node.animation) {
-            const node_length = node.getTotalLength();
-            const direction = dataBindByD3.data_string.startsWith("-") ? 1 : -1;
             node.setAttribute("stroke-dasharray", strokeDashArray);
-            node.animation = gsap.to(node, {
-              strokeDashoffset: direction * node_length * 2,
-              repeat: -1,
-              ease: "none",
-              // insure the animation restarts if the velocity changes
-              immediateRender: true,
-              duration: velocity * node_length / 100,
-              data: velocity
-            });
+            create_animation(node, dataBindByD3, velocity)
           }else {
             node.setAttribute("stroke-dasharray", strokeDashArray);
             node.animation.play(); // show the animation
           }
+        }else {
+          // stop the animation when not showing the reaction data animation
+          pause_animation(node);
         }
       } else {
         // stop the animation when the element is not in the viewport
-        if (node.animation) {
-          node.removeAttribute("stroke-dasharray");
-          node.animation.pause(); // stop the animation
-        }
+        pause_animation(node);
       }
     });
   }
