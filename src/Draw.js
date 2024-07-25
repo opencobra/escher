@@ -311,36 +311,15 @@ function update_segment (update_selection, scale, cobra_model,
 
 
   // define the function to handle the animation of the reaction data
-  function handleAnimation(entries, observer) {
+  function handleAnimation(entries, observer, show_animation) {
     entries.forEach(entry => {
       // get the node
       const node = entry.target;
-      const pause_animation = (node) => {
-        if (node.animation) {
-          node.removeAttribute("stroke-dasharray");
-          node.animation.pause(); // stop the animation
-        }
-      }
-
-      const create_animation = (node, dataBindByD3, velocity) => {
-        const node_length = node.getTotalLength();
-        const direction = dataBindByD3.data_string.startsWith("-") ? 1 : -1;
-        node.animation = gsap.to(node, {
-          strokeDashoffset: direction * node_length * 2,
-          repeat: -1,
-          ease: "none",
-          // insure the animation restarts if the velocity changes
-          immediateRender: true,
-          duration: velocity * node_length / 100,
-          data: velocity
-        });
-      }
-
       // check if the element is in the viewport
       if (entry.isIntersecting) {
         // show the animation when the element is in the viewport
         const dataBindByD3 = node.__data__;
-        if (has_data_on_reactions && show_reaction_data_animation && dataBindByD3.data) {
+        if (has_data_on_reactions && show_animation && dataBindByD3.data) {
           const fluxData = dataBindByD3.data;
           const velocity = scale.reaction_animation_duration(fluxData);
           const strokeDash = scale.reaction_size(fluxData) * 2;
@@ -352,25 +331,37 @@ function update_segment (update_selection, scale, cobra_model,
           }
 
           if(!node.animation) {
+            const node_length = node.getTotalLength();
+            const direction = dataBindByD3.data_string.startsWith("-") ? 1 : -1;
             node.setAttribute("stroke-dasharray", strokeDashArray);
-            create_animation(node, dataBindByD3, velocity)
+            node.animation = gsap.to(node, {
+              strokeDashoffset: direction * node_length * 2,
+              repeat: -1,
+              ease: "none",
+              // insure the animation restarts if the velocity changes
+              immediateRender: true,
+              duration: velocity * node_length / 100,
+              data: velocity
+            });
           }else {
             node.setAttribute("stroke-dasharray", strokeDashArray);
             node.animation.play(); // show the animation
           }
-        }else {
-          // stop the animation when not showing the reaction data animation
-          pause_animation(node);
         }
       } else {
         // stop the animation when the element is not in the viewport
-        pause_animation(node);
+        if (node.animation) {
+          node.removeAttribute("stroke-dasharray");
+          node.animation.pause(); // stop the animation
+        }
       }
     });
   }
 
   // define the observer for the intersection to stop the animation when the element is not in the viewport
-  const observer = new IntersectionObserver(handleAnimation, { threshold: 0.1 });
+  const observer = new IntersectionObserver((entries) => {
+    handleAnimation(entries, observer, this.settings.get('show_reaction_data_animation'));
+  }, { threshold: 0.1 });
 
   const reaction_data_styles = this.settings.get('reaction_styles')
   const should_size = (has_data_on_reactions && reaction_data_styles.indexOf('size') !== -1)
@@ -383,7 +374,7 @@ function update_segment (update_selection, scale, cobra_model,
   const hide_secondary_metabolites = this.settings.get('hide_secondary_metabolites')
   const primary_r = this.settings.get('primary_metabolite_radius')
   const secondary_r = this.settings.get('secondary_metabolite_radius')
-  // show the reaction data animation 
+  // show the reaction data animation
   const show_reaction_data_animation = this.settings.get('show_reaction_data_animation')
   
   const objectMouseover = this.behavior.reactionObjectMouseover
@@ -485,7 +476,7 @@ function update_segment (update_selection, scale, cobra_model,
     .each(function (d, i, nodes) {
       const node = nodes[0]
       // make the intersection observer callback can be triggered by the redraw
-      handleAnimation([{ target: node }], observer)
+      handleAnimation([{ target: node }], observer, show_reaction_data_animation);
       // observe the node
       observer.observe(node);
     })
