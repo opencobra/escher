@@ -561,9 +561,9 @@ def sbml2escher(input_file_path, output_file_path):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Process some JSON files.')
-    parser.add_argument('--input', default='SBML.xml', help='Path to the input XML file')
-    parser.add_argument('--output', default='sbml2escher_output.json', help='Path to the output JSON file')
-    parser.add_argument('--input-format', choices=['xml', 'celldesigner'], default='celldesigner', help='Format of the input file (xml, or celldesigner)')
+    parser.add_argument('--input', default='celldesigner.xml', help='Path to the input XML file')
+    parser.add_argument('--output', default='celldesigner2escher_output.json', help='Path to the output JSON file')
+    parser.add_argument('--input-format', choices=['sbml', 'celldesigner'], default='celldesigner', help='Format of the input file (sbml, or celldesigner)')
 
     args = parser.parse_args()
     input_file_path = args.input
