@@ -3,11 +3,12 @@
 ### 1. Install the necessary packages
 
 ```bash
-pip install json
-pip install argparse
-pip install sys
-pip install xmltodict
-pip install requests
+pip install json # for save the output file
+pip install argparse # for parse the command line arguments
+pip install sys # for exit the program
+pip install xmltodict # for parse the xml file
+pip install requests # for send the request to the MINERVA API
+pip install os # for check the file existence in the process of deleting the temporary file
 ```
 
 ### 2. Run the script

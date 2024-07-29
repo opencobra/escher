@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <sbml xmlns="http://www.sbml.org/sbml/level2/version4" xmlns:celldesigner="http://www.sbml.org/2001/ns/celldesigner" level="2" version="4">
-<model metaid="new_PPP" id="new_PPP">
+<model metaid="example" id="example">
 <annotation>
 <celldesigner:extension>
 <celldesigner:modelVersion>4.0</celldesigner:modelVersion>

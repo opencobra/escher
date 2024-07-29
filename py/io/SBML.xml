@@ -4,7 +4,7 @@
       render:required="false" version="2" xmlns:layout="http://www.sbml.org/sbml/level3/version1/layout/version1"
       xmlns:multi="http://www.sbml.org/sbml/level3/version1/multi/version1"
       xmlns:render="http://www.sbml.org/sbml/level3/version1/render/version1">
-    <model areaUnits="area" extentUnits="mole" id="new_PPP" lengthUnits="metre" substanceUnits="mole" timeUnits="second"
+    <model areaUnits="area" extentUnits="mole" id="example" lengthUnits="metre" substanceUnits="mole" timeUnits="second"
            volumeUnits="litre">
         <notes>
             <body xmlns="http://www.w3.org/1999/xhtml">
@@ -16,7 +16,7 @@
                      xmlns:dcterms="http://purl.org/dc/terms/" xmlns:vCard="http://www.w3.org/2001/vcard-rdf/3.0#"
                      xmlns:bqbiol="http://biomodels.net/biology-qualifiers/"
                      xmlns:bqmodel="http://biomodels.net/model-qualifiers/">
-                <rdf:Description rdf:about="#new_PPP">
+                <rdf:Description rdf:about="#example">
                     <dcterms:modified rdf:parseType="Resource"/>
                 </rdf:Description>
             </rdf:RDF>
