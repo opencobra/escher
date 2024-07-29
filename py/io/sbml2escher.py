@@ -2,7 +2,30 @@ import json
 import argparse
 import sys
 import xmltodict
+import requests
 
+def celldesigner2sbml(input_file_path, output_file_path):
+    with open(input_file_path, 'rb') as file:
+        data = file.read()
+
+    # Define the URL for the conversion service
+    url = 'https://minerva-service.lcsb.uni.lu/minerva/api/convert/CellDesigner_SBML:SBML'
+    # Define the headers for the HTTP request
+    headers = {
+        'Content-Type': 'text/plain'
+    }
+
+    # Make the HTTP POST request to the conversion service
+    response = requests.post(url, data=data, headers=headers)
+
+    # Check if the response is successful
+    if response.status_code == 200:
+        # Save the response content to the specified output file
+        with open(output_file_path, 'wb') as file:
+            file.write(response.content)
+        print(f"CellDesigner2SBML request successful, file saved as {output_file_path}")
+    else:
+        print(f"CellDesigner2SBML request failed with status code {response.status_code}, error message: {response.text}")
 
 # Load XML data
 def load_xml_data(file_path):
@@ -464,7 +487,7 @@ def create_all_segments(edges, layout_root, nodes):
         edges[reaction_glyph['@layout:reaction']] = reaction
 
 
-def main(input_file_path, output_file_path):
+def sbml2escher(input_file_path, output_file_path):
     """
     Main function to convert the SBML JSON to Escher JSON
     :param input_file_path: input file path
@@ -538,10 +561,18 @@ def main(input_file_path, output_file_path):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Process some JSON files.')
-    parser.add_argument('--input', default='SBML.xml', help='Path to the input JSON file')
+    parser.add_argument('--input', default='SBML.xml', help='Path to the input XML file')
     parser.add_argument('--output', default='sbml2escher_output.json', help='Path to the output JSON file')
+    parser.add_argument('--input-format', choices=['xml', 'celldesigner'], default='celldesigner', help='Format of the input file (xml, or celldesigner)')
+
     args = parser.parse_args()
     input_file_path = args.input
     output_file_path = args.output
 
-    main(input_file_path, output_file_path)
+    # Convert CellDesigner XML to SBML XML if needed
+    if args.input_format == 'celldesigner':
+        temp_output_file_path = 'SBML_converted.xml'
+        celldesigner2sbml(input_file_path, temp_output_file_path)
+        input_file_path = temp_output_file_path
+
+    sbml2escher(input_file_path, output_file_path)
