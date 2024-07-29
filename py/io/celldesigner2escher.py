@@ -4,6 +4,28 @@ import sys
 import xmltodict
 import requests
 import os
+import xml.etree.ElementTree as ET
+
+
+# identify the file type, whether it is CellDesigner XML or SBML XML
+def identify_file_type(file_path):
+    try:
+        tree = ET.parse(file_path)
+        root = tree.getroot()
+
+        # assume the file is CellDesigner XML if it has the 'xmlns:celldesigner' attribute
+        if 'xmlns:celldesigner' in root.attrib:
+            return 'celldesigner'
+
+        # assume the file is SBML XML if it has the 'sbml' tag
+        elif root.tag.endswith('sbml'):
+            return 'sbml'
+
+    except ET.ParseError:
+        return 'Not a valid XML file'
+
+    return 'Unknown XML type'
+
 
 def celldesigner2sbml(input_file_path, output_file_path):
     with open(input_file_path, 'rb') as file:
@@ -572,18 +594,20 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Process some JSON files.')
     parser.add_argument('--input', default='celldesigner.xml', help='Path to the input XML file')
     parser.add_argument('--output', default='celldesigner2escher_output.json', help='Path to the output JSON file')
-    parser.add_argument('--input-format', choices=['sbml', 'celldesigner'], default='celldesigner', help='Format of the input file (sbml, or celldesigner)')
 
     args = parser.parse_args()
     input_file_path = args.input
     output_file_path = args.output
 
-    has_temp_output_file = False
+    input_format = identify_file_type(input_file_path)
     # Convert CellDesigner XML to SBML XML if needed
-    if args.input_format == 'celldesigner':
-        has_temp_output_file = True
-        temp_output_file_path = 'SBML_converted.xml'
-        celldesigner2sbml(input_file_path, temp_output_file_path)
-        input_file_path = temp_output_file_path
+    if input_format in ('celldesigner', 'sbml'):
+        if input_format == 'celldesigner':
+            temp_output_file_path = 'SBML_converted.xml'
+            celldesigner2sbml(input_file_path, temp_output_file_path)
+            input_file_path = temp_output_file_path
 
-    sbml2escher(input_file_path, output_file_path, has_temp_output_file)
+        sbml2escher(input_file_path, output_file_path, input_format == 'celldesigner')
+    else:
+        print(f"Error: The input file {input_file_path} is not a valid CellDesigner or SBML XML file.")
+        sys.exit(1)
