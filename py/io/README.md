@@ -9,7 +9,7 @@ pip install sys # for exit the program
 pip install xmltodict # for parse the xml file
 pip install requests # for send the request to the MINERVA API
 pip install os # for check the file existence in the process of deleting the temporary file
-pip install xml # for parse the xml file so that we can identify the file format
+pip install time # for the statistics of the running time
 ```
 
 ### 2. Run the script

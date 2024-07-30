@@ -1,33 +1,27 @@
 import json
 import argparse
 import sys
+import time
+
 import xmltodict
 import requests
 import os
-import xml.etree.ElementTree as ET
-
 
 # identify the file type, whether it is CellDesigner XML or SBML XML
 def identify_file_type(file_path):
-    try:
-        tree = ET.parse(file_path)
-        root = tree.getroot()
+    data = load_xml_data(file_path)
+    # assume the file is SBML XML if it has the 'sbml' tag
+    if 'sbml' in data:
+        if '@xmlns:celldesigner' in data['sbml']:
+            # assume the file is CellDesigner XML if it has the 'xmlns:celldesigner' attribute
+            return 'celldesigner', data
+        return 'sbml', data
 
-        # assume the file is CellDesigner XML if it has the 'xmlns:celldesigner' attribute
-        if 'xmlns:celldesigner' in root.attrib:
-            return 'celldesigner'
-
-        # assume the file is SBML XML if it has the 'sbml' tag
-        elif root.tag.endswith('sbml'):
-            return 'sbml'
-
-    except ET.ParseError:
-        return 'Not a valid XML file'
-
-    return 'Unknown XML type'
+    return 'Unknown XML type', None
 
 
 def celldesigner2sbml(input_file_path, output_file_path):
+    start_time = time.time()
     with open(input_file_path, 'rb') as file:
         data = file.read()
 
@@ -46,9 +40,13 @@ def celldesigner2sbml(input_file_path, output_file_path):
         # Save the response content to the specified output file
         with open(output_file_path, 'wb') as file:
             file.write(response.content)
+        end_time = time.time()
+        print(f"CellDesigner2SBML request completed in {end_time - start_time:.2f} seconds.")
+
         print(f"CellDesigner2SBML request successful, file saved as {output_file_path}")
     else:
         print(f"CellDesigner2SBML request failed with status code {response.status_code}, error message: {response.text}")
+        sys.exit(1)
 
 # Load XML data
 def load_xml_data(file_path):
@@ -591,6 +589,7 @@ def sbml2escher(input_file_path, output_file_path, delete_temp_file=False):
 
 
 if __name__ == "__main__":
+    start_time = time.time()
     parser = argparse.ArgumentParser(description='Process some JSON files.')
     parser.add_argument('--input', default='celldesigner.xml', help='Path to the input XML file')
     parser.add_argument('--output', default='celldesigner2escher_output.json', help='Path to the output JSON file')
@@ -599,7 +598,7 @@ if __name__ == "__main__":
     input_file_path = args.input
     output_file_path = args.output
 
-    input_format = identify_file_type(input_file_path)
+    input_format, data = identify_file_type(input_file_path)
     # Convert CellDesigner XML to SBML XML if needed
     if input_format in ('celldesigner', 'sbml'):
         if input_format == 'celldesigner':
@@ -608,6 +607,8 @@ if __name__ == "__main__":
             input_file_path = temp_output_file_path
 
         sbml2escher(input_file_path, output_file_path, input_format == 'celldesigner')
+        end_time = time.time()
+        print(f"Conversion completed in {end_time - start_time:.2f} seconds.")
     else:
         print(f"Error: The input file {input_file_path} is not a valid CellDesigner or SBML XML file.")
         sys.exit(1)
