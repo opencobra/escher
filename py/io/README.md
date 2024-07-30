@@ -23,17 +23,17 @@ If the input file format is `SBML`, the script will directly convert the `SBML` 
 Example:
 
 ```bash
-python celldesigner2escher.py --input=<input_file> --output=<output_file>
+python sbml2escher.py --input=<input_file> --output=<output_file>
 ```
 
 | Argument         | Description            | Default                           |
 |------------------|------------------------|-----------------------------------|
-| `--input`        | The input file path.   | `celldesigner.xml`                |
-| `--output`       | The output file path.  | `celldesigner2escher_output.json` |
+| `--input`        | The input file path.   | `sbml.xml`                |
+| `--output`       | The output file path.  | `sbml2escher_output.json` |
 
 Tips:
 
 1. If the output file is not a `JSON` type, there will be a warning.
-2. If you don't specify the input file, the default input file will be `celldesigner.xml` in the current directory.
-3. If you don't specify the output file, the default output file will be `celldesigner2escher_output.json` in the
+2. If you don't specify the input file, the default input file will be `sbml.xml` in the current directory.
+3. If you don't specify the output file, the default output file will be `sbml2escher_output.json` in the
    current directory.
