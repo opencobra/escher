@@ -1,5 +1,11 @@
 ## This guide introduces the method for converting `CellDesigner` or `SBML` file formats to `Escher JSON` format.
 
+### 0. Install python and pip
+
+If you haven't installed python and pip, you can refer to the following links:
+
+- [Python Packaging User Guide](https://packaging.python.org/en/latest/tutorials/installing-packages/)
+
 ### 1. Install the necessary packages
 
 ```bash
@@ -19,6 +25,8 @@ The entire process involves converting the `CellDesigner` or `SBML` file format 
 If the input file format is `CellDesigner`, the script will utilize the public API provided by [MINERVA](https://minerva.pages.uni.lu/doc/api/16.4/index.html) to convert the `CellDesigner` file format to the `SBML` file format. This intermediate step is handled behind the scenes.
 
 If the input file format is `SBML`, the script will directly convert the `SBML` file format to the `Escher JSON` file format.
+
+To download the `sbml2escher.py` script, click the "Download" button at the top right of the [page](https://github.com/opencobra/escher/blob/a46146e34ae8f21edbd2b9029a7489915d3f72dd/py/io/sbml2escher.py).
 
 Example:
 
