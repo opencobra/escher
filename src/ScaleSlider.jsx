@@ -245,7 +245,7 @@ class ScaleSlider extends Component {
         </div>
         <div className='scaleLabels'>
           <label>Value:</label><label>Color:</label><label>Size:</label>
-          {this.props.type === "Reaction" && <label title="The seconds a reaction animation will last. The bigger the number, the slower the animation.">Seconds:</label>}
+          {this.props.type === "Reaction" && <label title="The seconds a reaction animation will last. The bigger the number, the slower the animation. And number must be greater than 0.">Speed:</label>}
         </div>
         <div className='noDataStyle'>
           <label className='styleHeader'>Styles for reactions with no data</label>
