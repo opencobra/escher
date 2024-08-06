@@ -250,7 +250,7 @@ def set_reaction_label_position(start, end, reaction):
         'y': (float(start['@layout:y']) + float(end['@layout:y'])) / 2
     }
     reaction['label_x'] = mid_node['x']
-    reaction['label_y'] = mid_node['y']
+    reaction['label_y'] = mid_node['y'] - 20
 
 
 def is_point_on_segment(px, py, x1, y1, x2, y2):
