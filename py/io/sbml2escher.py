@@ -358,7 +358,7 @@ def create_reaction_basic_info(model, specie2bigg, layout_width, layout_height, 
     reactions = model['listOfReactions']['reaction']
     for reaction in reactions:
         reaction_id = reaction['@id']
-        reaction_name = reaction['@name'] if '@name' in reaction else reaction_id
+        reaction_name = replace_brackets(reaction['@name']) if '@name' in reaction else reaction_id
         reaction_reversible = reaction['@reversible'] == 'true'
         reaction_metabolites = get_metabolites_for_reaction(reaction, specie2bigg)
         edges[reaction_id] = {}
