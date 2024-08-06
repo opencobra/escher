@@ -9,13 +9,8 @@ If you haven't installed python and pip, you can refer to the following links:
 ### 1. Install the necessary packages
 
 ```bash
-pip install json # for save the output file
-pip install argparse # for parse the command line arguments
-pip install sys # for exit the program
 pip install xmltodict # for parse the xml file
 pip install requests # for send the request to the MINERVA API
-pip install os # for check the file existence in the process of deleting the temporary file
-pip install time # for the statistics of the running time
 ```
 
 ### 2. Run the script

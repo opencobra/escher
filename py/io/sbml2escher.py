@@ -6,6 +6,20 @@ import time
 import xmltodict
 import requests
 import os
+import re
+
+#Replace brackets with underscores
+def replace_brackets(input_string):
+    # Define the replacer function
+    def replacer(match):
+        # Get the inner text of the match
+        inner_text = match.group(1)
+        # Return the inner text with underscores
+        return f"_{inner_text}"
+
+    # Replace the brackets with underscores
+    result = re.sub(r'\[(.*?)\]', replacer, input_string)
+    return result
 
 # identify the file type, whether it is CellDesigner XML or SBML XML
 def identify_file_type(file_path):
@@ -529,7 +543,8 @@ def sbml2escher(input_file_path, output_file_path, delete_temp_file=False):
     species = model['listOfSpecies']['species']
     specie2bigg = {}
     for sp in species:
-        specie2bigg[sp['@id']] = sp['@name']
+        # cause the bigg_id converted by minerva is not the format we want, so we need to replace the brackets for the link to the metabolite or reaction
+        specie2bigg[sp['@id']] = replace_brackets(sp['@name'])
 
     # define the list of layouts
     list_of_layouts = model['layout:listOfLayouts']
