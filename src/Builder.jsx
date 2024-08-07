@@ -114,6 +114,8 @@ class Builder {
       reaction_no_data_color: '#dcdcdc',
       reaction_no_data_size: 8,
       show_reaction_data_animation: false,
+      // (dashed / dotted)
+      animation_line_style: 'dashed',
       reaction_data_threshold: Math.pow(10, -6),
       // gene
       gene_data: null,
@@ -134,7 +136,7 @@ class Builder {
         'atp', 'adp', 'nad', 'nadh', 'nadp', 'nadph', 'gtp', 'gdp', 'h', 'coa',
         'ump', 'h2o', 'ppi'
       ],
-      // tooltips link
+      // tooltips link, open in bigg or vmh website
       open_in_vmh: window.localStorage.getItem('open_in_vmh') === 'true',
       // Extensions
       tooltip_component: DefaultTooltip,

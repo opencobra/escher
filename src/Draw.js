@@ -311,7 +311,7 @@ function update_segment (update_selection, scale, cobra_model,
 
 
   // define the function to handle the animation of the reaction data
-  function handleAnimation(entries, observer, show_animation) {
+  function handleAnimation(entries, observer, show_animation, lineStyle) {
     entries.forEach(entry => {
       // get the node
       const node = entry.target;
@@ -323,7 +323,7 @@ function update_segment (update_selection, scale, cobra_model,
           const fluxData = dataBindByD3.data;
           const velocity = scale.reaction_animation_duration(fluxData);
           const strokeDash = scale.reaction_size(fluxData) * 2;
-          const strokeDashArray = `${strokeDash}, ${strokeDash}`;
+          const strokeDashArray = lineStyle === 'dashed' ? `${strokeDash}, ${strokeDash}` : `2, ${strokeDash}`;
           // Check if the animation is already running and the velocity has changed
           if (node.animation && node.animation.data !== velocity) {
             node.animation.kill()
@@ -360,7 +360,7 @@ function update_segment (update_selection, scale, cobra_model,
 
   // define the observer for the intersection to stop the animation when the element is not in the viewport
   const observer = new IntersectionObserver((entries) => {
-    handleAnimation(entries, observer, this.settings.get('show_reaction_data_animation'));
+    handleAnimation(entries, observer, this.settings.get('show_reaction_data_animation'), this.settings.get('animation_line_style'));
   }, { threshold: 0.1 });
 
   const reaction_data_styles = this.settings.get('reaction_styles')
@@ -376,7 +376,8 @@ function update_segment (update_selection, scale, cobra_model,
   const secondary_r = this.settings.get('secondary_metabolite_radius')
   // show the reaction data animation
   const show_reaction_data_animation = this.settings.get('show_reaction_data_animation')
-  
+  // animation line style
+  const animation_line_style = this.settings.get('animation_line_style')
   const objectMouseover = this.behavior.reactionObjectMouseover
   const objectMouseout = this.behavior.reactionObjectMouseout
 
@@ -476,7 +477,7 @@ function update_segment (update_selection, scale, cobra_model,
     .each(function (d, i, nodes) {
       const node = nodes[0]
       // make the intersection observer callback can be triggered by the redraw
-      handleAnimation([{ target: node }], observer, show_reaction_data_animation);
+      handleAnimation([{ target: node }], observer, show_reaction_data_animation, animation_line_style);
       // observe the node
       observer.observe(node);
     })

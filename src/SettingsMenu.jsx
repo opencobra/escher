@@ -140,6 +140,35 @@ class SettingsMenu extends Component {
                   </td>
                 </tr>
               </table>
+              <table className='radioSelection'>
+                <tr title='The '>
+                  <td className='optionLabel'>Animation Line Style:</td>
+                  <td className='singleLine'>
+                    <label className='optionGroup'>
+                      <input
+                        type='radio'
+                        name='animation_line_style'
+                        onClick={() => {
+                          settings.set('animation_line_style', 'dashed')
+                        }}
+                        checked={settings.get('animation_line_style') === 'dashed'}
+                      />
+                      Dash
+                    </label>
+                    <label className='optionGroup'>
+                      <input
+                        type='radio'
+                        name='animation_line_style'
+                        onClick={() => {
+                          settings.set('animation_line_style', 'dotted')
+                        }}
+                        checked={settings.get('animation_line_style') === 'dotted'}
+                      />
+                      Dot
+                    </label>
+                  </td>
+                </tr>
+              </table>
               <label title='If checked, then the scroll wheel and trackpad will control zoom rather than pan.'>
                 <input
                   type='checkbox'
