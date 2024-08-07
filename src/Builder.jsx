@@ -134,6 +134,8 @@ class Builder {
         'atp', 'adp', 'nad', 'nadh', 'nadp', 'nadph', 'gtp', 'gdp', 'h', 'coa',
         'ump', 'h2o', 'ppi'
       ],
+      // tooltips link
+      open_in_vmh: window.localStorage.getItem('open_in_vmh') === 'true',
       // Extensions
       tooltip_component: DefaultTooltip,
       enable_tooltips: ['label'],

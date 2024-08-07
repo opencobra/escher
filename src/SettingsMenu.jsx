@@ -109,6 +109,37 @@ class SettingsMenu extends Component {
                   </td>
                 </tr>
               </table>
+              <table className='radioSelection'>
+                <tr title='Open the item in VMH or BiGG Models when the label is clicked'>
+                  <td className='optionLabel'>Open in vmh:</td>
+                  <td className='singleLine'>
+                    <label className='optionGroup'>
+                      <input
+                        type='radio'
+                        name='open_in_vmh'
+                        onClick={() => {
+                          settings.set('open_in_vmh', true)
+                          window.localStorage.setItem('open_in_vmh', true)
+                        }}
+                        checked={settings.get('open_in_vmh')}
+                      />
+                      vmh
+                    </label>
+                    <label className='optionGroup'>
+                      <input
+                        type='radio'
+                        name='open_in_vmh'
+                        onClick={() => {
+                          settings.set('open_in_vmh', false)
+                          window.localStorage.setItem('open_in_vmh', false)
+                        }}
+                        checked={!settings.get('open_in_vmh')}
+                      />
+                      BiGG
+                    </label>
+                  </td>
+                </tr>
+              </table>
               <label title='If checked, then the scroll wheel and trackpad will control zoom rather than pan.'>
                 <input
                   type='checkbox'
