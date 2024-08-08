@@ -1021,7 +1021,7 @@ function process_reaction_data (arr, threshold = 0) {
       // check if value is an object, if it is, call the function again
       if (typeof value === 'object' && value !== null) {
         processObject(value);
-      } else if (typeof value === 'number' && value < threshold) {
+      } else if (typeof value === 'number' && Math.abs(value) < threshold) {
         // if value is a number and less than threshold, set it to 0
         obj[key] = 0;
       }
