@@ -265,7 +265,7 @@ class MenuBar extends Component {
                    checked={this.props.settings.get('show_reaction_data_animation')}
             />
             <span className="slider"></span>
-            <span className="tooltiptext">If checked, then show the animation when reaction data is loaded.</span>
+            <span className="tooltiptext">If checked, then show the animation when reaction data is loaded(Except Safari Browser).</span>
           </label>
         </div>
         <a className="helpButton" target="#" href='https://escher.readthedocs.org'>?</a>
