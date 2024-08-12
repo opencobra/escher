@@ -894,7 +894,7 @@ function compartmentalize (bigg_id, compartment_id) {
  * length 1 or 2. Return [ id, null ] if no match is found.
  */
 function decompartmentalize (id) {
-  var reg = /(.*)_([a-z0-9]{1,2})$/;
+  var reg = /(.*)\[([a-z0-9]{1,2})\]$/;
   var result = reg.exec(id)
   return result !== null ? result.slice(1,3) : [ id, null ]
 }
