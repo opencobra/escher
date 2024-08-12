@@ -1,25 +1,12 @@
 import json
 import argparse
 import sys
-import time
+import times
 
 import xmltodict
 import requests
 import os
 import re
-
-#Replace brackets with underscores
-def replace_brackets(input_string):
-    # Define the replacer function
-    def replacer(match):
-        # Get the inner text of the match
-        inner_text = match.group(1)
-        # Return the inner text with underscores
-        return f"_{inner_text}"
-
-    # Replace the brackets with underscores
-    result = re.sub(r'\[(.*?)\]', replacer, input_string)
-    return result
 
 # identify the file type, whether it is CellDesigner XML or SBML XML
 def identify_file_type(file_path):
@@ -358,7 +345,7 @@ def create_reaction_basic_info(model, specie2bigg, layout_width, layout_height, 
     reactions = model['listOfReactions']['reaction']
     for reaction in reactions:
         reaction_id = reaction['@id']
-        reaction_name = replace_brackets(reaction['@name']) if '@name' in reaction else reaction_id
+        reaction_name = reaction['@name'] if '@name' in reaction else reaction_id
         reaction_reversible = reaction['@reversible'] == 'true'
         reaction_metabolites = get_metabolites_for_reaction(reaction, specie2bigg)
         edges[reaction_id] = {}
@@ -543,8 +530,7 @@ def sbml2escher(input_file_path, output_file_path, delete_temp_file=False):
     species = model['listOfSpecies']['species']
     specie2bigg = {}
     for sp in species:
-        # cause the bigg_id converted by minerva is not the format we want, so we need to replace the brackets for the link to the metabolite or reaction
-        specie2bigg[sp['@id']] = replace_brackets(sp['@name'])
+        specie2bigg[sp['@id']] = sp['@name']
 
     # define the list of layouts
     list_of_layouts = model['layout:listOfLayouts']
