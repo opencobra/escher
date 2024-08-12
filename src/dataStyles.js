@@ -259,7 +259,7 @@ export function gene_string_for_data (rule, gene_values, genes, styles,
 
   // definitions
   function null_or_d (d, format) {
-    return d === null ? 'nd' : format(d)
+    return d === null ? '' : format(d)
   }
 }
 
@@ -282,7 +282,7 @@ export function text_for_data (d, f) {
 
   // definitions
   function null_or_d (d, format) {
-    return d === null ? '(nd)' : format(d)
+    return d === null ? '' : format(d)
   }
 }
 
