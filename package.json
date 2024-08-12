@@ -66,6 +66,7 @@
     "d3-selection": "^1.0.3",
     "d3-zoom": "^1.7.3",
     "file-saver": "^1.3.3",
+    "gif.js": "^0.2.0",
     "gsap": "^3.12.5",
     "immutability-helper": "^2.4.0",
     "mousetrap": "^1.5.3",

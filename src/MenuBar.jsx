@@ -2,6 +2,7 @@
 import { h, Component } from 'preact'
 import Dropdown from './Dropdown'
 import MenuButton from './MenuButton'
+import GIF from 'gif.js'
 
 /**
  * MenuBar implements generic Dropdown and MenuButton objects to create the
@@ -26,6 +27,75 @@ class MenuBar extends Component {
     const disabledButtons = this.props.settings.get('disabled_buttons')
     const beziersEnabled = this.props.map.beziers_enabled
     const fullScreenButtonEnabled = this.props.settings.get('full_screen_button')
+    const convertSVGToGIF = () => {
+      const canvas = document.createElement('canvas');
+      const ctx = canvas.getContext('2d', { willReadFrequently: true });
+      const DOMURL = window.URL || window.webkitURL || window;
+
+
+      // TODO: limit the size of the canvas to prevent memory overflow
+      const originWidth = document.querySelector('.escher-svg rect#canvas').getAttribute('width');
+      const originHeight = document.querySelector('.escher-svg rect#canvas').getAttribute('height');
+
+      const scaleX = window.innerWidth / originWidth  > 1 ? 1 : window.innerWidth / originWidth;
+      const scaleY = window.innerHeight / originHeight > 1 ? 1 : window.innerHeight / originHeight;
+      const map_scale = Math.min(scaleX, scaleY);
+      canvas.width = originWidth;
+      canvas.height = originHeight;
+      const img = new Image();
+
+      fetch('https://cdn.jsdelivr.net/npm/gif.js@0.2.0/dist/gif.worker.js')
+        .then((response) => {
+          if (!response.ok)
+            throw new Error("Network response was not OK");
+          return response.blob();
+        }).then(workerBlob => {
+        const gif = new GIF({
+          workers: 2,
+          quality: 10,
+          workerScript: URL.createObjectURL(workerBlob),
+          width: originWidth,
+          height: originHeight
+        });
+
+        let frameCount = 20;
+        let delay = 100;
+
+        const captureFrame = (index) => {
+          if (index < frameCount) {
+            let svgElement = document.querySelector('.escher-svg');
+            let svgData = new XMLSerializer().serializeToString(svgElement);
+            let svgBlob = new Blob([svgData], {type: 'image/svg+xml;charset=utf-8'});
+            let url = DOMURL.createObjectURL(svgBlob);
+
+            img.onload = function () {
+              ctx.clearRect(0, 0, originWidth, originHeight);
+              ctx.drawImage(img, 0, 0, originWidth, originHeight, 0, 0, originWidth / map_scale, originHeight / map_scale);
+              gif.addFrame(ctx, {copy: true, delay: delay});
+              DOMURL.revokeObjectURL(url);
+              setTimeout(() => {
+                requestAnimationFrame(() => captureFrame(index + 1));
+              }, delay);
+            };
+            img.src = url;
+          } else {
+            gif.on('finished', function(blob) {
+              const downloadUrl = URL.createObjectURL(blob);
+              const a = document.createElement('a');
+              a.href = downloadUrl;
+              a.download = 'animation.gif';
+              document.body.appendChild(a);
+              a.click();
+              document.body.removeChild(a);
+            });
+
+            gif.render();
+          }
+        };
+
+        captureFrame(0);
+      });
+    };
 
     return (
       <ul className='menu-bar'>
@@ -50,6 +120,12 @@ class MenuBar extends Component {
           <MenuButton
             name={'Export as PNG' + (enableKeys ? ' (Ctrl+Shift+P)' : '')}
             onClick={() => this.props.save_png()}
+            disabledButtons={disabledButtons}
+          />
+          {/* TODO: disabledButtons, (Ctrl+Shift+G) keys */}
+          <MenuButton
+            name={'Export as GIF' + (enableKeys ? ' (Ctrl+Shift+G)' : '')}
+            onClick={() => convertSVGToGIF()}
             disabledButtons={disabledButtons}
           />
           <MenuButton
