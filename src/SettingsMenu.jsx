@@ -142,7 +142,7 @@ class SettingsMenu extends Component {
               </table>
               <table className='radioSelection'>
                 <tr title='The '>
-                  <td className='optionLabel'>Animation Line Style:</td>
+                  <td className='optionLabel' title={'Animation Line Style'}>Line Style:</td>
                   <td className='singleLine'>
                     <label className='optionGroup'>
                       <input
