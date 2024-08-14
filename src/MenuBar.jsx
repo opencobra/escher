@@ -272,7 +272,7 @@ class MenuBar extends Component {
                    checked={this.props.settings.get('show_reaction_data_animation')}
             />
             <span className="slider"></span>
-            <span className="tooltiptext">Show flux visualization( animation only available in Chrome).</span>
+            <span className="tooltiptext">Show flux visualization( animation NOT available in Safari).</span>
           </label>
         </div>
         <a className="helpButton" target="#" href='https://escher.readthedocs.org'>?</a>
