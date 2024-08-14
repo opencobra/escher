@@ -628,6 +628,7 @@ class Builder {
       },
       save_svg: () => this.map.save_svg(),
       save_png: () => this.map.save_png(),
+      save_gif: () => this.map.save_gif(),
       clear_map: () => { this.clear_map() },
       loadModel: file => this.load_model(file, true),
       assignKeyLoadModel: fn => {

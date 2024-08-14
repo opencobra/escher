@@ -2,6 +2,7 @@
 
 var vkbeautify = require('vkbeautify')
 var _ = require('underscore')
+const GIF = require("gif.js");
 var d3_json = require('d3-request').json
 var d3_text = require('d3-request').text
 var d3_csvParseRows = require('d3-dsv').csvParseRows
@@ -43,6 +44,7 @@ module.exports = {
   load_json_or_csv: load_json_or_csv,
   downloadSvg: downloadSvg,
   downloadPng: downloadPng,
+  downloadGif: downloadGif,
   rotate_coords_recursive: rotate_coords_recursive,
   rotate_coords: rotate_coords,
   get_angle: get_angle,
@@ -789,6 +791,97 @@ function downloadPng (name, svg_sel) {
       saveAs(blob, name + '.png')
     })
   }
+}
+
+/**
+ * Download a png file using FileSaver.js.
+ * @param {String} name - The filename (without extension).
+ * @param {D3 Selection} svg_sel - The d3 selection for the SVG element.
+ */
+function downloadGif (name, svg_sel, windowScale, windowTranslate) {
+  // Alert if blob isn't going to work
+  _check_filesaver()
+
+  // Canvas to hold the image
+  var canvas = document.createElement('canvas')
+  var context = canvas.getContext('2d', {willReadFrequently: true})
+  const DOMURL = window.URL || window.webkitURL || window;
+  const frameCount = 20;
+  const delay = 100;
+
+
+  // Get SVG size
+  var rectCanvas = document.querySelector('rect#canvas')
+  var svg_width = rectCanvas.getAttribute('width') * windowScale
+  var svg_height = rectCanvas.getAttribute('height') * windowScale
+
+  const LIMIT = 2000;
+  // Canvas size = SVG size. Constrained to 10000px for very large SVGs
+  if (svg_width < LIMIT && svg_height < LIMIT) {
+    canvas.width = svg_width
+    canvas.height = svg_height
+  } else {
+    if (canvas.width > canvas.height) {
+      canvas.width = LIMIT
+      canvas.height = LIMIT * (svg_height / svg_width)
+    } else {
+      canvas.width = LIMIT * (svg_width / svg_height)
+      canvas.height = LIMIT
+    }
+  }
+
+  const originWidth = canvas.width;
+  const originHeight = canvas.height;
+  // Image element appended with data
+  var base_image = new Image()
+  fetch('https://cdn.jsdelivr.net/npm/gif.js@0.2.0/dist/gif.worker.js')
+    .then((response) => {
+      if (!response.ok)
+        throw new Error("Network response was not OK");
+      return response.blob();
+    }).then(workerBlob => {
+    const gif = new GIF({
+      workers: 2,
+      quality: 10,
+      workerScript: URL.createObjectURL(workerBlob),
+      width: originWidth,
+      height: originHeight
+    });
+
+    const captureFrame = (index) => {
+      if (index < frameCount) {
+        let svgElement = document.querySelector('.escher-svg');
+        let svgData = new XMLSerializer().serializeToString(svgElement);
+        let svgBlob = new Blob([svgData], {type: 'image/svg+xml;charset=utf-8'});
+        let url = DOMURL.createObjectURL(svgBlob);
+
+        base_image.onload = function () {
+          context.clearRect(0, 0, originWidth, originHeight);
+          context.drawImage(base_image, 0, 0, originWidth, originHeight, -windowTranslate.x * windowScale, -windowTranslate.y * windowScale, originWidth, originHeight);
+          gif.addFrame(context, {copy: true, delay});
+          DOMURL.revokeObjectURL(url);
+          setTimeout(() => {
+            requestAnimationFrame(() => captureFrame(index + 1));
+          }, delay);
+        };
+        base_image.src = url;
+      } else {
+        gif.on('finished', function(blob) {
+          const downloadUrl = URL.createObjectURL(blob);
+          const a = document.createElement('a');
+          a.href = downloadUrl;
+          a.download = `${name}.gif`;
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a);
+        });
+
+        gif.render();
+      }
+    };
+
+    captureFrame(0);
+  });
 }
 
 function rotate_coords_recursive (coords_array, angle, center) {
