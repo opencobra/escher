@@ -52,7 +52,7 @@ class DefaultTooltip extends Component {
         </div>
         <div className='data'>
           data: {
-            this.props.data && this.props.data !== '' ? this.props.data : 'no data'
+            this.props.data && this.props.data !== '(nd)' ? this.props.data : 'no data'
           }
         </div>
         <button onClick={this.openBigg}>
