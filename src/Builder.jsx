@@ -117,6 +117,7 @@ class Builder {
       // (dashed / dotted)
       animation_line_style: 'dashed',
       reaction_data_threshold: Math.pow(10, -6),
+      hidden_no_data_reaction: true,
       // gene
       gene_data: null,
       and_method_in_gene_reaction_rule: 'mean',

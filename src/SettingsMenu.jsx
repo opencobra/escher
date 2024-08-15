@@ -250,6 +250,20 @@ class SettingsMenu extends Component {
                 />
                 Highlight reactions not in model
               </label>
+              <label
+                title='If checked, then the reactions with no flux will be hidden from the map when you loaded the reaction data.'>
+                <input
+                  type='checkbox'
+                  onClick={() => {
+                    settings.set(
+                      'hidden_no_data_reaction',
+                      !settings.get('hidden_no_data_reaction')
+                    )
+                  }}
+                  checked={settings.get('hidden_no_data_reaction')}
+                />
+                Hidden no data reactions
+              </label>
               <label title='If true, then use CSS3 3D transforms to speed up panning and zooming.'>
                 <input
                   type='checkbox'

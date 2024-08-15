@@ -171,6 +171,8 @@ function update_reaction_label (update_selection, has_data_on_reactions) {
   const show_gene_reaction_rules = this.settings.get('show_gene_reaction_rules')
   const hide_all_labels = this.settings.get('hide_all_labels')
   const gene_font_size = this.settings.get('gene_font_size')
+  // hidden_no_data_reaction should only work when there is data on reactions
+  const hidden_no_data_reaction = has_data_on_reactions && this.settings.get('hidden_no_data_reaction')
   const reactionLabelMouseover = this.behavior.reactionLabelMouseover
   const reactionLabelMouseout = this.behavior.reactionLabelMouseout
   const reactionLabelTouch = this.behavior.reactionLabelTouch
@@ -188,7 +190,13 @@ function update_reaction_label (update_selection, has_data_on_reactions) {
 
   // update label visibility
   var label = update_selection.select('.reaction-label')
-    .attr('visibility', hide_all_labels ? 'hidden' : 'visible')
+    .attr('visibility', (d) => {
+      // hide all labels or the reaction has no data when already loaded the reaction data
+      if (!d.data && hidden_no_data_reaction || hide_all_labels) {
+        return 'hidden'
+      }
+      return null
+    })
 
   if (!hide_all_labels) {
     label
@@ -368,6 +376,8 @@ function update_segment (update_selection, scale, cobra_model,
   const should_color = (has_data_on_reactions && reaction_data_styles.indexOf('color') !== -1)
   const no_data_size = this.settings.get('reaction_no_data_size')
   const no_data_color = this.settings.get('reaction_no_data_color')
+  // hidden_no_data_reaction should only work when there is data on reactions
+  const hidden_no_data_reaction = has_data_on_reactions && this.settings.get('hidden_no_data_reaction')
 
   // update segment attributes
   const highlight_missing  = this.settings.get('highlight_missing')
@@ -416,6 +426,12 @@ function update_segment (update_selection, scale, cobra_model,
            (start['node_type'] === 'metabolite' && !start.node_is_primary))) {
         return 'hidden'
       }
+      
+      // When the reaction data is loaded and the hidden_no_data_reaction option is enabled, the segment is hidden if there is no data.
+      if (!d.data && hidden_no_data_reaction) {
+        return 'hidden'
+      }
+
       return null
     })
     .attr('d', function(d) {
@@ -580,11 +596,18 @@ function update_segment (update_selection, scale, cobra_model,
       return null
     }).style('stroke', function(d) {
       if (should_color) {
-        // show the flux color in the stroke whether or not the fill is present
+        // show the flux color in the stroke whether the fill is present
         var f = d.data
         return f===null ? no_data_color : scale.reaction_color(f)
       }
       // default stroke color
+      return null
+    }).style('visibility', function(d) {
+      // When the reaction data is loaded and the hidden_no_data_reaction option is enabled, the arrowhead is hidden if there is no data.
+      if (!d.data && hidden_no_data_reaction) {
+        return 'hidden'
+      }
+
       return null
     })
   // remove
@@ -808,6 +831,11 @@ function update_node (update_selection, scale, has_data_on_nodes,
   var metabolite_data_styles = this.settings.get('metabolite_styles')
   var no_data_style = { color: this.settings.get('metabolite_no_data_color'),
                         size: this.settings.get('metabolite_no_data_size') }
+  
+  // for the hidden_no_data_reaction option
+  const hidden_no_data_reaction = this.map.has_data_on_reactions && this.settings.get('hidden_no_data_reaction')
+  const all_reactions_obj = this.map.reactions
+  
   var labelMouseover = this.behavior.nodeLabelMouseover
   var labelMouseout = this.behavior.nodeLabelMouseout
   var labelTouch = this.behavior.nodeLabelTouch
@@ -820,7 +848,17 @@ function update_node (update_selection, scale, has_data_on_nodes,
       return 'translate(' + d.x + ',' + d.y + ')'
     })
     .style('visibility', function(d) {
-      return hideNode(d, hide_secondary_metabolites) ? 'hidden' : null
+      if (hideNode(d, hide_secondary_metabolites)) {
+        return 'hidden'
+      }
+      // When the reaction data is loaded and the hidden_no_data_reaction option is enabled, the node is hidden if all the connected reactions have no data.
+      if (
+        hidden_no_data_reaction
+        && IsAllRelatedReactionsNoData(d, all_reactions_obj)
+      ) {
+        return 'hidden'
+      }
+      return null
     })
     .attr('r', function(d) {
       if (d.node_type === 'metabolite') {
@@ -864,7 +902,17 @@ function update_node (update_selection, scale, has_data_on_nodes,
   if (!hide_all_labels) {
     node_label
       .style('visibility', function(d) {
-        return hideNode(d, hide_secondary_metabolites) ? 'hidden' : null
+        if (hideNode(d, hide_secondary_metabolites)) {
+          return 'hidden'
+        }
+        // When the reaction data is loaded and the hidden_no_data_reaction option is enabled, the node label is hidden if all the connected reactions have no data.
+        if (
+          hidden_no_data_reaction
+          && IsAllRelatedReactionsNoData(d, all_reactions_obj)
+        ) {
+          return 'hidden'
+        }
+        return null
       })
       .attr('transform', function(d) {
         return 'translate(' + d.label_x + ',' + d.label_y + ')'
@@ -888,6 +936,18 @@ function update_node (update_selection, scale, has_data_on_nodes,
     return (d.node_type === 'metabolite' &&
             hide_secondary_metabolites &&
             !d.node_is_primary)
+  }
+
+  // Get if all the related reactions have no data
+  function IsAllRelatedReactionsNoData(d, all_reactions_obj) {
+    const all_reaction_ids = d.connected_segments.map(s => s.reaction_id)
+    let noData = true
+    all_reaction_ids.forEach(reaction_id => {
+      if (all_reactions_obj[reaction_id].data) {
+        noData = false
+      }
+    })
+    return noData
   }
 }
 
