@@ -797,6 +797,8 @@ function downloadPng (name, svg_sel) {
  * Download a png file using FileSaver.js.
  * @param {String} name - The filename (without extension).
  * @param {D3 Selection} svg_sel - The d3 selection for the SVG element.
+ * @param {Number} windowScale - The scale of the window.
+ * @param {Object} windowTranslate - The translation of the window.
  */
 function downloadGif (name, svg_sel, windowScale, windowTranslate) {
   // Alert if blob isn't going to work
@@ -806,32 +808,33 @@ function downloadGif (name, svg_sel, windowScale, windowTranslate) {
   var canvas = document.createElement('canvas')
   var context = canvas.getContext('2d', {willReadFrequently: true})
   const DOMURL = window.URL || window.webkitURL || window;
+  // total frames
   const frameCount = 20;
+  // delay between frames
   const delay = 100;
-
+  // FIXME: the export size of the gif
+  const MAX_CANVAS_LIMIT = Math.min(window.innerWidth, window.innerHeight);
 
   // Get SVG size
-  var rectCanvas = document.querySelector('rect#canvas')
-  var svg_width = rectCanvas.getAttribute('width') * windowScale
-  var svg_height = rectCanvas.getAttribute('height') * windowScale
+  var originWidth = document.querySelector('rect#canvas').getAttribute('width') * windowScale
+  var originHeight = document.querySelector('rect#canvas').getAttribute('height') * windowScale
 
-  const LIMIT = 2000;
-  // Canvas size = SVG size. Constrained to 10000px for very large SVGs
-  if (svg_width < LIMIT && svg_height < LIMIT) {
-    canvas.width = svg_width
-    canvas.height = svg_height
+  // Canvas size = SVG size. Constrained to 2000px for very large SVGs
+  if (originWidth < MAX_CANVAS_LIMIT && originHeight < MAX_CANVAS_LIMIT) {
+    canvas.width = originWidth
+    canvas.height = originHeight
   } else {
     if (canvas.width > canvas.height) {
-      canvas.width = LIMIT
-      canvas.height = LIMIT * (svg_height / svg_width)
+      canvas.width = MAX_CANVAS_LIMIT
+      canvas.height = MAX_CANVAS_LIMIT * (originHeight / originWidth)
     } else {
-      canvas.width = LIMIT * (svg_width / svg_height)
-      canvas.height = LIMIT
+      canvas.width = MAX_CANVAS_LIMIT * (originWidth / originHeight)
+      canvas.height = MAX_CANVAS_LIMIT
     }
   }
 
-  const originWidth = canvas.width;
-  const originHeight = canvas.height;
+  const scaledWidth = canvas.width;
+  const scaledHeight = canvas.height;
   // Image element appended with data
   var base_image = new Image()
   fetch('https://cdn.jsdelivr.net/npm/gif.js@0.2.0/dist/gif.worker.js')
@@ -844,8 +847,9 @@ function downloadGif (name, svg_sel, windowScale, windowTranslate) {
       workers: 2,
       quality: 10,
       workerScript: URL.createObjectURL(workerBlob),
-      width: originWidth,
-      height: originHeight
+      width: scaledWidth,
+      height: scaledHeight,
+      transparent: 'rgba(255, 255, 255, 0)',
     });
 
     const captureFrame = (index) => {
@@ -856,8 +860,8 @@ function downloadGif (name, svg_sel, windowScale, windowTranslate) {
         let url = DOMURL.createObjectURL(svgBlob);
 
         base_image.onload = function () {
-          context.clearRect(0, 0, originWidth, originHeight);
-          context.drawImage(base_image, 0, 0, originWidth, originHeight, -windowTranslate.x * windowScale, -windowTranslate.y * windowScale, originWidth, originHeight);
+          context.clearRect(0, 0, scaledWidth, scaledHeight);
+          context.drawImage(base_image, 0, 0, scaledWidth, scaledHeight, 0, 0, scaledWidth, scaledHeight);
           gif.addFrame(context, {copy: true, delay});
           DOMURL.revokeObjectURL(url);
           setTimeout(() => {
