@@ -1339,7 +1339,7 @@ function update_color_legends(reaction_color_scale, has_data_on_reactions) {
   // define the axis and text for the color legend
   const legendAxis = d3_axis_bottom(legendScale)
     .ticks(1)
-    .tickFormat(d => d === minDomain ? 'min' : d === maxDomain ? 'max' : '');
+    .tickFormat(d => d === domain[0] ? 'min' : d === domain[domain.length - 1] ? 'max' : '');
 
   // draw the color legend axis
   legend.select(".legend-axis")
