@@ -7,6 +7,7 @@ var d3_json = require('d3-request').json
 var d3_text = require('d3-request').text
 var d3_csvParseRows = require('d3-dsv').csvParseRows
 var d3_selection = require('d3-selection').selection
+const { gsap } = require('gsap')
 
 try {
   var saveAs = require('file-saver').saveAs
@@ -69,6 +70,7 @@ module.exports = {
   d3_transform_catch: d3_transform_catch,
   process_reaction_data: process_reaction_data,
   // check_browser: check_browser
+  handle_animation: handle_animation
 }
 
 /**
@@ -1234,3 +1236,64 @@ function d3_transform_catch (transform_attr) {
 //     return false
 //   }
 // }
+
+/**
+ * the function to handle the animation of the reaction data
+ * @param {Array} entries - The array of IntersectionObserverEntry objects.
+ * @param {IntersectionObserver} observer - The IntersectionObserver object.
+ * @param {Object} settings - The settings object, containing the get and set methods.
+ * @param {Boolean} has_data_on_reactions - The flag to indicate if the data on reactions is loaded.
+ * @param {Object} scale - The scale object, containing the reaction_animation_duration and reaction_size methods.
+ * @returns void
+ */
+function handle_animation(entries, observer, settings, has_data_on_reactions, scale) {
+  // show the reaction data animation
+  const show_animation = settings.get('show_reaction_data_animation')
+  // animation line style
+  const line_style = settings.get('animation_line_style')
+
+  entries.forEach(entry => {
+    // get the node
+    const node = entry.target;
+    // check if the element is in the viewport
+    if (entry.isIntersecting) {
+      // show the animation when the element is in the viewport
+      const dataBindByD3 = node.__data__;
+      if (has_data_on_reactions && show_animation && dataBindByD3.data) {
+        const fluxData = dataBindByD3.data;
+        const velocity = scale.reaction_animation_duration(fluxData);
+        const strokeDash = scale.reaction_size(fluxData) * 2;
+        const strokeDashArray = line_style === 'dashed' ? `${strokeDash}, ${strokeDash}` : `2, ${strokeDash}`;
+        // Check if the animation is already running and the velocity has changed
+        if (node.animation && node.animation.data !== velocity) {
+          node.animation.kill()
+          node.animation = null
+        }
+
+        if(!node.animation) {
+          const node_length = node.getTotalLength();
+          const direction = dataBindByD3.data_string.startsWith("-") ? 1 : -1;
+          node.setAttribute("stroke-dasharray", strokeDashArray);
+          node.animation = gsap.to(node, {
+            strokeDashoffset: direction * node_length * 2,
+            repeat: -1,
+            ease: "none",
+            // insure the animation restarts if the velocity changes
+            immediateRender: true,
+            duration: velocity * node_length / 100,
+            data: velocity
+          });
+        }else {
+          node.setAttribute("stroke-dasharray", strokeDashArray);
+          node.animation.play(); // show the animation
+        }
+      }
+    } else {
+      // stop the animation when the element is not in the viewport
+      if (node.animation) {
+        node.removeAttribute("stroke-dasharray");
+        node.animation.pause(); // stop the animation
+      }
+    }
+  });
+}
