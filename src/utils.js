@@ -806,43 +806,39 @@ function downloadPng (name, svg_sel) {
  * @param {Number} windowScale - The scale of the window.
  * @param {Object} windowTranslate - The translation of the window.
  */
-function downloadGif (name, svg_sel, windowScale, windowTranslate) {
+function downloadGif(name, svg_sel, windowScale, windowTranslate) {
   // Alert if blob isn't going to work
   _check_filesaver()
 
   // Canvas to hold the image
   var canvas = document.createElement('canvas')
-  var context = canvas.getContext('2d', {willReadFrequently: true})
+  var context = canvas.getContext('2d', { willReadFrequently: true })
   const DOMURL = window.URL || window.webkitURL || window;
   // total frames
   const frameCount = 20;
   // delay between frames
   const delay = 100;
-  // FIXME: the export size of the gif
-  const MAX_CANVAS_LIMIT = Math.min(window.innerWidth, window.innerHeight);
-
   // Get SVG size
-  var originWidth = document.querySelector('rect#canvas').getAttribute('width') * windowScale
-  var originHeight = document.querySelector('rect#canvas').getAttribute('height') * windowScale
+  const boundingClientRect= document.querySelector('rect#canvas').getBoundingClientRect()
+  const { width, height, x, y } = boundingClientRect
 
-  // Canvas size = SVG size. Constrained to 2000px for very large SVGs
-  if (originWidth < MAX_CANVAS_LIMIT && originHeight < MAX_CANVAS_LIMIT) {
-    canvas.width = originWidth
-    canvas.height = originHeight
-  } else {
-    if (canvas.width > canvas.height) {
-      canvas.width = MAX_CANVAS_LIMIT
-      canvas.height = MAX_CANVAS_LIMIT * (originHeight / originWidth)
-    } else {
-      canvas.width = MAX_CANVAS_LIMIT * (originWidth / originHeight)
-      canvas.height = MAX_CANVAS_LIMIT
-    }
+  canvas.width = width
+  canvas.height = height
+
+  // Function to process SVG to Canvas
+  const processSVGToCanvas = () => {
+    let svgElement = document.querySelector('.escher-svg').cloneNode(true);
+
+    svgElement.setAttribute('viewBox', `${x} ${y} ${width} ${height}`);
+    svgElement.setAttribute('width', width);
+    svgElement.setAttribute('height', height);
+
+    let svgData = new XMLSerializer().serializeToString(svgElement)
+    let svgBlob = new Blob([svgData], { type: 'image/svg+xml;charset=utf-8' })
+    return DOMURL.createObjectURL(svgBlob)
   }
 
-  const scaledWidth = canvas.width;
-  const scaledHeight = canvas.height;
-  // Image element appended with data
-  var base_image = new Image()
+  const base_image = new Image()
   fetch('https://cdn.jsdelivr.net/npm/gif.js@0.2.0/dist/gif.worker.js')
     .then((response) => {
       if (!response.ok)
@@ -850,33 +846,31 @@ function downloadGif (name, svg_sel, windowScale, windowTranslate) {
       return response.blob();
     }).then(workerBlob => {
     const gif = new GIF({
-      workers: 2,
+      workers: 4,
       quality: 10,
       workerScript: URL.createObjectURL(workerBlob),
-      width: scaledWidth,
-      height: scaledHeight,
-      transparent: 'rgba(255, 255, 255, 0)',
+      width,
+      height,
     });
 
     const captureFrame = (index) => {
       if (index < frameCount) {
-        let svgElement = document.querySelector('.escher-svg');
-        let svgData = new XMLSerializer().serializeToString(svgElement);
-        let svgBlob = new Blob([svgData], {type: 'image/svg+xml;charset=utf-8'});
-        let url = DOMURL.createObjectURL(svgBlob);
+        let url = processSVGToCanvas();
 
         base_image.onload = function () {
-          context.clearRect(0, 0, scaledWidth, scaledHeight);
-          context.drawImage(base_image, 0, 0, scaledWidth, scaledHeight, 0, 0, scaledWidth, scaledHeight);
-          gif.addFrame(context, {copy: true, delay});
+          // Clear the canvas before drawing
+          context.clearRect(0, 0, width, height);
+          context.drawImage(base_image, 0, 0, width, height);
+          gif.addFrame(context, { copy: true, delay });
           DOMURL.revokeObjectURL(url);
           setTimeout(() => {
             requestAnimationFrame(() => captureFrame(index + 1));
           }, delay);
         };
+
         base_image.src = url;
       } else {
-        gif.on('finished', function(blob) {
+        gif.on('finished', function (blob) {
           const downloadUrl = URL.createObjectURL(blob);
           const a = document.createElement('a');
           a.href = downloadUrl;

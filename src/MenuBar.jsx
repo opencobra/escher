@@ -2,7 +2,6 @@
 import { h, Component } from 'preact'
 import Dropdown from './Dropdown'
 import MenuButton from './MenuButton'
-import GIF from 'gif.js'
 
 /**
  * MenuBar implements generic Dropdown and MenuButton objects to create the

@@ -1139,6 +1139,11 @@ class Builder {
         target: map,
         fn: map.save_png
       },
+      save_gif: {
+        key: 'ctrl+shift+g',
+        target: map,
+        fn: map.save_gif
+      },
       load_map: {
         key: 'ctrl+o',
         fn: null // defined by button
