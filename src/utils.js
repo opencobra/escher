@@ -7,7 +7,10 @@ var d3_json = require('d3-request').json
 var d3_text = require('d3-request').text
 var d3_csvParseRows = require('d3-dsv').csvParseRows
 var d3_selection = require('d3-selection').selection
+var d3_select = require('d3-selection').select
 const { gsap } = require('gsap')
+const d3_scale = require('d3-scale')
+const {axisBottom: d3_axis_bottom} = require('d3-axis')
 
 try {
   var saveAs = require('file-saver').saveAs
@@ -70,7 +73,8 @@ module.exports = {
   d3_transform_catch: d3_transform_catch,
   process_reaction_data: process_reaction_data,
   // check_browser: check_browser
-  handle_animation: handle_animation
+  handle_animation: handle_animation,
+  update_color_legends: update_color_legends
 }
 
 /**
@@ -1296,4 +1300,69 @@ function handle_animation(entries, observer, settings, has_data_on_reactions, sc
       }
     }
   });
+}
+
+/**
+ * update the color legends when the data on reactions is loaded
+ * @param reaction_color_scale - The color scale for reactions.
+ * @param has_data_on_reactions - The flag to indicate if the data on reactions is loaded.
+ * @returns void
+ */
+function update_color_legends(reaction_color_scale, has_data_on_reactions) {
+  // get the domain and range of the color scale
+  const domain = reaction_color_scale.domain();
+  const range = reaction_color_scale.range();
+  // get elements for the color legends
+  const LEGEND_WIDTH = 200;
+  const LEGEND_HEIGHT = 19;
+  const svg = d3_select(".legend-container")
+  const legend = svg.select(".legend-group");
+  const gradient = legend.select(".legend-defs linearGradient");
+
+  // define the linear gradient data for the color rectangle
+  gradient.selectAll("stop").data(_get_color_linearGradient_data(domain, range)).enter().append('stop')
+    .attr("offset", d => d.offset)
+    .attr("stop-color", d => d.color);
+  // draw the color rectangle
+  legend.select(".legend-rect")
+    .attr("x", 0)
+    .attr("y", 0)
+    .attr("width", LEGEND_WIDTH)
+    .attr("height", LEGEND_HEIGHT)
+    .style("fill", "url(#legend-gradient)");
+
+  // define the scale for the color legend
+  const legendScale = d3_scale.scaleLinear()
+    .domain(domain)
+    .range(domain.map((d, i) => i * LEGEND_WIDTH / (domain.length - 1)));
+
+  // define the axis and text for the color legend
+  const legendAxis = d3_axis_bottom(legendScale)
+    .ticks(1)
+    .tickFormat(d => d === minDomain ? 'min' : d === maxDomain ? 'max' : '');
+
+  // draw the color legend axis
+  legend.select(".legend-axis")
+    .attr("transform", `translate(0, ${LEGEND_HEIGHT})`)
+    .call(legendAxis);
+
+  has_data_on_reactions ? svg.style("display", "block") : svg.style("display", "none");
+}
+
+// get the linear gradient data for the color rectangle, used by update_color_legends(internal function)
+function _get_color_linearGradient_data(domain, range) {
+  const minDomain = domain[0];
+  const maxDomain = domain[domain.length - 1];
+  const percentages = domain.map(value => ((value - minDomain) / (maxDomain - minDomain)) * 100);
+
+  const data = [];
+  for (let i = 0; i < domain.length; i++) {
+    if (typeof range[i] === 'string' || range[i] instanceof String) {
+      data.push({
+        offset: `${percentages[i]}%`,
+        color: range[i]
+      });
+    }
+  }
+  return data
 }

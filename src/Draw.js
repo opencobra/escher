@@ -364,6 +364,8 @@ function update_segment (update_selection, scale, cobra_model,
     return r + arrow_height + 10
   }
 
+  // update color legends
+  utils.update_color_legends(scale.reaction_color, has_data_on_reactions)
   // update arrows
   update_selection
     .selectAll('.segment')
