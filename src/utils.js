@@ -818,24 +818,33 @@ function downloadGif(name, svg_sel, windowScale, windowTranslate) {
   const frameCount = 20;
   // delay between frames
   const delay = 100;
-  // Get SVG size
+  // Calculate the size of the picture
   const boundingClientRect= document.querySelector('rect#canvas').getBoundingClientRect()
-  const { width, height, x, y } = boundingClientRect
-
-  canvas.width = width
-  canvas.height = height
+  const { width, height, x, y, left, top } = boundingClientRect
+  const screenWidth = window.innerWidth
+  const screenHeight = window.innerHeight
+  const picWidth = width > screenWidth ? screenWidth : width
+  const picHeight = height > screenHeight ? screenHeight : height
+  // Calculate the offset of the svg data
+  const offset = {
+    x: width > screenWidth ? window.scrollX : left,
+    y: height > screenHeight ? window.scrollY : top
+  }
+  // Set the canvas size
+  canvas.width = picWidth
+  canvas.height = picHeight
 
   // Function to process SVG to Canvas
   const processSVGToCanvas = () => {
     let svgElement = document.querySelector('.escher-svg').cloneNode(true);
+    svgElement.setAttribute('viewBox', `${offset.x} ${offset.y} ${picWidth} ${picHeight}`);
+    svgElement.setAttribute('width', picWidth);
+    svgElement.setAttribute('height', picHeight);
 
-    svgElement.setAttribute('viewBox', `${x} ${y} ${width} ${height}`);
-    svgElement.setAttribute('width', width);
-    svgElement.setAttribute('height', height);
+    let svgData = new XMLSerializer().serializeToString(svgElement);
+    let svgBlob = new Blob([svgData], { type: 'image/svg+xml;charset=utf-8' });
 
-    let svgData = new XMLSerializer().serializeToString(svgElement)
-    let svgBlob = new Blob([svgData], { type: 'image/svg+xml;charset=utf-8' })
-    return DOMURL.createObjectURL(svgBlob)
+    return DOMURL.createObjectURL(svgBlob);
   }
 
   const base_image = new Image()
@@ -849,8 +858,8 @@ function downloadGif(name, svg_sel, windowScale, windowTranslate) {
       workers: 4,
       quality: 10,
       workerScript: URL.createObjectURL(workerBlob),
-      width,
-      height,
+      width: picWidth,
+      height: picHeight,
     });
 
     const captureFrame = (index) => {
@@ -859,8 +868,8 @@ function downloadGif(name, svg_sel, windowScale, windowTranslate) {
 
         base_image.onload = function () {
           // Clear the canvas before drawing
-          context.clearRect(0, 0, width, height);
-          context.drawImage(base_image, 0, 0, width, height);
+          context.clearRect(0, 0, picWidth, picHeight);
+          context.drawImage(base_image, 0, 0, picWidth, picHeight);
           gif.addFrame(context, { copy: true, delay });
           DOMURL.revokeObjectURL(url);
           setTimeout(() => {
