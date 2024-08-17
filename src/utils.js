@@ -809,6 +809,8 @@ function downloadPng (name, svg_sel) {
 function downloadGif(name, svg_sel, windowScale, windowTranslate) {
   // Alert if blob isn't going to work
   _check_filesaver()
+  // Create a loading indicator
+  const {removeLoadingIndicator} = _create_loading_indicator()
 
   // Canvas to hold the image
   var canvas = document.createElement('canvas')
@@ -887,6 +889,8 @@ function downloadGif(name, svg_sel, windowScale, windowTranslate) {
           document.body.appendChild(a);
           a.click();
           document.body.removeChild(a);
+          // Remove or hide the loading indicator
+          removeLoadingIndicator();
         });
 
         gif.render();
@@ -895,6 +899,34 @@ function downloadGif(name, svg_sel, windowScale, windowTranslate) {
 
     captureFrame(0);
   });
+}
+
+/**
+ * Create a loading indicator for the export process.
+ * @return {Function} A function to remove the loading indicator.
+ * @private
+ */
+function _create_loading_indicator() {
+  var loadingIndicator = document.createElement('div');
+  loadingIndicator.setAttribute('id', 'loadingIndicator');
+  loadingIndicator.style.position = 'fixed';
+  loadingIndicator.style.top = '0';
+  loadingIndicator.style.left = '0';
+  loadingIndicator.style.width = '100%';
+  loadingIndicator.style.height = '100%';
+  loadingIndicator.style.background = 'rgba(0, 0, 0, 0.5)';
+  loadingIndicator.style.zIndex = '1000';
+  loadingIndicator.style.justifyContent = 'center';
+  loadingIndicator.style.alignItems = 'center';
+  loadingIndicator.style.display = 'flex';
+  loadingIndicator.style.color = 'white';
+  loadingIndicator.style.fontSize = '24px';
+  loadingIndicator.textContent = 'Exporting...';
+  document.body.appendChild(loadingIndicator);
+
+  return {
+    removeLoadingIndicator: () => document.body.removeChild(loadingIndicator)
+  }
 }
 
 function rotate_coords_recursive (coords_array, angle, center) {
