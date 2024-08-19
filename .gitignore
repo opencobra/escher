@@ -36,3 +36,10 @@ docs/example_map.html
 
 # IDEs
 .idea/
+
+# virtual environments
+.env
+.venv*
+env/
+venv/
+ENV/
