@@ -2229,42 +2229,47 @@ export default class Map {
       transform: this.canvas.mouseNode.attr('transform')
     }
 
-    this.zoomContainer._goToSvg(
-      1.0,
-      { x: -canvasSizeAndLoc.x, y: -canvasSizeAndLoc.y },
-      () => {
-        this.svg.attr('width', canvasSizeAndLoc.width)
-        this.svg.attr('height', canvasSizeAndLoc.height)
-        this.canvas.mouseNode.attr('width', '0px')
-        this.canvas.mouseNode.attr('height', '0px')
-        this.canvas.mouseNode.attr('transform', null)
+    // save as gif don't need to change and revert the canvas size
+    if (mapType === 'gif') {
+      utils.downloadGif('saved_map_gif', this.svg, windowScale, windowTranslate)
+    }else {
+      this.zoomContainer._goToSvg(
+        1.0,
+        {x: -canvasSizeAndLoc.x, y: -canvasSizeAndLoc.y},
+        () => {
+          this.svg.attr('width', canvasSizeAndLoc.width)
+          this.svg.attr('height', canvasSizeAndLoc.height)
+          this.canvas.mouseNode.attr('width', '0px')
+          this.canvas.mouseNode.attr('height', '0px')
+          this.canvas.mouseNode.attr('transform', null)
 
-        // hide the segment control points
-        var hidden_sel = this.sel.selectAll('.multimarker-circle,.midmarker-circle,#canvas,.bezier,#rotation-center,.direction-arrow,.start-reaction-target')
+          // hide the segment control points
+          var hidden_sel = this.sel.selectAll('.multimarker-circle,.midmarker-circle,#canvas,.bezier,#rotation-center,.direction-arrow,.start-reaction-target')
             .style('visibility', 'hidden')
 
-        // do the export
-        if( mapType === 'svg') {
-          utils.downloadSvg('saved_map', this.svg, true)
-        } else if (mapType === 'png') {
-          utils.downloadPng('saved_map', this.svg)
+          // do the export
+          if (mapType === 'svg') {
+            utils.downloadSvg('saved_map', this.svg, true)
+          } else if (mapType === 'png') {
+            utils.downloadPng('saved_map', this.svg)
+          }
+
+          // revert everything
+          this.zoomContainer._goToSvg(windowScale, windowTranslate, () => {
+            this.svg.attr('width', null)
+            this.svg.attr('height', null)
+            this.canvas.mouseNode.attr('width', mouseNodeSizeAndTrans.w)
+            this.canvas.mouseNode.attr('height', mouseNodeSizeAndTrans.h)
+            this.canvas.mouseNode.attr('transform', mouseNodeSizeAndTrans.transform)
+            // unhide the segment control points
+            hidden_sel.style('visibility', null)
+
+            // run the after callback
+            this.callback_manager.run(callbackAfter)
+          })
         }
-
-        // revert everything
-        this.zoomContainer._goToSvg(windowScale, windowTranslate, () => {
-          this.svg.attr('width', null)
-          this.svg.attr('height', null)
-          this.canvas.mouseNode.attr('width', mouseNodeSizeAndTrans.w)
-          this.canvas.mouseNode.attr('height', mouseNodeSizeAndTrans.h)
-          this.canvas.mouseNode.attr('transform', mouseNodeSizeAndTrans.transform)
-          // unhide the segment control points
-          hidden_sel.style('visibility', null)
-
-          // run the after callback
-          this.callback_manager.run(callbackAfter)
-        })
-      }
-    )
+      )
+    }
   }
 
   save_svg () {
@@ -2273,6 +2278,10 @@ export default class Map {
 
   save_png () {
     this.saveMap('before_png_export', 'after_png_export', 'png')
+  }
+
+  save_gif () {
+    this.saveMap('before_gif_export', 'after_gif_export', 'gif')
   }
 
   /**

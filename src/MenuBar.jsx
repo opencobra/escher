@@ -52,6 +52,12 @@ class MenuBar extends Component {
             onClick={() => this.props.save_png()}
             disabledButtons={disabledButtons}
           />
+          {/* TODO: disabledButtons, (Ctrl+Shift+G) keys */}
+          <MenuButton
+            name={'Export as GIF' + (enableKeys ? ' (Ctrl+Shift+G)' : '')}
+            onClick={() => this.props.save_gif()}
+            disabledButtons={disabledButtons}
+          />
           <MenuButton
             name='Clear map'
             onClick={() => this.props.clear_map()}
@@ -255,7 +261,20 @@ class MenuBar extends Component {
             type='settings'
           />
         </Dropdown>
-        <a className='helpButton' target='#' href='https://escher.readthedocs.org'>?</a>
+        <div className="switch-container">
+          <label className="switch tooltip">
+            <input type="checkbox"
+                   onClick={() => {
+                     this.props.settings.set('show_reaction_data_animation', !this.props.settings.get('show_reaction_data_animation'))
+                     this.props.settings.acceptChanges()
+                   }}
+                   checked={this.props.settings.get('show_reaction_data_animation')}
+            />
+            <span className="slider"></span>
+            <span className="tooltiptext">Show flux visualization( animation NOT available in Safari).</span>
+          </label>
+        </div>
+        <a className="helpButton" target="#" href='https://escher.readthedocs.org'>?</a>
       </ul>
     )
   }

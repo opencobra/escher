@@ -28,7 +28,9 @@ class DefaultTooltip extends Component {
     const url = type === 'gene'
       ? `${pref}search?query=${biggId}`
       : `${pref}universal/${type}s/${this.decompartmentalizeCheck(biggId, type)}`
-    window.open(url)
+
+    const vmh_link = `https://www.vmh.life/#allsearch/${biggId}`
+    window.open(this.props.openInVmh() ? vmh_link : url)
   }
 
   capitalizeFirstLetter (s) {
@@ -39,7 +41,7 @@ class DefaultTooltip extends Component {
 
   render () {
     const decomp = this.decompartmentalizeCheck(this.props.biggId, this.props.type)
-    const biggButtonText = `Open ${decomp} in BiGG Models.`
+    const biggButtonText = this.props.openInVmh() ? `Open ${decomp} in VMH` : `Open ${decomp} in BiGG Models.`
     return (
       <div className='default-tooltip'>
         <div className='id'>

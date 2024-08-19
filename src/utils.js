@@ -2,10 +2,15 @@
 
 var vkbeautify = require('vkbeautify')
 var _ = require('underscore')
+const GIF = require("gif.js");
 var d3_json = require('d3-request').json
 var d3_text = require('d3-request').text
 var d3_csvParseRows = require('d3-dsv').csvParseRows
 var d3_selection = require('d3-selection').selection
+var d3_select = require('d3-selection').select
+const { gsap } = require('gsap')
+const d3_scale = require('d3-scale')
+const {axisBottom: d3_axis_bottom} = require('d3-axis')
 
 try {
   var saveAs = require('file-saver').saveAs
@@ -43,6 +48,7 @@ module.exports = {
   load_json_or_csv: load_json_or_csv,
   downloadSvg: downloadSvg,
   downloadPng: downloadPng,
+  downloadGif: downloadGif,
   rotate_coords_recursive: rotate_coords_recursive,
   rotate_coords: rotate_coords,
   get_angle: get_angle,
@@ -64,8 +70,11 @@ module.exports = {
   name_to_url: name_to_url,
   get_document: get_document,
   get_window: get_window,
-  d3_transform_catch: d3_transform_catch
+  d3_transform_catch: d3_transform_catch,
+  process_reaction_data: process_reaction_data,
   // check_browser: check_browser
+  handle_animation: handle_animation,
+  update_color_legends: update_color_legends
 }
 
 /**
@@ -790,6 +799,136 @@ function downloadPng (name, svg_sel) {
   }
 }
 
+/**
+ * Download a png file using FileSaver.js.
+ * @param {String} name - The filename (without extension).
+ * @param {D3 Selection} svg_sel - The d3 selection for the SVG element.
+ * @param {Number} windowScale - The scale of the window.
+ * @param {Object} windowTranslate - The translation of the window.
+ */
+function downloadGif(name, svg_sel, windowScale, windowTranslate) {
+  // Alert if blob isn't going to work
+  _check_filesaver()
+  // Create a loading indicator
+  const {removeLoadingIndicator} = _create_loading_indicator()
+
+  // Canvas to hold the image
+  var canvas = document.createElement('canvas')
+  var context = canvas.getContext('2d', { willReadFrequently: true })
+  const DOMURL = window.URL || window.webkitURL || window;
+  // total frames
+  const frameCount = 20;
+  // delay between frames
+  const delay = 100;
+  // Calculate the size of the picture
+  const boundingClientRect= document.querySelector('rect#canvas').getBoundingClientRect()
+  const { width, height, x, y, left, top } = boundingClientRect
+  const screenWidth = window.innerWidth
+  const screenHeight = window.innerHeight
+  const picWidth = width > screenWidth ? screenWidth : width
+  const picHeight = height > screenHeight ? screenHeight : height
+  // Calculate the offset of the svg data
+  const offset = {
+    x: width > screenWidth ? window.scrollX : left,
+    y: height > screenHeight ? window.scrollY : top
+  }
+  // Set the canvas size
+  canvas.width = picWidth
+  canvas.height = picHeight
+
+  // Function to process SVG to Canvas
+  const processSVGToCanvas = () => {
+    let svgElement = document.querySelector('.escher-svg').cloneNode(true);
+    svgElement.setAttribute('viewBox', `${offset.x} ${offset.y} ${picWidth} ${picHeight}`);
+    svgElement.setAttribute('width', picWidth);
+    svgElement.setAttribute('height', picHeight);
+
+    let svgData = new XMLSerializer().serializeToString(svgElement);
+    let svgBlob = new Blob([svgData], { type: 'image/svg+xml;charset=utf-8' });
+
+    return DOMURL.createObjectURL(svgBlob);
+  }
+
+  const base_image = new Image()
+  fetch('https://cdn.jsdelivr.net/npm/gif.js@0.2.0/dist/gif.worker.js')
+    .then((response) => {
+      if (!response.ok)
+        throw new Error("Network response was not OK");
+      return response.blob();
+    }).then(workerBlob => {
+    const gif = new GIF({
+      workers: 4,
+      quality: 10,
+      workerScript: URL.createObjectURL(workerBlob),
+      width: picWidth,
+      height: picHeight,
+    });
+
+    const captureFrame = (index) => {
+      if (index < frameCount) {
+        let url = processSVGToCanvas();
+
+        base_image.onload = function () {
+          // Clear the canvas before drawing
+          context.clearRect(0, 0, picWidth, picHeight);
+          context.drawImage(base_image, 0, 0, picWidth, picHeight);
+          gif.addFrame(context, { copy: true, delay });
+          DOMURL.revokeObjectURL(url);
+          setTimeout(() => {
+            requestAnimationFrame(() => captureFrame(index + 1));
+          }, delay);
+        };
+
+        base_image.src = url;
+      } else {
+        gif.on('finished', function (blob) {
+          const downloadUrl = URL.createObjectURL(blob);
+          const a = document.createElement('a');
+          a.href = downloadUrl;
+          a.download = `${name}.gif`;
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a);
+          // Remove or hide the loading indicator
+          removeLoadingIndicator();
+        });
+
+        gif.render();
+      }
+    };
+
+    captureFrame(0);
+  });
+}
+
+/**
+ * Create a loading indicator for the export process.
+ * @return {Function} A function to remove the loading indicator.
+ * @private
+ */
+function _create_loading_indicator() {
+  var loadingIndicator = document.createElement('div');
+  loadingIndicator.setAttribute('id', 'loadingIndicator');
+  loadingIndicator.style.position = 'fixed';
+  loadingIndicator.style.top = '0';
+  loadingIndicator.style.left = '0';
+  loadingIndicator.style.width = '100%';
+  loadingIndicator.style.height = '100%';
+  loadingIndicator.style.background = 'rgba(0, 0, 0, 0.5)';
+  loadingIndicator.style.zIndex = '1000';
+  loadingIndicator.style.justifyContent = 'center';
+  loadingIndicator.style.alignItems = 'center';
+  loadingIndicator.style.display = 'flex';
+  loadingIndicator.style.color = 'white';
+  loadingIndicator.style.fontSize = '24px';
+  loadingIndicator.textContent = 'Exporting...';
+  document.body.appendChild(loadingIndicator);
+
+  return {
+    removeLoadingIndicator: () => document.body.removeChild(loadingIndicator)
+  }
+}
+
 function rotate_coords_recursive (coords_array, angle, center) {
   return coords_array.map(function (c) {
     return rotate_coords(c, angle, center)
@@ -893,7 +1032,7 @@ function compartmentalize (bigg_id, compartment_id) {
  * length 1 or 2. Return [ id, null ] if no match is found.
  */
 function decompartmentalize (id) {
-  var reg = /(.*)_([a-z0-9]{1,2})$/;
+  var reg = /(.*)\[([a-z0-9]{1,2})\]$/;
   var result = reg.exec(id)
   return result !== null ? result.slice(1,3) : [ id, null ]
 }
@@ -1008,6 +1147,28 @@ function get_window (node) {
   return get_document(node).defaultView
 }
 
+// filter the data which is less than threshold
+function process_reaction_data (arr, threshold = 0) {
+  const obj = arr[0];
+
+  // call the function for each key in the object
+  for (let key in obj) {
+    if (obj.hasOwnProperty(key)) {
+      let value = obj[key];
+
+      // check if value is an object, if it is, call the function again
+      if (typeof value === 'object' && value !== null) {
+        processObject(value);
+      } else if (typeof value === 'number' && Math.abs(value) < threshold) {
+        // if value is a number and less than threshold, set it to 0
+        obj[key] = 0;
+      }
+    }
+  }
+
+  return [obj];
+}
+
 /**
  * Get translation and rotation values for a transform string. This used to be
  * in d3, but since v4, I just adapted a solution from SO:
@@ -1114,3 +1275,127 @@ function d3_transform_catch (transform_attr) {
 //     return false
 //   }
 // }
+
+/**
+ * the function to handle the animation of the reaction data
+ * @param {Array} entries - The array of IntersectionObserverEntry objects.
+ * @param {IntersectionObserver} observer - The IntersectionObserver object.
+ * @param {Object} settings - The settings object, containing the get and set methods.
+ * @param {Boolean} has_data_on_reactions - The flag to indicate if the data on reactions is loaded.
+ * @param {Object} scale - The scale object, containing the reaction_animation_duration and reaction_size methods.
+ * @returns void
+ */
+function handle_animation(entries, observer, settings, has_data_on_reactions, scale) {
+  // show the reaction data animation
+  const show_animation = settings.get('show_reaction_data_animation')
+  // animation line style
+  const line_style = settings.get('animation_line_style')
+
+  entries.forEach(entry => {
+    // get the node
+    const node = entry.target;
+    // check if the element is in the viewport
+    if (entry.isIntersecting) {
+      // show the animation when the element is in the viewport
+      const dataBindByD3 = node.__data__;
+      if (has_data_on_reactions && show_animation && dataBindByD3.data) {
+        const fluxData = dataBindByD3.data;
+        const velocity = scale.reaction_animation_duration(fluxData);
+        const strokeDash = scale.reaction_size(fluxData) * 2;
+        const strokeDashArray = line_style === 'dashed' ? `${strokeDash}, ${strokeDash}` : `2, ${strokeDash}`;
+        // Check if the animation is already running and the velocity has changed
+        if (node.animation && node.animation.data !== velocity) {
+          node.animation.kill()
+          node.animation = null
+        }
+
+        if(!node.animation) {
+          const node_length = node.getTotalLength();
+          const direction = dataBindByD3.data_string.startsWith("-") ? 1 : -1;
+          node.setAttribute("stroke-dasharray", strokeDashArray);
+          node.animation = gsap.to(node, {
+            strokeDashoffset: direction * node_length * 2,
+            repeat: -1,
+            ease: "none",
+            // insure the animation restarts if the velocity changes
+            immediateRender: true,
+            duration: velocity * node_length / 100,
+            data: velocity
+          });
+        }else {
+          node.setAttribute("stroke-dasharray", strokeDashArray);
+          node.animation.play(); // show the animation
+        }
+      }
+    } else {
+      // stop the animation when the element is not in the viewport
+      if (node.animation) {
+        node.removeAttribute("stroke-dasharray");
+        node.animation.pause(); // stop the animation
+      }
+    }
+  });
+}
+
+/**
+ * update the color legends when the data on reactions is loaded
+ * @param reaction_color_scale - The color scale for reactions.
+ * @param has_data_on_reactions - The flag to indicate if the data on reactions is loaded.
+ * @returns void
+ */
+function update_color_legends(reaction_color_scale, has_data_on_reactions) {
+  // get the domain and range of the color scale
+  const domain = reaction_color_scale.domain();
+  const range = reaction_color_scale.range();
+  // get elements for the color legends
+  const LEGEND_WIDTH = 200;
+  const LEGEND_HEIGHT = 19;
+  const svg = d3_select(".legend-container")
+  const legend = svg.select(".legend-group");
+  const gradient = legend.select(".legend-defs linearGradient");
+  // define the linear gradient data for the color rectangle
+  gradient.selectAll("stop").data(_get_color_linearGradient_data(domain, range)).enter().append('stop')
+    .attr("offset", d => d.offset)
+    .attr("stop-color", d => d.color);
+  // draw the color rectangle
+  legend.select(".legend-rect")
+    .attr("x", 0)
+    .attr("y", 0)
+    .attr("width", LEGEND_WIDTH)
+    .attr("height", LEGEND_HEIGHT)
+    .style("fill", "url(#legend-gradient)");
+
+  const legendScale = d3_scale.scaleLinear()
+    .domain([Math.min(...domain), Math.max(...domain)])
+    .range([0, LEGEND_WIDTH]);
+
+  // define the axis and text for the color legend
+  const legendAxis = d3_axis_bottom(legendScale)
+    .tickValues([domain[0], domain[domain.length - 1]])
+    .tickFormat(d => d === domain[0] ? 'min' : d === domain[domain.length - 1] ? 'max' : '');
+
+  // draw the color legend axis
+  legend.select(".legend-axis")
+    .attr("transform", `translate(0, ${LEGEND_HEIGHT})`)
+    .call(legendAxis);
+
+  has_data_on_reactions ? svg.style("display", "block") : svg.style("display", "none");
+}
+
+// get the linear gradient data for the color rectangle, used by update_color_legends(internal function)
+function _get_color_linearGradient_data(domain, range) {
+  const minDomain = domain[0];
+  const maxDomain = domain[domain.length - 1];
+  const percentages = domain.map(value => ((value - minDomain) / (maxDomain - minDomain)) * 100);
+
+  const data = [];
+  for (let i = 0; i < domain.length; i++) {
+    if (typeof range[i] === 'string' || range[i] instanceof String) {
+      data.push({
+        offset: `${percentages[i]}%`,
+        color: range[i]
+      });
+    }
+  }
+  return data
+}

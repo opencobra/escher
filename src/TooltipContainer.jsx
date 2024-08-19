@@ -42,7 +42,8 @@ export default class TooltipContainer {
     )
     this.passProps({
       display: false,
-      disableTooltips: () => this.disableTooltips()
+      disableTooltips: () => this.disableTooltips(),
+      openInVmh: () => this.settings.get('open_in_vmh')
     })
   }
 
