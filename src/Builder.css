@@ -76,7 +76,17 @@ resizes. */
   margin: 0;
   text-align: center;
   pointer-events: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
+
+.escher-container .search-menu-container .legend-container{
+  display: none;
+  width: 224px;
+  height: 35.5px;
+}
+
 .escher-container .search-menu-container-inline {
   box-sizing: border-box;
   width: 320px;
@@ -86,7 +96,7 @@ resizes. */
 }
 @media (min-width: 550px) {
   .escher-container .search-menu-container-inline {
-    width: 410px;
+    width: 470px;
   }
 }
 

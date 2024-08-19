@@ -221,8 +221,9 @@ export function newReaction (biggId, cobraReaction, cobraMetabolites,
     [ anchorIds['anchor_products'], anchorIds['center'], 'products' ]
   ]
   newAnchorGroups.map(l => {
-    const fromId = l[0]
-    const toId = l[1]
+    // The flux flow is from reactants to products
+    const fromId = l[2] === 'products' ? l[0] : l[1]
+    const toId = l[2] === 'products' ? l[1] : l[0]
     const newSegmentId = String(++largestIds.segments)
     const unconnectedSeg = (
       (reactantCount === 0 && l[2] === 'reactants' && newReaction.reversibility) ||
@@ -277,13 +278,16 @@ export function newReaction (biggId, cobraReaction, cobraMetabolites,
     // if this is the existing metabolite
     if (selectedNode.bigg_id === metabolite.bigg_id) {
       const newSegmentId = String(++largestIds.segments)
+      // if the selected node is a reactant, then the selected node is the 'from' node, cause the flux flows reactants -> products, vice versa.
+      const [_fromNodeId, _toNodeId] = metabolite.coefficient > 0 ? [ fromNodeId, selectedNodeId ] : [ selectedNodeId, fromNodeId ]
+      const [from_node_coefficient, to_node_coefficient] = metabolite.coefficient > 0 ? [ null, metabolite.coefficient ] : [ metabolite.coefficient, null ]
       newReaction.segments[newSegmentId] = {
         b1: metLoc.b1,
         b2: metLoc.b2,
-        from_node_id: fromNodeId,
-        to_node_id: selectedNodeId,
-        from_node_coefficient: null,
-        to_node_coefficient: metabolite.coefficient,
+        from_node_id: _fromNodeId,
+        to_node_id: _toNodeId,
+        from_node_coefficient,
+        to_node_coefficient,
         reversibility: newReaction.reversibility
       }
       // Update the existing node
@@ -299,13 +303,16 @@ export function newReaction (biggId, cobraReaction, cobraMetabolites,
       // save new metabolite
       const newSegmentId = String(++largestIds.segments)
       const newNodeId = String(++largestIds.nodes)
+      // if the selected node is a reactant, then the selected node is the 'from' node, cause the flux flows reactants -> products, vice versa.
+      const [_fromNodeId, _toNodeId] = metabolite.coefficient > 0 ? [ fromNodeId, newNodeId ] : [ newNodeId, fromNodeId ]
+      const [from_node_coefficient, to_node_coefficient] = metabolite.coefficient > 0 ? [ null, metabolite.coefficient ] : [ metabolite.coefficient, null ]
       newReaction.segments[newSegmentId] = {
         b1: metLoc.b1,
         b2: metLoc.b2,
-        from_node_id: fromNodeId,
-        to_node_id: newNodeId,
-        from_node_coefficient: null,
-        to_node_coefficient: metabolite.coefficient,
+        from_node_id: _fromNodeId,
+        to_node_id: _toNodeId,
+        from_node_coefficient,
+        to_node_coefficient,
         reversibility: newReaction.reversibility
       }
       // save new node

@@ -109,6 +109,66 @@ class SettingsMenu extends Component {
                   </td>
                 </tr>
               </table>
+              <table className='radioSelection'>
+                <tr title='Open the item in VMH or BiGG Models when the label is clicked'>
+                  <td className='optionLabel'>Open in vmh:</td>
+                  <td className='singleLine'>
+                    <label className='optionGroup'>
+                      <input
+                        type='radio'
+                        name='open_in_vmh'
+                        onClick={() => {
+                          settings.set('open_in_vmh', true)
+                          window.localStorage.setItem('open_in_vmh', true)
+                        }}
+                        checked={settings.get('open_in_vmh')}
+                      />
+                      vmh
+                    </label>
+                    <label className='optionGroup'>
+                      <input
+                        type='radio'
+                        name='open_in_vmh'
+                        onClick={() => {
+                          settings.set('open_in_vmh', false)
+                          window.localStorage.setItem('open_in_vmh', false)
+                        }}
+                        checked={!settings.get('open_in_vmh')}
+                      />
+                      BiGG
+                    </label>
+                  </td>
+                </tr>
+              </table>
+              <table className='radioSelection'>
+                <tr title='The '>
+                  <td className='optionLabel' title={'Animation Line Style'}>Line Style:</td>
+                  <td className='singleLine'>
+                    <label className='optionGroup'>
+                      <input
+                        type='radio'
+                        name='animation_line_style'
+                        onClick={() => {
+                          settings.set('animation_line_style', 'dashed')
+                        }}
+                        checked={settings.get('animation_line_style') === 'dashed'}
+                      />
+                      Dash
+                    </label>
+                    <label className='optionGroup'>
+                      <input
+                        type='radio'
+                        name='animation_line_style'
+                        onClick={() => {
+                          settings.set('animation_line_style', 'dotted')
+                        }}
+                        checked={settings.get('animation_line_style') === 'dotted'}
+                      />
+                      Dot
+                    </label>
+                  </td>
+                </tr>
+              </table>
               <label title='If checked, then the scroll wheel and trackpad will control zoom rather than pan.'>
                 <input
                   type='checkbox'
@@ -189,6 +249,20 @@ class SettingsMenu extends Component {
                   checked={settings.get('highlight_missing')}
                 />
                 Highlight reactions not in model
+              </label>
+              <label
+                title='If checked, then the reactions with no flux will be hidden from the map when you loaded the reaction data.'>
+                <input
+                  type='checkbox'
+                  onClick={() => {
+                    settings.set(
+                      'hidden_no_data_reaction',
+                      !settings.get('hidden_no_data_reaction')
+                    )
+                  }}
+                  checked={settings.get('hidden_no_data_reaction')}
+                />
+                Hidden no data reactions
               </label>
               <label title='If true, then use CSS3 3D transforms to speed up panning and zooming.'>
                 <input

@@ -113,6 +113,11 @@ class Builder {
       reaction_scale_preset: 'GaBuGeRd',
       reaction_no_data_color: '#dcdcdc',
       reaction_no_data_size: 8,
+      show_reaction_data_animation: false,
+      // (dashed / dotted)
+      animation_line_style: 'dashed',
+      reaction_data_threshold: Math.pow(10, -6),
+      hidden_no_data_reaction: false,
       // gene
       gene_data: null,
       and_method_in_gene_reaction_rule: 'mean',
@@ -132,6 +137,8 @@ class Builder {
         'atp', 'adp', 'nad', 'nadh', 'nadp', 'nadph', 'gtp', 'gdp', 'h', 'coa',
         'ump', 'h2o', 'ppi'
       ],
+      // tooltips link, open in bigg or vmh website
+      open_in_vmh: window.localStorage.getItem('open_in_vmh') === 'true',
       // Extensions
       tooltip_component: DefaultTooltip,
       enable_tooltips: ['label'],
@@ -162,6 +169,9 @@ class Builder {
       'hide_all_labels',
       'allow_building_duplicate_reactions',
       'highlight_missing',
+      'hidden_no_data_reaction',
+      'open_in_vmh',
+      'animation_line_style',
       'enable_tooltips',
       'reaction_scale_preset',
       'reaction_no_data_color',
@@ -180,6 +190,12 @@ class Builder {
     // this.options and this.settings used to have different functions, but now
     // they are aliases
     this.settings = new Settings(optionsWithDefaults, conditional)
+
+    // Filter the reaction data according to the threshold
+    const _reaction_data = this.settings.get("reaction_data")
+    const _reaction_data_threshold = this.settings.get("reaction_data_threshold")
+    const filteredReactionData = _reaction_data ? utils.process_reaction_data(_reaction_data, _reaction_data_threshold) :_reaction_data
+    this.settings.set("reaction_data", filteredReactionData)
 
     // Warn if full/fill screen options conflict
     if (this.settings.get('fill_screen') && this.settings.get('full_screen_button')) {
@@ -419,9 +435,17 @@ class Builder {
     this.setUpButtonPanel(this.mapToolsContainer)
 
     // share a parent container for menu bar and search bar
-    const sel = this.mapToolsContainer
+    const menu_container = this.mapToolsContainer
                     .append('div').attr('class', 'search-menu-container')
-                    .append('div').attr('class', 'search-menu-container-inline')
+
+    const sel = menu_container.append('div').attr('class', 'search-menu-container-inline')
+    // Set up the reaction color legend
+    const legend_g = menu_container.append('svg').attr('class', 'legend-container').append('g').attr('class', 'legend-group').attr('transform', 'translate(10, 0)')
+    legend_g.append('defs').attr('class', 'legend-defs').append("linearGradient")
+      .attr("id", "legend-gradient")
+    legend_g.append('rect').attr('class', 'legend-rect')
+    legend_g.append('g').attr('class', 'legend-axis')
+
     this.setUpMenuBar(sel)
     this.setUpSearchBar(sel)
 
@@ -616,6 +640,7 @@ class Builder {
       },
       save_svg: () => this.map.save_svg(),
       save_png: () => this.map.save_png(),
+      save_gif: () => this.map.save_gif(),
       clear_map: () => { this.clear_map() },
       loadModel: file => this.load_model(file, true),
       assignKeyLoadModel: fn => {
@@ -848,10 +873,14 @@ class Builder {
    * For documentation of this function, see docs/javascript_api.rst.
    */
   set_reaction_data (data) { // eslint-disable-line camelcase
-    this.settings.set('reaction_data', data)
+    // filter data
+    const _reaction_data_threshold = this.settings.get("reaction_data_threshold")
+    const filteredData = data ? utils.process_reaction_data(data, _reaction_data_threshold) : data;
+
+    this.settings.set('reaction_data', filteredData)
 
     // clear gene data
-    if (data) {
+    if (filteredData) {
       this.settings._options.gene_data = null
     }
 
@@ -866,12 +895,12 @@ class Builder {
     const buttonName = 'Clear reaction data'
     const geneButtonName = 'Clear gene data'
     const index = disabledButtons.indexOf(buttonName)
-    if (data && index !== -1) {
+    if (filteredData && index !== -1) {
       disabledButtons.splice(index, 1)
       const gInd = disabledButtons.indexOf(geneButtonName)
       if (gInd === -1) disabledButtons.push(geneButtonName)
       this.settings.set('disabled_buttons', disabledButtons)
-    } else if (!data && index === -1) {
+    } else if (!filteredData && index === -1) {
       disabledButtons.push(buttonName)
       this.settings.set('disabled_buttons', disabledButtons)
     }
@@ -1109,6 +1138,11 @@ class Builder {
         key: 'ctrl+shift+p',
         target: map,
         fn: map.save_png
+      },
+      save_gif: {
+        key: 'ctrl+shift+g',
+        target: map,
+        fn: map.save_gif
       },
       load_map: {
         key: 'ctrl+o',
