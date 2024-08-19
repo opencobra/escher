@@ -120,7 +120,7 @@ If the input file format is `CellDesigner`, the script will utilize the public A
 
 If the input file format is `SBML`, the script will directly convert the `SBML` file format to the `Escher JSON` file format.
 
-To download the `sbml2escher.py` script, click the "Download" button at the top right of the [page](https://github.com/opencobra/escher/blob/a46146e34ae8f21edbd2b9029a7489915d3f72dd/py/io/sbml2escher.py).
+To download the `sbml2escher.py` script, click the "Download" button at the top right of the [page](https://github.com/opencobra/escher/blob/master/py/io/sbml2escher.py).
 
 Example:
 
