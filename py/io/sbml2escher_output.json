@@ -1,0 +1,1318 @@
+[
+    {
+        "map_name": "example",
+        "map_id": "example",
+        "map_description": "",
+        "homepage": "https://escher.github.io",
+        "schema": "https://escher.github.io/escher/jsonschema/1-0-0#"
+    },
+    {
+        "reactions": {
+            "re13": {
+                "name": "PPM",
+                "bigg_id": "PPM",
+                "reversibility": true,
+                "metabolites": [
+                    {
+                        "bigg_id": "r5p_c",
+                        "coefficient": -1
+                    },
+                    {
+                        "bigg_id": "r1p_c",
+                        "coefficient": 1
+                    }
+                ],
+                "label_x": 765.0,
+                "label_y": 186.0,
+                "segments": {
+                    "re13_0-0": {
+                        "from_node_id": "re13_0-0",
+                        "to_node_id": "re13_0-1-end",
+                        "b1": null,
+                        "b2": null
+                    },
+                    "re13_0-node_1-sa30-0": {
+                        "from_node_id": "sa30",
+                        "to_node_id": "re13_0-0",
+                        "b1": null,
+                        "b2": null
+                    },
+                    "re13_0-node_2-sa31-0": {
+                        "from_node_id": "re13_0-1-end",
+                        "to_node_id": "sa31",
+                        "b1": null,
+                        "b2": null
+                    }
+                }
+            },
+            "re4": {
+                "name": "PGI",
+                "bigg_id": "PGI",
+                "reversibility": true,
+                "metabolites": [
+                    {
+                        "bigg_id": "g6p_c",
+                        "coefficient": -1
+                    },
+                    {
+                        "bigg_id": "f6p_c",
+                        "coefficient": 1
+                    }
+                ],
+                "label_x": 630.0,
+                "label_y": 1025.0,
+                "segments": {
+                    "re4_3-0": {
+                        "from_node_id": "re4_3-0",
+                        "to_node_id": "re4_3-1-end",
+                        "b1": null,
+                        "b2": null
+                    },
+                    "re4_3-node_4-sa4-0": {
+                        "from_node_id": "sa4",
+                        "to_node_id": "re4_3-0",
+                        "b1": null,
+                        "b2": null
+                    },
+                    "re4_3-node_5-sa8-0": {
+                        "from_node_id": "re4_3-1-end",
+                        "to_node_id": "sa8",
+                        "b1": null,
+                        "b2": null
+                    }
+                }
+            },
+            "re10": {
+                "name": "PGL",
+                "bigg_id": "PGL",
+                "reversibility": false,
+                "metabolites": [
+                    {
+                        "bigg_id": "6pgl_c",
+                        "coefficient": -1
+                    },
+                    {
+                        "bigg_id": "h2o_c",
+                        "coefficient": -1
+                    },
+                    {
+                        "bigg_id": "6pgc_c",
+                        "coefficient": 1
+                    },
+                    {
+                        "bigg_id": "h_c",
+                        "coefficient": 1
+                    }
+                ],
+                "label_x": 516.0,
+                "label_y": 623.5,
+                "segments": {
+                    "re10_6-0": {
+                        "from_node_id": "re10_6-0",
+                        "to_node_id": "re10_6-1-end",
+                        "b1": null,
+                        "b2": null
+                    },
+                    "re10_6-node_7-sa19-0": {
+                        "from_node_id": "sa19",
+                        "to_node_id": "re10_6-0",
+                        "b1": null,
+                        "b2": null
+                    },
+                    "re10_6-node_8-sa24-0": {
+                        "from_node_id": "sa24",
+                        "to_node_id": "re10_6-0",
+                        "b1": null,
+                        "b2": null
+                    },
+                    "re10_6-node_9-sa23-0": {
+                        "from_node_id": "re10_6-1-end",
+                        "to_node_id": "sa23",
+                        "b1": null,
+                        "b2": null
+                    },
+                    "re10_6-node_10-sa25-0": {
+                        "from_node_id": "re10_6-1-end",
+                        "to_node_id": "sa25",
+                        "b1": null,
+                        "b2": null
+                    }
+                }
+            },
+            "re5": {
+                "name": "PFK",
+                "bigg_id": "PFK",
+                "reversibility": false,
+                "metabolites": [
+                    {
+                        "bigg_id": "f6p_c",
+                        "coefficient": -1
+                    },
+                    {
+                        "bigg_id": "atp_c",
+                        "coefficient": -1
+                    },
+                    {
+                        "bigg_id": "fdp_c",
+                        "coefficient": 1
+                    },
+                    {
+                        "bigg_id": "adp_c",
+                        "coefficient": 1
+                    },
+                    {
+                        "bigg_id": "h_c",
+                        "coefficient": 1
+                    }
+                ],
+                "label_x": 878.5,
+                "label_y": 1025.5,
+                "segments": {
+                    "re5_11-0": {
+                        "from_node_id": "re5_11-0",
+                        "to_node_id": "re5_11-1-end",
+                        "b1": null,
+                        "b2": null
+                    },
+                    "re5_11-node_12-sa8-0": {
+                        "from_node_id": "sa8",
+                        "to_node_id": "re5_11-0",
+                        "b1": null,
+                        "b2": null
+                    },
+                    "re5_11-node_13-sa14-0": {
+                        "from_node_id": "sa14",
+                        "to_node_id": "re5_11-0",
+                        "b1": null,
+                        "b2": null
+                    },
+                    "re5_11-node_14-sa13-0": {
+                        "from_node_id": "re5_11-1-end",
+                        "to_node_id": "sa13",
+                        "b1": null,
+                        "b2": null
+                    },
+                    "re5_11-node_15-sa15-0": {
+                        "from_node_id": "re5_11-1-end",
+                        "to_node_id": "sa15",
+                        "b1": null,
+                        "b2": null
+                    },
+                    "re5_11-node_16-sa16-0": {
+                        "from_node_id": "re5_11-1-end",
+                        "to_node_id": "sa16",
+                        "b1": null,
+                        "b2": null
+                    }
+                }
+            },
+            "re17": {
+                "name": "TKT2",
+                "bigg_id": "TKT2",
+                "reversibility": true,
+                "metabolites": [
+                    {
+                        "bigg_id": "f6p_c",
+                        "coefficient": -1
+                    },
+                    {
+                        "bigg_id": "g3p_c",
+                        "coefficient": -1
+                    },
+                    {
+                        "bigg_id": "xu5p__D_c",
+                        "coefficient": 1
+                    },
+                    {
+                        "bigg_id": "e4p_c",
+                        "coefficient": 1
+                    }
+                ],
+                "label_x": 705.0001427749966,
+                "label_y": 731.501164012819,
+                "segments": {
+                    "re17_17-0": {
+                        "from_node_id": "re17_17-0",
+                        "to_node_id": "re17_17-1-end",
+                        "b1": null,
+                        "b2": null
+                    },
+                    "re17_17-node_18-sa8-0": {
+                        "from_node_id": "sa8",
+                        "to_node_id": "re17_17-0",
+                        "b1": null,
+                        "b2": null
+                    },
+                    "re17_17-node_19-sa37-0": {
+                        "from_node_id": "sa37",
+                        "to_node_id": "re17_17-0",
+                        "b1": null,
+                        "b2": null
+                    },
+                    "re17_17-node_20-sa38-0": {
+                        "from_node_id": "re17_17-1-end",
+                        "to_node_id": "sa38",
+                        "b1": null,
+                        "b2": null
+                    },
+                    "re17_17-node_21-sa39-0": {
+                        "from_node_id": "re17_17-1-end",
+                        "to_node_id": "sa39",
+                        "b1": null,
+                        "b2": null
+                    }
+                }
+            },
+            "re12": {
+                "name": "RPI",
+                "bigg_id": "RPI",
+                "reversibility": true,
+                "metabolites": [
+                    {
+                        "bigg_id": "ru5p__D_c",
+                        "coefficient": -1
+                    },
+                    {
+                        "bigg_id": "r5p_c",
+                        "coefficient": 1
+                    }
+                ],
+                "label_x": 578.0,
+                "label_y": 238.5,
+                "segments": {
+                    "re12_22-0": {
+                        "from_node_id": "re12_22-0",
+                        "to_node_id": "re12_22-1-end",
+                        "b1": null,
+                        "b2": null
+                    },
+                    "re12_22-node_23-sa26-0": {
+                        "from_node_id": "sa26",
+                        "to_node_id": "re12_22-0",
+                        "b1": null,
+                        "b2": null
+                    },
+                    "re12_22-node_24-sa30-0": {
+                        "from_node_id": "re12_22-1-end",
+                        "to_node_id": "sa30",
+                        "b1": null,
+                        "b2": null
+                    }
+                }
+            },
+            "re11": {
+                "name": "GND",
+                "bigg_id": "GND",
+                "reversibility": false,
+                "metabolites": [
+                    {
+                        "bigg_id": "6pgc_c",
+                        "coefficient": -1
+                    },
+                    {
+                        "bigg_id": "nadp_c",
+                        "coefficient": -1
+                    },
+                    {
+                        "bigg_id": "ru5p__D_c",
+                        "coefficient": 1
+                    },
+                    {
+                        "bigg_id": "co2",
+                        "coefficient": 1
+                    },
+                    {
+                        "bigg_id": "nadph_c",
+                        "coefficient": 1
+                    }
+                ],
+                "label_x": 514.0,
+                "label_y": 403.5,
+                "segments": {
+                    "re11_25-0": {
+                        "from_node_id": "re11_25-0",
+                        "to_node_id": "re11_25-1-end",
+                        "b1": null,
+                        "b2": null
+                    },
+                    "re11_25-node_26-sa23-0": {
+                        "from_node_id": "sa23",
+                        "to_node_id": "re11_25-0",
+                        "b1": null,
+                        "b2": null
+                    },
+                    "re11_25-node_27-sa27-0": {
+                        "from_node_id": "sa27",
+                        "to_node_id": "re11_25-0",
+                        "b1": null,
+                        "b2": null
+                    },
+                    "re11_25-node_28-sa26-0": {
+                        "from_node_id": "re11_25-1-end",
+                        "to_node_id": "sa26",
+                        "b1": null,
+                        "b2": null
+                    },
+                    "re11_25-node_29-sa29-0": {
+                        "from_node_id": "re11_25-1-end",
+                        "to_node_id": "sa29",
+                        "b1": null,
+                        "b2": null
+                    },
+                    "re11_25-node_30-sa28-0": {
+                        "from_node_id": "re11_25-1-end",
+                        "to_node_id": "sa28",
+                        "b1": null,
+                        "b2": null
+                    }
+                }
+            },
+            "re8": {
+                "name": "re8",
+                "bigg_id": "re8",
+                "reversibility": true,
+                "metabolites": [
+                    {
+                        "bigg_id": "dhap_c",
+                        "coefficient": -1
+                    },
+                    {
+                        "bigg_id": "g3p_c",
+                        "coefficient": 1
+                    }
+                ],
+                "label_x": 1281.0,
+                "label_y": 1065.0,
+                "segments": {
+                    "re8_31-0": {
+                        "from_node_id": "re8_31-0",
+                        "to_node_id": "re8_31-1-end",
+                        "b1": null,
+                        "b2": null
+                    },
+                    "re8_31-node_32-sa18-0": {
+                        "from_node_id": "sa18",
+                        "to_node_id": "re8_31-0",
+                        "b1": null,
+                        "b2": null
+                    },
+                    "re8_31-node_33-sa17-0": {
+                        "from_node_id": "re8_31-1-end",
+                        "to_node_id": "sa17",
+                        "b1": null,
+                        "b2": null
+                    }
+                }
+            },
+            "re18": {
+                "name": "TALA",
+                "bigg_id": "TALA",
+                "reversibility": true,
+                "metabolites": [
+                    {
+                        "bigg_id": "f6p_c",
+                        "coefficient": -1
+                    },
+                    {
+                        "bigg_id": "e4p_c",
+                        "coefficient": -1
+                    },
+                    {
+                        "bigg_id": "s7p_c",
+                        "coefficient": 1
+                    },
+                    {
+                        "bigg_id": "g3p_c",
+                        "coefficient": 1
+                    }
+                ],
+                "label_x": 861.8743686707646,
+                "label_y": 642.330582617584,
+                "segments": {
+                    "re18_34-0": {
+                        "from_node_id": "re18_34-0",
+                        "to_node_id": "re18_34-1-end",
+                        "b1": null,
+                        "b2": null
+                    },
+                    "re18_34-node_35-sa8-0": {
+                        "from_node_id": "sa8",
+                        "to_node_id": "re18_34-0",
+                        "b1": null,
+                        "b2": null
+                    },
+                    "re18_34-node_36-sa40-0": {
+                        "from_node_id": "sa40",
+                        "to_node_id": "re18_34-0",
+                        "b1": null,
+                        "b2": null
+                    },
+                    "re18_34-node_37-sa36-0": {
+                        "from_node_id": "re18_34-1-end",
+                        "to_node_id": "sa36",
+                        "b1": null,
+                        "b2": null
+                    },
+                    "re18_34-node_38-sa37-0": {
+                        "from_node_id": "re18_34-1-end",
+                        "to_node_id": "sa37",
+                        "b1": null,
+                        "b2": null
+                    }
+                }
+            },
+            "re2": {
+                "name": "HEX1",
+                "bigg_id": "HEX1",
+                "reversibility": false,
+                "metabolites": [
+                    {
+                        "bigg_id": "glc__D_c",
+                        "coefficient": -1
+                    },
+                    {
+                        "bigg_id": "atp_c",
+                        "coefficient": -1
+                    },
+                    {
+                        "bigg_id": "g6p_c",
+                        "coefficient": 1
+                    },
+                    {
+                        "bigg_id": "adp_c",
+                        "coefficient": 1
+                    },
+                    {
+                        "bigg_id": "h_c",
+                        "coefficient": 1
+                    }
+                ],
+                "label_x": 352.49922756341937,
+                "label_y": 1024.5587222401457,
+                "segments": {
+                    "re2_39-0": {
+                        "from_node_id": "re2_39-0",
+                        "to_node_id": "re2_39-1-end",
+                        "b1": null,
+                        "b2": null
+                    },
+                    "re2_39-node_40-sa1-0": {
+                        "from_node_id": "sa1",
+                        "to_node_id": "re2_39-0",
+                        "b1": null,
+                        "b2": null
+                    },
+                    "re2_39-node_41-sa5-0": {
+                        "from_node_id": "sa5",
+                        "to_node_id": "re2_39-0",
+                        "b1": null,
+                        "b2": null
+                    },
+                    "re2_39-node_42-sa4-0": {
+                        "from_node_id": "re2_39-1-end",
+                        "to_node_id": "sa4",
+                        "b1": null,
+                        "b2": null
+                    },
+                    "re2_39-node_43-sa6-0": {
+                        "from_node_id": "re2_39-1-end",
+                        "to_node_id": "sa6",
+                        "b1": null,
+                        "b2": null
+                    },
+                    "re2_39-node_44-sa7-0": {
+                        "from_node_id": "re2_39-1-end",
+                        "to_node_id": "sa7",
+                        "b1": null,
+                        "b2": null
+                    }
+                }
+            },
+            "re9": {
+                "name": "G6PDH2r",
+                "bigg_id": "G6PDH2r",
+                "reversibility": true,
+                "metabolites": [
+                    {
+                        "bigg_id": "g6p_c",
+                        "coefficient": -1
+                    },
+                    {
+                        "bigg_id": "nadp_c",
+                        "coefficient": -1
+                    },
+                    {
+                        "bigg_id": "6pgl_c",
+                        "coefficient": 1
+                    },
+                    {
+                        "bigg_id": "nadph_c",
+                        "coefficient": 1
+                    },
+                    {
+                        "bigg_id": "h_c",
+                        "coefficient": 1
+                    }
+                ],
+                "label_x": 518.0,
+                "label_y": 878.0,
+                "segments": {
+                    "re9_45-0": {
+                        "from_node_id": "re9_45-0",
+                        "to_node_id": "re9_45-1-end",
+                        "b1": null,
+                        "b2": null
+                    },
+                    "re9_45-node_46-sa4-0": {
+                        "from_node_id": "sa4",
+                        "to_node_id": "re9_45-0",
+                        "b1": null,
+                        "b2": null
+                    },
+                    "re9_45-node_47-sa20-0": {
+                        "from_node_id": "sa20",
+                        "to_node_id": "re9_45-0",
+                        "b1": null,
+                        "b2": null
+                    },
+                    "re9_45-node_48-sa19-0": {
+                        "from_node_id": "re9_45-1-end",
+                        "to_node_id": "sa19",
+                        "b1": null,
+                        "b2": null
+                    },
+                    "re9_45-node_49-sa21-0": {
+                        "from_node_id": "re9_45-1-end",
+                        "to_node_id": "sa21",
+                        "b1": null,
+                        "b2": null
+                    },
+                    "re9_45-node_50-sa22-0": {
+                        "from_node_id": "re9_45-1-end",
+                        "to_node_id": "sa22",
+                        "b1": null,
+                        "b2": null
+                    }
+                }
+            },
+            "re15": {
+                "name": "RPE",
+                "bigg_id": "RPE",
+                "reversibility": true,
+                "metabolites": [
+                    {
+                        "bigg_id": "ru5p__D_c",
+                        "coefficient": -1
+                    },
+                    {
+                        "bigg_id": "xu5p__D_c",
+                        "coefficient": 1
+                    }
+                ],
+                "label_x": 667.3837398685309,
+                "label_y": 357.7399440899123,
+                "segments": {
+                    "re15_51-0": {
+                        "from_node_id": "re15_51-0",
+                        "to_node_id": "re15_51-1-end",
+                        "b1": null,
+                        "b2": null
+                    },
+                    "re15_51-node_52-sa26-0": {
+                        "from_node_id": "re15_51-node_52-sa26-1",
+                        "to_node_id": "re15_51-0",
+                        "b1": null,
+                        "b2": null
+                    },
+                    "re15_51-node_52-sa26-1": {
+                        "from_node_id": "sa26",
+                        "to_node_id": "re15_51-node_52-sa26-1",
+                        "b1": null,
+                        "b2": null
+                    },
+                    "re15_51-node_53-sa38-0": {
+                        "from_node_id": "re15_51-1-end",
+                        "to_node_id": "sa38",
+                        "b1": null,
+                        "b2": null
+                    }
+                }
+            },
+            "re16": {
+                "name": "TKT1",
+                "bigg_id": "TKT1",
+                "reversibility": true,
+                "metabolites": [
+                    {
+                        "bigg_id": "s7p_c",
+                        "coefficient": -1
+                    },
+                    {
+                        "bigg_id": "g3p_c",
+                        "coefficient": -1
+                    },
+                    {
+                        "bigg_id": "r5p_c",
+                        "coefficient": 1
+                    },
+                    {
+                        "bigg_id": "xu5p__D_c",
+                        "coefficient": 1
+                    }
+                ],
+                "label_x": 791.0290682474415,
+                "label_y": 229.16601853047734,
+                "segments": {
+                    "re16_54-0": {
+                        "from_node_id": "re16_54-0",
+                        "to_node_id": "re16_54-1-end",
+                        "b1": null,
+                        "b2": null
+                    },
+                    "re16_54-node_55-sa36-0": {
+                        "from_node_id": "sa36",
+                        "to_node_id": "re16_54-0",
+                        "b1": null,
+                        "b2": null
+                    },
+                    "re16_54-node_56-sa37-0": {
+                        "from_node_id": "sa37",
+                        "to_node_id": "re16_54-0",
+                        "b1": null,
+                        "b2": null
+                    },
+                    "re16_54-node_57-sa30-0": {
+                        "from_node_id": "re16_54-1-end",
+                        "to_node_id": "sa30",
+                        "b1": null,
+                        "b2": null
+                    },
+                    "re16_54-node_58-sa38-0": {
+                        "from_node_id": "re16_54-1-end",
+                        "to_node_id": "sa38",
+                        "b1": null,
+                        "b2": null
+                    }
+                }
+            },
+            "re7": {
+                "name": "FBA",
+                "bigg_id": "FBA",
+                "reversibility": false,
+                "metabolites": [
+                    {
+                        "bigg_id": "fdp_c",
+                        "coefficient": -1
+                    },
+                    {
+                        "bigg_id": "g3p_c",
+                        "coefficient": 1
+                    },
+                    {
+                        "bigg_id": "dhap_c",
+                        "coefficient": 1
+                    }
+                ],
+                "label_x": 1169.4507047857023,
+                "label_y": 1024.9380574063275,
+                "segments": {
+                    "re7_59-0": {
+                        "from_node_id": "re7_59-0",
+                        "to_node_id": "re7_59-1-end",
+                        "b1": null,
+                        "b2": null
+                    },
+                    "re7_59-node_60-sa13-0": {
+                        "from_node_id": "sa13",
+                        "to_node_id": "re7_59-0",
+                        "b1": null,
+                        "b2": null
+                    },
+                    "re7_59-node_61-sa17-0": {
+                        "from_node_id": "re7_59-1-end",
+                        "to_node_id": "sa17",
+                        "b1": null,
+                        "b2": null
+                    },
+                    "re7_59-node_62-sa18-0": {
+                        "from_node_id": "re7_59-1-end",
+                        "to_node_id": "sa18",
+                        "b1": null,
+                        "b2": null
+                    }
+                }
+            },
+            "re14": {
+                "name": "PRPPS",
+                "bigg_id": "PRPPS",
+                "reversibility": true,
+                "metabolites": [
+                    {
+                        "bigg_id": "r5p_c",
+                        "coefficient": -1
+                    },
+                    {
+                        "bigg_id": "atp_c",
+                        "coefficient": -1
+                    },
+                    {
+                        "bigg_id": "prpp_c",
+                        "coefficient": 1
+                    },
+                    {
+                        "bigg_id": "h_c",
+                        "coefficient": 1
+                    },
+                    {
+                        "bigg_id": "amp_c",
+                        "coefficient": 1
+                    }
+                ],
+                "label_x": 643.5,
+                "label_y": 104.0,
+                "segments": {
+                    "re14_63-0": {
+                        "from_node_id": "re14_63-0",
+                        "to_node_id": "re14_63-1-end",
+                        "b1": null,
+                        "b2": null
+                    },
+                    "re14_63-node_64-sa30-0": {
+                        "from_node_id": "sa30",
+                        "to_node_id": "re14_63-0",
+                        "b1": null,
+                        "b2": null
+                    },
+                    "re14_63-node_65-sa34-0": {
+                        "from_node_id": "sa34",
+                        "to_node_id": "re14_63-0",
+                        "b1": null,
+                        "b2": null
+                    },
+                    "re14_63-node_66-sa32-0": {
+                        "from_node_id": "re14_63-1-end",
+                        "to_node_id": "sa32",
+                        "b1": null,
+                        "b2": null
+                    },
+                    "re14_63-node_67-sa35-0": {
+                        "from_node_id": "re14_63-1-end",
+                        "to_node_id": "sa35",
+                        "b1": null,
+                        "b2": null
+                    },
+                    "re14_63-node_68-sa33-0": {
+                        "from_node_id": "re14_63-1-end",
+                        "to_node_id": "sa33",
+                        "b1": null,
+                        "b2": null
+                    }
+                }
+            }
+        },
+        "nodes": {
+            "sa23": {
+                "bigg_id": "6pgc_c",
+                "name": "6pgc_c",
+                "node_type": "metabolite",
+                "x": 515.0,
+                "y": 516.0,
+                "label_x": 515.0,
+                "label_y": 516.0,
+                "node_is_primary": true
+            },
+            "sa13": {
+                "bigg_id": "fdp_c",
+                "name": "fdp_c",
+                "node_type": "metabolite",
+                "x": 1016.0,
+                "y": 1026.0,
+                "label_x": 1016.0,
+                "label_y": 1026.0,
+                "node_is_primary": true
+            },
+            "sa25": {
+                "bigg_id": "h_c",
+                "name": "h_c",
+                "node_type": "metabolite",
+                "x": 458.5,
+                "y": 565.5,
+                "label_x": 458.5,
+                "label_y": 565.5,
+                "node_is_primary": false
+            },
+            "sa18": {
+                "bigg_id": "dhap_c",
+                "name": "dhap_c",
+                "node_type": "metabolite",
+                "x": 1257.0,
+                "y": 1106.0,
+                "label_x": 1257.0,
+                "label_y": 1106.0,
+                "node_is_primary": true
+            },
+            "sa5": {
+                "bigg_id": "atp_c",
+                "name": "atp_c",
+                "node_type": "metabolite",
+                "x": 222.5,
+                "y": 987.5,
+                "label_x": 222.5,
+                "label_y": 987.5,
+                "node_is_primary": false
+            },
+            "sa14": {
+                "bigg_id": "atp_c",
+                "name": "atp_c",
+                "node_type": "metabolite",
+                "x": 786.0,
+                "y": 1071.0,
+                "label_x": 786.0,
+                "label_y": 1071.0,
+                "node_is_primary": false
+            },
+            "sa32": {
+                "bigg_id": "prpp_c",
+                "name": "prpp_c",
+                "node_type": "metabolite",
+                "x": 644.0,
+                "y": 22.0,
+                "label_x": 644.0,
+                "label_y": 22.0,
+                "node_is_primary": true
+            },
+            "sa1": {
+                "bigg_id": "glc__D_c",
+                "name": "glc__D_c",
+                "node_type": "metabolite",
+                "x": 186.0,
+                "y": 1024.0,
+                "label_x": 186.0,
+                "label_y": 1024.0,
+                "node_is_primary": true
+            },
+            "sa31": {
+                "bigg_id": "r1p_c",
+                "name": "r1p_c",
+                "node_type": "metabolite",
+                "x": 887.0,
+                "y": 186.0,
+                "label_x": 887.0,
+                "label_y": 186.0,
+                "node_is_primary": true
+            },
+            "sa30": {
+                "bigg_id": "r5p_c",
+                "name": "r5p_c",
+                "node_type": "metabolite",
+                "x": 643.0,
+                "y": 186.0,
+                "label_x": 643.0,
+                "label_y": 186.0,
+                "node_is_primary": true
+            },
+            "sa39": {
+                "bigg_id": "e4p_c",
+                "name": "e4p_c",
+                "node_type": "metabolite",
+                "x": 604.0,
+                "y": 609.0,
+                "label_x": 604.0,
+                "label_y": 609.0,
+                "node_is_primary": false
+            },
+            "sa36": {
+                "bigg_id": "s7p_c",
+                "name": "s7p_c",
+                "node_type": "metabolite",
+                "x": 958.0,
+                "y": 256.0,
+                "label_x": 958.0,
+                "label_y": 256.0,
+                "node_is_primary": true
+            },
+            "sa37": {
+                "bigg_id": "g3p_c",
+                "name": "g3p_c",
+                "node_type": "metabolite",
+                "x": 849.0,
+                "y": 367.0,
+                "label_x": 849.0,
+                "label_y": 367.0,
+                "node_is_primary": false
+            },
+            "sa34": {
+                "bigg_id": "atp_c",
+                "name": "atp_c",
+                "node_type": "metabolite",
+                "x": 572.5,
+                "y": 158.5,
+                "label_x": 572.5,
+                "label_y": 158.5,
+                "node_is_primary": false
+            },
+            "sa28": {
+                "bigg_id": "nadph_c",
+                "name": "nadph_c",
+                "node_type": "metabolite",
+                "x": 433.5,
+                "y": 333.5,
+                "label_x": 433.5,
+                "label_y": 333.5,
+                "node_is_primary": false
+            },
+            "sa6": {
+                "bigg_id": "adp_c",
+                "name": "adp_c",
+                "node_type": "metabolite",
+                "x": 404.5,
+                "y": 978.5,
+                "label_x": 404.5,
+                "label_y": 978.5,
+                "node_is_primary": false
+            },
+            "sa29": {
+                "bigg_id": "co2",
+                "name": "co2",
+                "node_type": "metabolite",
+                "x": 434.0,
+                "y": 370.0,
+                "label_x": 434.0,
+                "label_y": 370.0,
+                "node_is_primary": false
+            },
+            "sa17": {
+                "bigg_id": "g3p_c",
+                "name": "g3p_c",
+                "node_type": "metabolite",
+                "x": 1305.0,
+                "y": 1024.0,
+                "label_x": 1305.0,
+                "label_y": 1024.0,
+                "node_is_primary": true
+            },
+            "sa4": {
+                "bigg_id": "g6p_c",
+                "name": "g6p_c",
+                "node_type": "metabolite",
+                "x": 519.0,
+                "y": 1025.0,
+                "label_x": 519.0,
+                "label_y": 1025.0,
+                "node_is_primary": true
+            },
+            "sa27": {
+                "bigg_id": "nadp_c",
+                "name": "nadp_c",
+                "node_type": "metabolite",
+                "x": 434.5,
+                "y": 464.5,
+                "label_x": 434.5,
+                "label_y": 464.5,
+                "node_is_primary": false
+            },
+            "sa26": {
+                "bigg_id": "ru5p__D_c",
+                "name": "ru5p__D_c",
+                "node_type": "metabolite",
+                "x": 513.0,
+                "y": 291.0,
+                "label_x": 513.0,
+                "label_y": 291.0,
+                "node_is_primary": true
+            },
+            "sa20": {
+                "bigg_id": "nadp_c",
+                "name": "nadp_c",
+                "node_type": "metabolite",
+                "x": 463.0,
+                "y": 936.0,
+                "label_x": 463.0,
+                "label_y": 936.0,
+                "node_is_primary": false
+            },
+            "sa7": {
+                "bigg_id": "h_c",
+                "name": "h_c",
+                "node_type": "metabolite",
+                "x": 460.0,
+                "y": 984.5,
+                "label_x": 460.0,
+                "label_y": 984.5,
+                "node_is_primary": false
+            },
+            "sa33": {
+                "bigg_id": "amp_c",
+                "name": "amp_c",
+                "node_type": "metabolite",
+                "x": 558.5,
+                "y": 79.5,
+                "label_x": 558.5,
+                "label_y": 79.5,
+                "node_is_primary": false
+            },
+            "sa24": {
+                "bigg_id": "h2o_c",
+                "name": "h2o_c",
+                "node_type": "metabolite",
+                "x": 448.0,
+                "y": 672.0,
+                "label_x": 448.0,
+                "label_y": 672.0,
+                "node_is_primary": false
+            },
+            "sa16": {
+                "bigg_id": "h_c",
+                "name": "h_c",
+                "node_type": "metabolite",
+                "x": 986.5,
+                "y": 1086.0,
+                "label_x": 986.5,
+                "label_y": 1086.0,
+                "node_is_primary": false
+            },
+            "sa15": {
+                "bigg_id": "adp_c",
+                "name": "adp_c",
+                "node_type": "metabolite",
+                "x": 918.0,
+                "y": 1075.0,
+                "label_x": 918.0,
+                "label_y": 1075.0,
+                "node_is_primary": false
+            },
+            "sa38": {
+                "bigg_id": "xu5p__D_c",
+                "name": "xu5p__D_c",
+                "node_type": "metabolite",
+                "x": 669.0,
+                "y": 438.0,
+                "label_x": 669.0,
+                "label_y": 438.0,
+                "node_is_primary": true
+            },
+            "sa21": {
+                "bigg_id": "nadph_c",
+                "name": "nadph_c",
+                "node_type": "metabolite",
+                "x": 440.0,
+                "y": 827.0,
+                "label_x": 440.0,
+                "label_y": 827.0,
+                "node_is_primary": false
+            },
+            "sa8": {
+                "bigg_id": "f6p_c",
+                "name": "f6p_c",
+                "node_type": "metabolite",
+                "x": 741.0,
+                "y": 1025.0,
+                "label_x": 741.0,
+                "label_y": 1025.0,
+                "node_is_primary": true
+            },
+            "sa40": {
+                "bigg_id": "e4p_c",
+                "name": "e4p_c",
+                "node_type": "metabolite",
+                "x": 957.6666666666667,
+                "y": 745.1666666666667,
+                "label_x": 957.6666666666667,
+                "label_y": 745.1666666666667,
+                "node_is_primary": false
+            },
+            "sa35": {
+                "bigg_id": "h_c",
+                "name": "h_c",
+                "node_type": "metabolite",
+                "x": 555.5,
+                "y": 38.5,
+                "label_x": 555.5,
+                "label_y": 38.5,
+                "node_is_primary": false
+            },
+            "sa19": {
+                "bigg_id": "6pgl_c",
+                "name": "6pgl_c",
+                "node_type": "metabolite",
+                "x": 517.0,
+                "y": 731.0,
+                "label_x": 517.0,
+                "label_y": 731.0,
+                "node_is_primary": true
+            },
+            "sa22": {
+                "bigg_id": "h_c",
+                "name": "h_c",
+                "node_type": "metabolite",
+                "x": 443.5,
+                "y": 783.5,
+                "label_x": 443.5,
+                "label_y": 783.5,
+                "node_is_primary": false
+            },
+            "re13_0-0": {
+                "node_type": "multimarker",
+                "x": 761.0,
+                "y": 186.0
+            },
+            "re13_0-1-end": {
+                "node_type": "multimarker",
+                "x": 769.0,
+                "y": 186.0
+            },
+            "re4_3-0": {
+                "node_type": "multimarker",
+                "x": 626.0,
+                "y": 1025.0
+            },
+            "re4_3-1-end": {
+                "node_type": "multimarker",
+                "x": 634.0,
+                "y": 1025.0
+            },
+            "re10_6-0": {
+                "node_type": "multimarker",
+                "x": 516.1767443143874,
+                "y": 642.500013796643
+            },
+            "re10_6-1-end": {
+                "node_type": "multimarker",
+                "x": 515.8232556856126,
+                "y": 604.499986203357
+            },
+            "re5_11-0": {
+                "node_type": "multimarker",
+                "x": 857.9996371852342,
+                "y": 1025.4254532261282
+            },
+            "re5_11-1-end": {
+                "node_type": "multimarker",
+                "x": 899.0003628147658,
+                "y": 1025.5745467738718
+            },
+            "re17_17-0": {
+                "node_type": "multimarker",
+                "x": 711.8937640682647,
+                "y": 787.7033265009904
+            },
+            "re17_17-1-end": {
+                "node_type": "multimarker",
+                "x": 698.1065214817285,
+                "y": 675.2990015246476
+            },
+            "re12_22-0": {
+                "node_type": "multimarker",
+                "x": 574.8882352791851,
+                "y": 241.01334842835047
+            },
+            "re12_22-1-end": {
+                "node_type": "multimarker",
+                "x": 581.1117647208149,
+                "y": 235.98665157164953
+            },
+            "re11_25-0": {
+                "node_type": "multimarker",
+                "x": 514.1777778897559,
+                "y": 423.50001259753645
+            },
+            "re11_25-1-end": {
+                "node_type": "multimarker",
+                "x": 513.8222221102441,
+                "y": 383.4999874024636
+            },
+            "re8_31-0": {
+                "node_type": "multimarker",
+                "x": 1278.9792831937243,
+                "y": 1068.4520578773877
+            },
+            "re8_31-1-end": {
+                "node_type": "multimarker",
+                "x": 1283.0207168062757,
+                "y": 1061.5479421226123
+            },
+            "re18_34-0": {
+                "node_type": "multimarker",
+                "x": 842.6492424049175,
+                "y": 717.0966991411009
+            },
+            "re18_34-1-end": {
+                "node_type": "multimarker",
+                "x": 881.0994949366117,
+                "y": 567.5644660940673
+            },
+            "re2_39-0": {
+                "node_type": "multimarker",
+                "x": 326.1990730761032,
+                "y": 1024.4704666881748
+            },
+            "re2_39-1-end": {
+                "node_type": "multimarker",
+                "x": 378.7993820507355,
+                "y": 1024.6469777921166
+            },
+            "re9_45-0": {
+                "node_type": "multimarker",
+                "x": 518.1829932474716,
+                "y": 904.9000073783178
+            },
+            "re9_45-1-end": {
+                "node_type": "multimarker",
+                "x": 517.8170067525284,
+                "y": 851.0999926216822
+            },
+            "re15_51-0": {
+                "node_type": "multimarker",
+                "x": 667.3032050375325,
+                "y": 353.7407549044653
+            },
+            "re15_51-1-end": {
+                "node_type": "multimarker",
+                "x": 667.4642746995294,
+                "y": 361.7391332753593
+            },
+            "re15_51-node_52-sa26-1": {
+                "node_type": "multimarker",
+                "x": 666.0191968658178,
+                "y": 289.97962781586665
+            },
+            "re16_54-0": {
+                "node_type": "multimarker",
+                "x": 817.9560978703743,
+                "y": 235.4895234052946
+            },
+            "re16_54-1-end": {
+                "node_type": "multimarker",
+                "x": 764.1020386245089,
+                "y": 222.8425136556601
+            },
+            "re7_59-0": {
+                "node_type": "multimarker",
+                "x": 1156.5000957808534,
+                "y": 1025.0276809980564
+            },
+            "re7_59-1-end": {
+                "node_type": "multimarker",
+                "x": 1182.401313790551,
+                "y": 1024.8484338145984
+            },
+            "re14_63-0": {
+                "node_type": "multimarker",
+                "x": 643.4152438662929,
+                "y": 117.90000592795242
+            },
+            "re14_63-1-end": {
+                "node_type": "multimarker",
+                "x": 643.5847561337071,
+                "y": 90.09999407204758
+            }
+        },
+        "text_labels": {},
+        "canvas": {
+            "x": -74.55,
+            "y": -56.4,
+            "width": 1640.1000000000001,
+            "height": 1240.8000000000002
+        }
+    }
+]
