@@ -1,17 +1,116 @@
 ## This guide introduces the method for converting `CellDesigner` or `SBML` file formats to `Escher JSON` format.
 
-### 0. Install python and pip
+Before starting the installation, verify if Python and pip are already installed:
 
-If you haven't installed python and pip, you can refer to the following links:
+- **Check Python installation:**
+    - Open a command prompt (Windows) or terminal (macOS/Linux) and type:
+      ```
+      python --version
+      ```
+    - If Python is installed, it will display the version number. If not, no output will be shown or an error message will appear.
 
-- [Python Packaging User Guide](https://packaging.python.org/en/latest/tutorials/installing-packages/)
+- **Check pip installation:**
+    - In the same command prompt or terminal, type:
+      ```
+      pip --version
+      ```
+    - If pip is installed, it will show the version number. If pip is not installed, you'll see an error message indicating that pip is not recognized.
 
-### 1. Install the necessary packages
+If both Python and pip are installed, you can skip to Step 1. If not, please follow the installation instructions below to install Python and pip.
 
-```bash
-pip install xmltodict # for parse the xml file
-pip install requests # for send the request to the MINERVA API
-```
+
+### 0. Install Python and pip
+
+#### Windows
+- **Install Python:**
+    - Follow the detailed guide on how to install Python on Windows here: [Installing Python on Windows](https://www.dataquest.io/blog/installing-python-on-windows/).
+    - Make sure to add Python to your PATH during the installation process.
+
+- **Install pip:**
+    - After installing Python, you can install pip by following this guide: [Installing PIP on Windows](https://www.dataquest.io/blog/install-pip-windows/).
+
+#### macOS
+- **Install Python using Homebrew:**
+   - If Homebrew is not installed, open Terminal and run:
+     ```
+     /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+     ```
+   - Install Python:
+     ```
+     brew install python
+     ```
+- **Verify pip installation:**
+  - `pip` should be installed automatically with Python. To verify that `pip` is installed, type the following command in Terminal:
+    ```
+    pip --version
+    ```
+    - If `pip` is installed, you should see a version number. If not, you can install `pip` by running:
+    ```
+    sudo easy_install pip
+    ```
+
+#### Linux (Debian/Ubuntu)
+- **Install Python:**
+   - Open Terminal and run:
+     ```
+     sudo apt update
+     sudo apt install python3 python3-pip
+     ```
+
+### 1. Setup Virtual Environment and Install Dependencies
+
+
+#### a. Depending on how you obtained the project files, follow the appropriate steps to navigate to the project directory:
+
+- **If you cloned the project from a Git repository:**
+    - Open a terminal (Linux/macOS) or command prompt (Windows).
+    - Navigate to the cloned project's root directory:
+        ```
+        cd path/to/your/project/py/io
+        ```
+    - To confirm you're in the correct directory, list the contents of the directory:
+        ```
+        ls  # On Linux/macOS
+        dir # On Windows
+        ```
+        Make sure you see the expected project files listed.
+
+- **If you downloaded the `sbml2escher.py` file directly:**
+    - Open a terminal (Linux/macOS) or command prompt (Windows).
+    - Navigate to the directory containing the `sbml2escher.py` file:
+       ```
+       cd path/to/directory/containing/sbml2escher.py
+       ```
+    - Confirm you are in the correct directory by listing the contents:
+       ```
+       ls  # On Linux/macOS
+       dir # On Windows
+       ```
+    - Look for the `sbml2escher.py` file in the output to verify its presence.
+    
+    In both cases, using the `ls` (Linux/macOS) or `dir` (Windows) command allows you to see the files and ensure you are in the correct directory. This is crucial before proceeding with any further operations such as setting up environments or running scripts.
+
+#### b. **Create a virtual environment:**
+   - Run:
+     ```
+     python -m venv venv
+     ```
+
+#### c. **Activate the virtual environment:**
+   - On Windows:
+     ```
+     .\venv\Scripts\activate
+     ```
+   - On macOS/Linux:
+     ```
+     source venv/bin/activate
+     ```
+
+#### d. **Install dependencies:**
+   - Ensure your virtual environment is active and run:
+     ```
+     pip install -r requirements.txt
+     ```
 
 ### 2. Run the script
 
