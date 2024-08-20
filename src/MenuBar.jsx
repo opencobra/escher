@@ -52,7 +52,6 @@ class MenuBar extends Component {
             onClick={() => this.props.save_png()}
             disabledButtons={disabledButtons}
           />
-          {/* TODO: disabledButtons, (Ctrl+Shift+G) keys */}
           <MenuButton
             name={'Export as GIF' + (enableKeys ? ' (Ctrl+Shift+G)' : '')}
             onClick={() => this.props.save_gif()}

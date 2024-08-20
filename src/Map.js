@@ -2231,7 +2231,7 @@ export default class Map {
 
     // save as gif don't need to change and revert the canvas size
     if (mapType === 'gif') {
-      utils.downloadGif('saved_map_gif', this.svg, windowScale, windowTranslate)
+      utils.downloadGif(`${utils.get_current_date()}_${this.map_name}`, this.svg)
     }else {
       this.zoomContainer._goToSvg(
         1.0,
