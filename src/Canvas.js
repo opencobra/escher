@@ -75,7 +75,8 @@ export default class Canvas {
         .attr('height', this.height)
         .attr('transform', 'translate(' + [ this.x, this.y ] + ')')
 
-      // Set the background of the canvas using an uploaded image, allowing users to simulate different environments.    const background = newSel.append('image')
+    // Set the background of the canvas using an uploaded image, allowing users to simulate different environments.
+    const background = newSel.append('image')
       .attr('id', 'canvas-background')
       .attr(
       'xlink:href', ''
