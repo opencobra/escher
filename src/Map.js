@@ -46,6 +46,10 @@ function _on_array (fn) {
  * map.callback_manager.run('after_svg_export')
  * map.callback_manager.run('before_png_export')
  * map.callback_manager.run('after_png_export')
+ * map.callback_manager.run('before_gif_export')
+ * map.callback_manager.run('after_gif_export')
+ * map.callback_manager.run('before_import_background')
+ * map.callback_manager.run('after_import_background')
  * map.callback_manager.run('before_convert_map')
  * map.callback_manager.run('after_convert_map')
  * this.callback_manager.run('calc_data_stats__reaction', null, changed)
@@ -2231,7 +2235,9 @@ export default class Map {
 
     // save as gif don't need to change and revert the canvas size
     if (mapType === 'gif') {
-      utils.downloadGif(`${utils.get_current_date()}_${this.map_name}`, this.svg)
+      const reaction_data = this.settings.get('reaction_data')
+      // only save gif if there is reaction data
+      reaction_data && utils.downloadGif(`${utils.get_current_date()}_${this.map_name}`, this.svg)
     }else {
       this.zoomContainer._goToSvg(
         1.0,
@@ -2420,5 +2426,22 @@ export default class Map {
 
     // run the after callback
     this.callback_manager.run('after_convert_map')
+  }
+
+  /**
+   * Import a image as the background of the map.
+   * @param {Object} file - The data from the file input.
+   */
+  import_background (file) {
+    this.callback_manager.run('before_import_background')
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const imageUrl = e.target.result;
+        document.getElementById('canvas-background').setAttribute('href', imageUrl);
+      };
+      reader.readAsDataURL(file);
+    }
+    this.callback_manager.run('after_import_background')
   }
 }

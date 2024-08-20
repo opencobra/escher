@@ -43,6 +43,18 @@ class MenuBar extends Component {
             disabledButtons={disabledButtons}
           />
           <MenuButton
+            name={'Import Background' + (enableKeys ? ' (Ctrl+I)' : '')}
+            onClick={() => document.getElementById('canvasBackgroundInput').click()}
+            disabledButtons={disabledButtons}
+          />
+          <input
+            type="file"
+            id="canvasBackgroundInput"
+            style={{display: 'none'}}
+            accept="image/*"
+            onChange={e => this.props.import_background(e.target.files[0])}
+          />
+          <MenuButton
             name={'Export as SVG' + (enableKeys ? ' (Ctrl+Shift+S)' : '')}
             onClick={() => this.props.save_svg()}
             disabledButtons={disabledButtons}
