@@ -1154,7 +1154,7 @@ function process_reaction_data (arr, threshold = 0) {
   // call the function for each key in the object
   for (let key in obj) {
     if (obj.hasOwnProperty(key)) {
-      let value = obj[key];
+      let value = Number(obj[key]);
 
       // check if value is an object, if it is, call the function again
       if (typeof value === 'object' && value !== null) {
