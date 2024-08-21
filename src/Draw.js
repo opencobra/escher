@@ -170,8 +170,8 @@ function update_reaction_label (update_selection, has_data_on_reactions) {
   const show_gene_reaction_rules = this.settings.get('show_gene_reaction_rules')
   const hide_all_labels = this.settings.get('hide_all_labels')
   const gene_font_size = this.settings.get('gene_font_size')
-  // hidden_no_data_reaction should only work when there is data on reactions
-  const hidden_no_data_reaction = has_data_on_reactions && this.settings.get('hidden_no_data_reaction')
+  // hide_no_data_reaction should only work when there is data on reactions
+  const hide_no_data_reaction = has_data_on_reactions && this.settings.get('hide_no_data_reaction')
   const reactionLabelMouseover = this.behavior.reactionLabelMouseover
   const reactionLabelMouseout = this.behavior.reactionLabelMouseout
   const reactionLabelTouch = this.behavior.reactionLabelTouch
@@ -191,7 +191,7 @@ function update_reaction_label (update_selection, has_data_on_reactions) {
   var label = update_selection.select('.reaction-label')
     .attr('visibility', (d) => {
       // hide all labels or the reaction has no data when already loaded the reaction data
-      if (!d.data && hidden_no_data_reaction || hide_all_labels) {
+      if (!d.data && hide_no_data_reaction || hide_all_labels) {
         return 'hidden'
       }
       return null
@@ -331,8 +331,8 @@ function update_segment (update_selection, scale, cobra_model,
   const should_color = (has_data_on_reactions && reaction_data_styles.indexOf('color') !== -1)
   const no_data_size = this.settings.get('reaction_no_data_size')
   const no_data_color = this.settings.get('reaction_no_data_color')
-  // hidden_no_data_reaction should only work when there is data on reactions
-  const hidden_no_data_reaction = has_data_on_reactions && this.settings.get('hidden_no_data_reaction')
+  // hide_no_data_reaction should only work when there is data on reactions
+  const hide_no_data_reaction = has_data_on_reactions && this.settings.get('hide_no_data_reaction')
   const _settings = this.settings
 
   // update segment attributes
@@ -382,8 +382,8 @@ function update_segment (update_selection, scale, cobra_model,
         return 'hidden'
       }
       
-      // When the reaction data is loaded and the hidden_no_data_reaction option is enabled, the segment is hidden if there is no data.
-      if (!d.data && hidden_no_data_reaction) {
+      // When the reaction data is loaded and the hide_no_data_reaction option is enabled, the segment is hidden if there is no data.
+      if (!d.data && hide_no_data_reaction) {
         return 'hidden'
       }
 
@@ -564,8 +564,8 @@ function update_segment (update_selection, scale, cobra_model,
       // default stroke color
       return null
     }).style('visibility', function(d) {
-      // When the reaction data is loaded and the hidden_no_data_reaction option is enabled, the arrowhead is hidden if there is no data.
-      if (!d.data && hidden_no_data_reaction) {
+      // When the reaction data is loaded and the hide_no_data_reaction option is enabled, the arrowhead is hidden if there is no data.
+      if (!d.data && hide_no_data_reaction) {
         return 'hidden'
       }
 
@@ -793,8 +793,8 @@ function update_node (update_selection, scale, has_data_on_nodes,
   var no_data_style = { color: this.settings.get('metabolite_no_data_color'),
                         size: this.settings.get('metabolite_no_data_size') }
   
-  // for the hidden_no_data_reaction option
-  const hidden_no_data_reaction = this.map.has_data_on_reactions && this.settings.get('hidden_no_data_reaction')
+  // for the hide_no_data_reaction option
+  const hide_no_data_reaction = this.map.has_data_on_reactions && this.settings.get('hide_no_data_reaction')
   const all_reactions_obj = this.map.reactions
   
   var labelMouseover = this.behavior.nodeLabelMouseover
@@ -812,9 +812,9 @@ function update_node (update_selection, scale, has_data_on_nodes,
       if (hideNode(d, hide_secondary_metabolites)) {
         return 'hidden'
       }
-      // When the reaction data is loaded and the hidden_no_data_reaction option is enabled, the node is hidden if all the connected reactions have no data.
+      // When the reaction data is loaded and the hide_no_data_reaction option is enabled, the node is hidden if all the connected reactions have no data.
       if (
-        hidden_no_data_reaction
+        hide_no_data_reaction
         && IsAllRelatedReactionsNoData(d, all_reactions_obj)
       ) {
         return 'hidden'
@@ -866,9 +866,9 @@ function update_node (update_selection, scale, has_data_on_nodes,
         if (hideNode(d, hide_secondary_metabolites)) {
           return 'hidden'
         }
-        // When the reaction data is loaded and the hidden_no_data_reaction option is enabled, the node label is hidden if all the connected reactions have no data.
+        // When the reaction data is loaded and the hide_no_data_reaction option is enabled, the node label is hidden if all the connected reactions have no data.
         if (
-          hidden_no_data_reaction
+          hide_no_data_reaction
           && IsAllRelatedReactionsNoData(d, all_reactions_obj)
         ) {
           return 'hidden'
