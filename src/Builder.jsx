@@ -935,6 +935,7 @@ class Builder {
     const reactionButtonName = 'Clear reaction data'
     if (index > -1 && data) {
       disabledButtons.splice(index, 1)
+      disabledButtons.splice(disabledButtons.indexOf(exportAsGifButtonName), 1)
       const rInd = disabledButtons.indexOf('Clear reaction data')
       if (rInd === -1) disabledButtons.push(reactionButtonName)
       this.settings.set('disabled_buttons', disabledButtons)
