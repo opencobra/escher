@@ -483,10 +483,10 @@ class Builder {
     const newDisabledButtons = this.settings.get('disabled_buttons') || []
     if (!this.settings.get('reaction_data')) {
       newDisabledButtons.push('Clear reaction data')
+      newDisabledButtons.push('Export as GIF')
     }
     if (!this.settings.get('gene_data')) {
       newDisabledButtons.push('Clear gene data')
-      newDisabledButtons.push('Export as GIF')
     }
     if (!this.settings.get('metabolite_data')) {
       newDisabledButtons.push('Clear metabolite data')
