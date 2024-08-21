@@ -900,6 +900,7 @@ class Builder {
     const index = disabledButtons.indexOf(buttonName)
     if (filteredData && index !== -1) {
       disabledButtons.splice(index, 1)
+      disabledButtons.splice(disabledButtons.indexOf(exportAsGifButtonName), 1)
       const gInd = disabledButtons.indexOf(geneButtonName)
       if (gInd === -1) disabledButtons.push(geneButtonName)
       this.settings.set('disabled_buttons', disabledButtons)
@@ -935,7 +936,6 @@ class Builder {
     const reactionButtonName = 'Clear reaction data'
     if (index > -1 && data) {
       disabledButtons.splice(index, 1)
-      disabledButtons.splice(disabledButtons.indexOf(exportAsGifButtonName), 1)
       const rInd = disabledButtons.indexOf('Clear reaction data')
       if (rInd === -1) disabledButtons.push(reactionButtonName)
       this.settings.set('disabled_buttons', disabledButtons)
