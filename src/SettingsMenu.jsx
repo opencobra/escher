@@ -256,11 +256,11 @@ class SettingsMenu extends Component {
                   type='checkbox'
                   onClick={() => {
                     settings.set(
-                      'hidden_no_data_reaction',
-                      !settings.get('hidden_no_data_reaction')
+                      'hide_no_data_reaction',
+                      !settings.get('hide_no_data_reaction')
                     )
                   }}
-                  checked={settings.get('hidden_no_data_reaction')}
+                  checked={settings.get('hide_no_data_reaction')}
                 />
                 Hide no data reactions
               </label>
