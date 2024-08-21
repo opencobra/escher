@@ -74,7 +74,8 @@ module.exports = {
   process_reaction_data: process_reaction_data,
   // check_browser: check_browser
   handle_animation: handle_animation,
-  update_color_legends: update_color_legends
+  update_color_legends: update_color_legends,
+  get_current_date: get_current_date,
 }
 
 /**
@@ -803,10 +804,8 @@ function downloadPng (name, svg_sel) {
  * Download a png file using FileSaver.js.
  * @param {String} name - The filename (without extension).
  * @param {D3 Selection} svg_sel - The d3 selection for the SVG element.
- * @param {Number} windowScale - The scale of the window.
- * @param {Object} windowTranslate - The translation of the window.
  */
-function downloadGif(name, svg_sel, windowScale, windowTranslate) {
+function downloadGif(name, svg_sel) {
   // Alert if blob isn't going to work
   _check_filesaver()
   // Create a loading indicator
@@ -1154,7 +1153,7 @@ function process_reaction_data (arr, threshold = 0) {
   // call the function for each key in the object
   for (let key in obj) {
     if (obj.hasOwnProperty(key)) {
-      let value = obj[key];
+      let value = Number(obj[key]);
 
       // check if value is an object, if it is, call the function again
       if (typeof value === 'object' && value !== null) {
@@ -1398,4 +1397,17 @@ function _get_color_linearGradient_data(domain, range) {
     }
   }
   return data
+}
+
+/**
+ * Get current date in the format of "YYYY-MM-DD".
+ * @returns {string}
+ */
+function get_current_date() {
+  const now = new Date();
+  const year = now.getFullYear();
+  const month = String(now.getMonth() + 1).padStart(2, '0');
+  const day = String(now.getDate()).padStart(2, '0');
+
+  return `${year}-${month}-${day}`;
 }

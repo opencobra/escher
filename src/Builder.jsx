@@ -483,6 +483,7 @@ class Builder {
     const newDisabledButtons = this.settings.get('disabled_buttons') || []
     if (!this.settings.get('reaction_data')) {
       newDisabledButtons.push('Clear reaction data')
+      newDisabledButtons.push('Export as GIF')
     }
     if (!this.settings.get('gene_data')) {
       newDisabledButtons.push('Clear gene data')
@@ -641,6 +642,7 @@ class Builder {
       save_svg: () => this.map.save_svg(),
       save_png: () => this.map.save_png(),
       save_gif: () => this.map.save_gif(),
+      import_background: (file) => this.map.import_background(file),
       clear_map: () => { this.clear_map() },
       loadModel: file => this.load_model(file, true),
       assignKeyLoadModel: fn => {
@@ -893,6 +895,7 @@ class Builder {
 
     const disabledButtons = this.settings.get('disabled_buttons') || []
     const buttonName = 'Clear reaction data'
+    const exportAsGifButtonName = 'Export as GIF'
     const geneButtonName = 'Clear gene data'
     const index = disabledButtons.indexOf(buttonName)
     if (filteredData && index !== -1) {
@@ -902,6 +905,7 @@ class Builder {
       this.settings.set('disabled_buttons', disabledButtons)
     } else if (!filteredData && index === -1) {
       disabledButtons.push(buttonName)
+      disabledButtons.push(exportAsGifButtonName)
       this.settings.set('disabled_buttons', disabledButtons)
     }
   }
@@ -1128,6 +1132,10 @@ class Builder {
         key: 'ctrl+s',
         target: map,
         fn: map.save
+      },
+      import_background: {
+        key: 'ctrl+i',
+        fn: () => document.getElementById('canvasBackgroundInput').click()
       },
       save_svg: {
         key: 'ctrl+shift+s',

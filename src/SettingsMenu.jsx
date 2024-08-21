@@ -262,7 +262,7 @@ class SettingsMenu extends Component {
                   }}
                   checked={settings.get('hidden_no_data_reaction')}
                 />
-                Hidden no data reactions
+                Hide no data reactions
               </label>
               <label title='If true, then use CSS3 3D transforms to speed up panning and zooming.'>
                 <input

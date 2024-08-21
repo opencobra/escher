@@ -75,6 +75,14 @@ export default class Canvas {
         .attr('height', this.height)
         .attr('transform', 'translate(' + [ this.x, this.y ] + ')')
 
+    // Set the background of the canvas using an uploaded image, allowing users to simulate different compartments.
+    const background = newSel.append('image')
+      .attr('id', 'canvas-background')
+      .attr(
+      'xlink:href', ''
+    ).attr('width', this.width).attr('height', this.height).attr('transform', 'translate(' + [ this.x, this.y ] + ')')
+
+
     const dragLeft = d3Drag()
           .on('start', stopPropagation)
           .on('drag', d => {
