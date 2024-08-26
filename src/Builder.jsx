@@ -265,10 +265,14 @@ class Builder {
       this._updateTooltipSetting(val)
     })
 
+    this.mapToolsContainer = null
     // Make a container for other map-related tools that will be reset on map load
-    // TODO only create these once in the Builder constructor
-    this.mapToolsContainer = this.selection.append('div')
+    if (this.selection.select('.map-tools-container').empty()) {
+      this.mapToolsContainer = this.selection.append('div')
                                  .attr('class', 'map-tools-container')
+    }else {
+      this.mapToolsContainer = this.selection.select('.map-tools-container')
+    }
 
     // Status in both modes
     this._createStatus(this.selection)
