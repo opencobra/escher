@@ -139,6 +139,7 @@ class Builder {
       ],
       // tooltips link, open in bigg or vmh website
       open_in_vmh: window.localStorage.getItem('open_in_vmh') === 'true',
+      vmh_basic_url: 'https://www.vmh.life/#allsearch/',
       // Extensions
       tooltip_component: DefaultTooltip,
       enable_tooltips: ['label'],
@@ -647,6 +648,7 @@ class Builder {
       save_png: () => this.map.save_png(),
       save_gif: () => this.map.save_gif(),
       import_background: (file) => this.map.import_background(file),
+      clear_background: () => this.map.clear_background(),
       clear_map: () => { this.clear_map() },
       loadModel: file => this.load_model(file, true),
       assignKeyLoadModel: fn => {
@@ -1141,6 +1143,11 @@ class Builder {
       import_background: {
         key: 'ctrl+i',
         fn: () => document.getElementById('canvasBackgroundInput').click()
+      },
+      clear_background: {
+        key: 'ctrl+shift+i',
+        target: map,
+        fn: map.clear_background
       },
       save_svg: {
         key: 'ctrl+shift+s',

@@ -50,6 +50,8 @@ function _on_array (fn) {
  * map.callback_manager.run('after_gif_export')
  * map.callback_manager.run('before_import_background')
  * map.callback_manager.run('after_import_background')
+ * map.callback_manager.run('before_clear_background')
+ * map.callback_manager.run('after_clear_background')
  * map.callback_manager.run('before_convert_map')
  * map.callback_manager.run('after_convert_map')
  * this.callback_manager.run('calc_data_stats__reaction', null, changed)
@@ -2443,5 +2445,15 @@ export default class Map {
       reader.readAsDataURL(file);
     }
     this.callback_manager.run('after_import_background')
+  }
+
+  /**
+   * Clear the background of the map.
+   */
+  clear_background () {
+    this.callback_manager.run('before_clear_background')
+    document.getElementById('canvas-background').setAttribute('href', '');
+    document.getElementById('canvasBackgroundInput').value = '';
+    this.callback_manager.run('after_clear_background')
   }
 }

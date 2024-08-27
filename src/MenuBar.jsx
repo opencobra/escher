@@ -55,6 +55,11 @@ class MenuBar extends Component {
             onChange={e => this.props.import_background(e.target.files[0])}
           />
           <MenuButton
+            name={'Clear Background' + (enableKeys ? ' (Ctrl+Shift+I)' : '')}
+            onClick={() => this.props.clear_background()}
+            disabledButtons={disabledButtons}
+          />
+          <MenuButton
             name={'Export as SVG' + (enableKeys ? ' (Ctrl+Shift+S)' : '')}
             onClick={() => this.props.save_svg()}
             disabledButtons={disabledButtons}

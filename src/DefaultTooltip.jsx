@@ -29,7 +29,7 @@ class DefaultTooltip extends Component {
       ? `${pref}search?query=${biggId}`
       : `${pref}universal/${type}s/${this.decompartmentalizeCheck(biggId, type)}`
 
-    const vmh_link = `https://www.vmh.life/#allsearch/${biggId}`
+    const vmh_link = `${this.props.vmhBasicUrl()}${biggId}`
     window.open(this.props.openInVmh() ? vmh_link : url)
   }
 
