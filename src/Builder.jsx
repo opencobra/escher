@@ -139,6 +139,7 @@ class Builder {
       ],
       // tooltips link, open in bigg or vmh website
       open_in_vmh: window.localStorage.getItem('open_in_vmh') === 'true',
+      vmh_basic_url: 'https://www.vmh.life/#allsearch/',
       // Extensions
       tooltip_component: DefaultTooltip,
       enable_tooltips: ['label'],
