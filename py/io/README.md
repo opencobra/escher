@@ -102,6 +102,8 @@ In both cases, using the `ls` (Linux/macOS) or `dir` (Windows) command allows yo
 
 The entire process involves converting the `CellDesigner` or `SBML` file format to the `Escher JSON` file format.
 
+> Note: Ensure that the file names do not contain any spaces.
+
 If the input file format is `CellDesigner`, the script will utilize the public API provided by [MINERVA](https://minerva.pages.uni.lu/doc/api/16.4/index.html) to convert the `CellDesigner` file format to the `SBML` file format. This intermediate step is handled behind the scenes.
 
 If the input file format is `SBML`, the script will directly convert the `SBML` file format to the `Escher JSON` file format.
@@ -138,3 +140,7 @@ git clone https://github.com/Homebrew/homebrew-core.git
 ```
 
 For more details, you can refer to this Stack Overflow discussion: [How to remove the shallow clone warning from Homebrew](https://stackoverflow.com/questions/45782694/how-to-remove-the-shallow-clone-warning-from-homebrew).
+
+**Q2: What should I do if I encounter the error `sbml2escher.py: error: unrecognized arguments:` when running the script?**
+
+A: If you encounter the error `sbml2escher.py: error: unrecognized arguments:` while running the script, please check if the input or output file name contains any spaces. Ensure that the file names do not have spaces, as spaces can cause this error.
