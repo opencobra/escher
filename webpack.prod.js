@@ -1,5 +1,5 @@
 const path = require('path')
-const merge = require('webpack-merge')
+const {merge} = require('webpack-merge')
 const common = require('./webpack.common.js')
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
 
@@ -8,7 +8,7 @@ const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
 // yarn build
 // const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
 
-module.exports = merge.smart(common, {
+module.exports = merge(common, {
   mode: 'production',
   entry: {
     'escher': './src/main.js',

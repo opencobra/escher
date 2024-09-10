@@ -1,7 +1,6 @@
 # npm
 
 source .venv/bin/activate
-nvm use
 (update version in package.json)
 yarn clean
 yarn install
