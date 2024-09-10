@@ -1,14 +1,11 @@
 /* global global */
 
+import { describe, it, before, after } from 'mocha'
+import { assert } from 'chai'
+
 const utils = require('../utils')
 const dataStyles = require('../dataStyles')
 const d3Body = require('./helpers/d3Body')
-
-const describe = require('mocha').describe
-const it = require('mocha').it
-const before = require('mocha').before
-const after = require('mocha').after
-const assert = require('chai').assert
 
 describe('utils.set_options', () => {
   it('defaults to null', () => {
@@ -285,7 +282,7 @@ describe('utils.compartmentalize', () => {
 
 describe('utils.decompartmentalize', () => {
   it('gets compartment', () => {
-    assert.deepEqual(utils.decompartmentalize('atp_c1'), [ 'atp', 'c1' ])
+    assert.deepEqual(utils.decompartmentalize('atp[c1]'), [ 'atp', 'c1' ])
   })
 
   it('returns null compartment if not found', () => {

@@ -1,11 +1,10 @@
+import { describe, it, beforeEach} from "mocha";
+import {assert} from "chai";
+import 'intersection-observer';
+
 const Map = require('../Map').default
 const Settings = require('../Settings').default
 const CobraModel = require('../CobraModel')
-
-const describe = require('mocha').describe
-const it = require('mocha').it
-const beforeEach = require('mocha').beforeEach
-const assert = require('chai').assert
 
 const d3Body = require('./helpers/d3Body')
 const get_map = require('./helpers/get_map')

@@ -1,9 +1,6 @@
 var CobraModel = require('../CobraModel')
-
-var describe = require('mocha').describe
-var it = require('mocha').it
-var assert = require('chai').assert
-
+import {describe, it } from 'mocha'
+import {assert} from 'chai'
 
 describe('CobraModel', function () {
   it('initializes', function () {

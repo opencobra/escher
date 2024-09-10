@@ -315,16 +315,20 @@ function create_segment (enter_selection) {
  */
 function update_segment (update_selection, scale, cobra_model,
                          drawn_nodes, defs, has_data_on_reactions) {
+  let observer = null
   // define the observer for the intersection to stop the animation when the element is not in the viewport
-  const observer = new IntersectionObserver((entries) => {
-    utils.handle_animation(
-      entries,
-      observer,
-      this.settings,
-      has_data_on_reactions,
-      scale
-    );
-  }, { threshold: 0.1 });
+  if (typeof IntersectionObserver !== 'undefined') {
+    // check if the browser supports IntersectionObserver
+    observer = new IntersectionObserver((entries) => {
+      utils.handle_animation(
+        entries,
+        observer,
+        this.settings,
+        has_data_on_reactions,
+        scale
+      );
+    }, { threshold: 0.1 });
+  }
 
   const reaction_data_styles = this.settings.get('reaction_styles')
   const should_size = (has_data_on_reactions && reaction_data_styles.indexOf('size') !== -1)
@@ -447,16 +451,18 @@ function update_segment (update_selection, scale, cobra_model,
     })
     .each(function (d, i, nodes) {
       const node = nodes[0]
-      // make the intersection observer callback can be triggered by the redraw
-      utils.handle_animation(
-        [{ target: node }],
-        observer,
-        _settings,
-        has_data_on_reactions,
-        scale
-      );
-      // observe the node
-      observer.observe(node);
+      if (typeof IntersectionObserver === 'undefined' && observer !== null) {
+        // make the intersection observer callback can be triggered by the redraw
+        utils.handle_animation(
+          [{target: node}],
+          observer,
+          _settings,
+          has_data_on_reactions,
+          scale
+        );
+        // observe the node
+        observer.observe(node);
+      }
     })
     .attr('pointer-events', 'visibleStroke')
     .on('mouseover', objectMouseover)
