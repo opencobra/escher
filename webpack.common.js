@@ -4,12 +4,6 @@ const package = require('./package.json')
 module.exports = {
   resolve: {
     extensions: ['.js', '.jsx', '.json'],
-    fallback: {
-      buffer: false,
-      stream: false,
-      crypto: false,
-      vm: false,
-    },
   },
   devtool: 'source-map',
   module: {
@@ -21,7 +15,12 @@ module.exports = {
       {
         test: /\.jsx?$/,
         exclude: /node_modules/,
-        use: ['babel-loader']
+        use: {
+          loader: 'babel-loader',
+          options: {
+            presets: ['@babel/preset-env']
+          }
+        }
       },
       // Embed font Definitions
       {
