@@ -165,7 +165,7 @@ export default class Behavior {
         selectedNodeIds.forEach(id => {
           theseNodes[id] = nodes[id]
         })
-        const updated = build.rotatenodes(theseNodes, reactions,
+        const updated = build.rotateNodes(theseNodes, reactions,
                                           beziers, totalAngle,
                                           center)
         map.draw_these_nodes(updated.node_ids)

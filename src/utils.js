@@ -76,6 +76,7 @@ module.exports = {
   handle_animation: handle_animation,
   update_color_legends: update_color_legends,
   get_current_date: get_current_date,
+  get_local_storage_item: get_local_storage_item,
 }
 
 /**
@@ -1414,4 +1415,22 @@ function get_current_date() {
   const day = String(now.getDate()).padStart(2, '0');
 
   return `${year}-${month}-${day}`;
+}
+
+/**
+ * Get local storage item.
+ *
+ * @param key - The key of the item to get.
+ * @param defaultValue - The default value to return if the item is not found.
+ * @returns {null|string}
+ */
+function get_local_storage_item(key, defaultValue = null) {
+  try {
+    if (typeof window !== 'undefined' && window.localStorage) {
+      return window.localStorage.getItem(key);
+    }
+  } catch (e) {
+    console.warn('LocalStorage is not available.', e);
+  }
+  return defaultValue;
 }

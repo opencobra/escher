@@ -1,9 +1,8 @@
+import {describe, it, beforeEach} from "mocha";
+import {assert} from 'chai'
+
 const Draw = require('../Draw')
 
-const describe = require('mocha').describe
-const it = require('mocha').it
-const assert = require('chai').assert
-const beforeEach = require('mocha').beforeEach;
 const d3Body = require('./helpers/d3Body')
 const d3_select = require('d3-selection').select
 

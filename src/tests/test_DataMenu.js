@@ -1,9 +1,7 @@
+import { describe, it} from "mocha";
+import { assert } from 'chai'
 var DataMenu = require('../DataMenu')
 var d3Body = require('./helpers/d3Body')
-
-var describe = require('mocha').describe
-var it = require('mocha').it
-var assert = require('chai').assert
 
 describe('DataMenu', () => {
   it('initializes',() => {

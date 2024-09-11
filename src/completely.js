@@ -14,7 +14,7 @@
 
 import * as utils from './utils'
 
-module.exports = function(container, config) {
+export default function(container, config) {
   const thisDocument = utils.get_document(container)
   const thisWindow = utils.get_window(container)
 

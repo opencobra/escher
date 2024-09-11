@@ -8,6 +8,7 @@ import getModel from './helpers/get_model'
 
 import { describe, it } from 'mocha'
 import { assert } from 'chai'
+import { utils } from "../main";
 
 function makeParentSel (s) {
   const element = s.append('div')
@@ -115,7 +116,7 @@ describe('Builder', () => {
         // These just need to run right now
         const data = { GAPD: 2.0 }
         builder.set_reaction_data(data)
-        assert.deepEqual(builder.settings.get('reaction_data'), data)
+        assert.deepEqual(builder.settings.get('reaction_data'), utils.process_reaction_data(data))
         builder.set_reaction_data(null)
         assert.strictEqual(builder.settings.get('reaction_data'), null)
         done()
@@ -161,7 +162,7 @@ describe('Builder', () => {
         const reactionData = { GAPD: 2.0 }
         const geneData = { b1779: 2.0 }
         builder.set_reaction_data(reactionData)
-        assert.deepEqual(builder.settings.get('reaction_data'), reactionData)
+        assert.deepEqual(builder.settings.get('reaction_data'), utils.process_reaction_data(reactionData))
         builder.set_gene_data(geneData)
         assert.strictEqual(builder.settings.get('reaction_data'), null)
         assert.deepEqual(builder.settings.get('gene_data'), geneData)
@@ -183,7 +184,7 @@ describe('Builder', () => {
         assert.deepEqual(builder.settings.get('gene_data'), geneData)
         builder.set_reaction_data(reactionData)
         assert.strictEqual(builder.settings.get('gene_data'), null)
-        assert.deepEqual(builder.settings.get('reaction_data'), reactionData)
+        assert.deepEqual(builder.settings.get('reaction_data'), utils.process_reaction_data(reactionData))
         builder.set_reaction_data(null)
         assert.strictEqual(builder.settings.get('reaction_data'), null)
         done()

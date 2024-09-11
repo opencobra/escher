@@ -1,4 +1,4 @@
-const merge = require('webpack-merge')
+const { merge } = require('webpack-merge')
 const common = require('./webpack.common.js')
 const nodeExternals = require('webpack-node-externals')
 const path = require('path')
@@ -20,13 +20,13 @@ const istanbulLoader = {
 }
 const rules = isCoverage ? [istanbulLoader, cssNullLoader] : [cssNullLoader]
 
-module.exports = merge.smart(common, {
+module.exports = merge(common, {
   mode: 'development',
  // Webpack should emit node.js compatible code
   target: 'node',
   // Ignore all modules in node_modules folder from bundling
   externals: [nodeExternals({
-    whitelist: ['font-awesome/css/font-awesome.min.css']
+    allowlist: ['font-awesome/css/font-awesome.min.css']
   })],
   output: {
     // filename: 'bundle.js', // for testing

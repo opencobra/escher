@@ -1,8 +1,7 @@
-const Settings = require('../Settings').default
+import {describe, it} from "mocha";
+import {assert} from 'chai'
 
-const describe = require('mocha').describe
-const it = require('mocha').it
-const assert = require('chai').assert
+const Settings = require('../Settings').default
 
 describe('Settings', () => {
   it('initializes', () => {
