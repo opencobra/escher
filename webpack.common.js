@@ -24,60 +24,10 @@ module.exports = {
       },
       // Embed font Definitions
       {
-        test: /\.svg$/,
-        use: {
-          loader: 'url-loader',
-          options: {
-            limit: 65000,
-            mimetype: 'image/svg+xml',
-            name: 'public/fonts/[name].[ext]'
-          }
-        }
+        test: /\.(svg|eot|otf|ttf|woff|woff2)$/i,
+        // More information here https://webpack.js.org/guides/asset-modules/
+        type: "asset",
       },
-      {
-        test: /\.woff$/,
-        use: {
-          loader: 'url-loader',
-          options: {
-            limit: 65000,
-            mimetype: 'application/font-woff',
-            name: 'public/fonts/[name].[ext]'
-          }
-        }
-      },
-      {
-        test: /\.woff2$/,
-        use: {
-          loader: 'url-loader',
-          options: {
-            limit: 65000,
-            mimetype: 'application/font-woff2',
-            name: 'public/fonts/[name].[ext]'
-          }
-        }
-      },
-      {
-        test: /\.[ot]tf$/,
-        use: {
-          loader: 'url-loader',
-          options: {
-            limit: 65000,
-            mimetype: 'application/octet-stream',
-            name: 'public/fonts/[name].[ext]'
-          }
-        }
-      },
-      {
-        test: /\.eot$/,
-        use: {
-          loader: 'url-loader',
-          options: {
-            limit: 65000,
-            mimetype: 'application/vnd.ms-fontobject',
-            name: 'public/fonts/[name].[ext]'
-          }
-        }
-      }
     ]
   },
   plugins: [
