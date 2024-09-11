@@ -451,7 +451,7 @@ function update_segment (update_selection, scale, cobra_model,
     })
     .each(function (d, i, nodes) {
       const node = nodes[0]
-      if (typeof IntersectionObserver === 'undefined' && observer !== null) {
+      if (typeof IntersectionObserver !== 'undefined' && observer !== null) {
         // make the intersection observer callback can be triggered by the redraw
         utils.handle_animation(
           [{target: node}],
