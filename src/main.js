@@ -32,7 +32,7 @@
 /* global ESCHER_VERSION */
 
 import underscore from 'underscore'
-import preact from 'preact'
+import * as preact from 'preact'
 import * as baconjs from 'baconjs'
 import mousetrap from 'mousetrap'
 import vkbeautify from 'vkbeautify'

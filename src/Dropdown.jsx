@@ -68,7 +68,7 @@ class Dropdown extends Component {
           id={this.props.rightMenu === 'true' ? 'rightMenu' : ''}
         >
           {this.props.children.map((listItem) => {
-            if (listItem && listItem.attributes.name === 'divider') {
+            if (listItem && listItem.props.name === 'divider') {
               return (
                 <li
                   style={{

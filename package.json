@@ -72,7 +72,7 @@
     "gsap": "^3.12.5",
     "immutability-helper": "^2.4.0",
     "mousetrap": "^1.5.3",
-    "preact": "^8.2.1",
+    "preact": "^10.23.2",
     "underscore": "^1.8.3",
     "vkbeautify": "^0.99.1"
   },
