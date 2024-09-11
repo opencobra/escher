@@ -1,4 +1,4 @@
-import bacon from 'baconjs'
+import {Bus, combineAsArray} from 'baconjs'
 import _ from 'underscore'
 
 /**
@@ -13,7 +13,7 @@ function convertToConditionalStream (valueStream, statusStream) {
     lastStatus: null
   }
 
-  const held = bacon.combineAsArray(valueStream, statusStream.toProperty(null))
+  const held = combineAsArray(valueStream, statusStream.toProperty(null))
         .scan(init, ({ savedValue, currentValue, lastStatus }, [ value, status ]) => {
           // See if the status was just set
           const newStatus = lastStatus !== status
@@ -92,7 +92,7 @@ export default class Settings {
     this._options = optionsWithDefaults
 
     // Manage accepting/abandoning changes
-    this.statusBus = new bacon.Bus()
+    this.statusBus = new Bus()
 
     // Create the options
     ;[ this.busses, this.streams, this.acceptedStreams ] = _.chain(optionsWithDefaults)
@@ -118,7 +118,7 @@ export default class Settings {
    */
   createSetting (name, initialValue, isConditional) {
     // Set up the bus
-    const bus = new bacon.Bus()
+    const bus = new Bus()
 
     // Make the event stream and conditionally accept changes
     const stream = isConditional

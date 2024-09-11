@@ -58,7 +58,7 @@
     "webpack-node-externals": "^3.0.0"
   },
   "dependencies": {
-    "baconjs": "^0.7.71",
+    "baconjs": "^3.0.19",
     "d3-axis": "^1.0.3",
     "d3-brush": "https://github.com/zakandrewking/d3-brush.git",
     "d3-drag": "^1.0.2",

@@ -2142,10 +2142,10 @@ backbone@1.4.0:
   dependencies:
     underscore ">=1.8.3"
 
-baconjs@^0.7.71:
-  version "0.7.95"
-  resolved "https://registry.npmjs.org/baconjs/-/baconjs-0.7.95.tgz#96869a814c730e62e5991944eb2fcb8c97171615"
-  integrity sha512-3qp0GuAfEUlJybSVPQ2oai8VYO0aSTJf4wP/jYZpgaffEXi31VBcqSlVmD8ahmXXGzgdO+yFk9onDnt2ZJJXxA==
+baconjs@^3.0.19:
+  version "3.0.19"
+  resolved "https://registry.npmjs.org/baconjs/-/baconjs-3.0.19.tgz#ddedbb9a89d41dbb7eb4094d7fdabdee7e327995"
+  integrity sha512-/h7R6hTql8yk1FxYk/bTALea7fGcSJrUoLHFhX1WEkfI4C2mbR4sPbaNd0EhUIDJi3QwTBWEFHh7xEAaz3A3/A==
 
 balanced-match@^1.0.0:
   version "1.0.2"
