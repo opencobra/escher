@@ -3367,7 +3367,7 @@ eslint-plugin-promise@^6.1.1:
   resolved "https://registry.npmjs.org/eslint-plugin-promise/-/eslint-plugin-promise-6.6.0.tgz#acd3fd7d55cead7a10f92cf698f36c0aafcd717a"
   integrity sha512-57Zzfw8G6+Gq7axm2Pdo3gW/Rx3h9Yywgn61uE/3elTCOePEHVrn2i5CdfBwA1BLK0Q0WqctICIUSqXZW/VprQ==
 
-eslint-plugin-react@^7.32.2:
+eslint-plugin-react@7.35.2:
   version "7.35.2"
   resolved "https://registry.npmjs.org/eslint-plugin-react/-/eslint-plugin-react-7.35.2.tgz#d32500d3ec268656d5071918bfec78cfd8b070ed"
   integrity sha512-Rbj2R9zwP2GYNcIak4xoAMV57hrBh3hTaR0k7hVjwCQgryE/pw5px4b13EYjduOI0hfXyZhwBxaGpOTbWSGzKQ==
@@ -6582,7 +6582,7 @@ ssri@^6.0.1:
   dependencies:
     figgy-pudding "^3.5.1"
 
-standard-engine@^15.0.0:
+standard-engine@^15.1.0:
   version "15.1.0"
   resolved "https://registry.npmjs.org/standard-engine/-/standard-engine-15.1.0.tgz#717409a002edd13cd57f6554fdd3464d9a22a774"
   integrity sha512-VHysfoyxFu/ukT+9v49d4BRXIokFRZuH3z1VRxzFArZdjSCFpro6rEIU3ji7e4AoAtuSfKBkiOmsrDqKW5ZSRw==
@@ -6592,10 +6592,10 @@ standard-engine@^15.0.0:
     pkg-conf "^3.1.0"
     xdg-basedir "^4.0.0"
 
-standard@^17.1.0:
-  version "17.1.0"
-  resolved "https://registry.npmjs.org/standard/-/standard-17.1.0.tgz#829eeeb3139ad50714294d3531592d60ad1286af"
-  integrity sha512-jaDqlNSzLtWYW4lvQmU0EnxWMUGQiwHasZl5ZEIwx3S/ijZDjZOzs1y1QqKwKs5vqnFpGtizo4NOYX2s0Voq/g==
+standard@^17.1.1:
+  version "17.1.1"
+  resolved "https://registry.npmjs.org/standard/-/standard-17.1.1.tgz#799035b4d2e4c5a7baaa537635a818f510410eaa"
+  integrity sha512-GuqFtDMmpcIMX3R/kLaq+Cm18Pjx6IOpR9KhOYKetmkR5ryCxFtus4rC3JNvSE3l9GarlOZLZpBRHqDA9wY8zw==
   dependencies:
     eslint "^8.41.0"
     eslint-config-standard "17.1.0"
@@ -6603,8 +6603,8 @@ standard@^17.1.0:
     eslint-plugin-import "^2.27.5"
     eslint-plugin-n "^15.7.0"
     eslint-plugin-promise "^6.1.1"
-    eslint-plugin-react "^7.32.2"
-    standard-engine "^15.0.0"
+    eslint-plugin-react "7.35.2"
+    standard-engine "^15.1.0"
     version-guard "^1.1.1"
 
 statuses@2.0.1:
