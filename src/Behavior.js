@@ -995,7 +995,7 @@ export default class Behavior {
         x: dx,
         y: dy
       }
-      const [x, y] = d3Pointer(e, d)
+      const [x, y] = d3Pointer(e, rel)
       const location = {
         x,
         y

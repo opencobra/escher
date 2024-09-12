@@ -48,8 +48,8 @@ export default class Canvas {
           .classed('canvas-group', true)
           .data([ { x: this.x, y: this.y } ])
 
-    const stopPropagation = (d) => {
-      d.sourceEvent.stopPropagation()
+    const stopPropagation = (event) => {
+      event.sourceEvent.stopPropagation()
     }
 
     const transformString = (x, y, currentTransform) => {
@@ -118,9 +118,9 @@ export default class Canvas {
 
     let lastRightX
     const dragRight = d3Drag()
-          .on('start', (d) => {
-            lastRightX = d.x
-            stopPropagation(d)
+          .on('start', (event) => {
+            lastRightX = event.x
+            stopPropagation(event)
           })
           .on('drag', (event, d) => {
             event.sourceEvent.stopPropagation()
@@ -200,9 +200,9 @@ export default class Canvas {
 
     let lastBottomY
     const dragBottom = d3Drag()
-          .on('start', (d) => {
-            lastBottomY = d.y
-            stopPropagation(d)
+          .on('start', (event) => {
+            lastBottomY = event.y
+            stopPropagation(event)
           })
           .on('drag', (event, d) => {
             event.sourceEvent.stopPropagation()
