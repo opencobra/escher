@@ -1,9 +1,6 @@
 import * as utils from './utils'
 import { drag as d3Drag } from 'd3-drag'
-import {
-  mouse as d3Mouse,
-  event
-} from 'd3-selection'
+import { pointer as d3Pointer } from 'd3-selection';
 
 /**
  * DirectionArrow. A constructor for an arrow that can be rotated and dragged,
@@ -100,20 +97,31 @@ export default class DirectionArrow {
   }
 
   _setupDrag () {
+    let lastX, lastY;
     var drag = d3Drag()
-        .on('start', d => {
+        .on('start', e => {
+          lastX = e.x
+          lastY = e.y
           // silence other listeners
-          event.sourceEvent.stopPropagation()
+          e.sourceEvent.stopPropagation()
           this.dragging = true
         })
-        .on('drag', d => {
+        .on('drag', e => {
+          const dx = e.x - lastX
+          lastX = e.x
+          const dy = e.y - lastY
+          lastY = e.y
+
           const displacement = {
-            x: event.dx,
-            y: event.dy
+            x: dx,
+            y: dy
           }
+
+          const [x, y] = d3Pointer(e, this.sel.node());
+
           const location = {
-            x: d3Mouse(this.sel.node())[0],
-            y: d3Mouse(this.sel.node())[1]
+            x,
+            y
           }
           const dAngle = utils.angle_for_event(displacement, location,
                                                this.center)

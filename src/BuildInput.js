@@ -4,7 +4,7 @@ import completely from './completely'
 import DirectionArrow from './DirectionArrow'
 import CobraModel from './CobraModel'
 import _ from 'underscore'
-import { mouse as d3Mouse } from 'd3-selection'
+import { pointer as d3Pointer } from 'd3-selection'
 
 /**
  * BuildInput
@@ -324,13 +324,15 @@ export default class BuildInput {
 
     if (this.start_reaction_listener) {
       const node = this.map.sel.node()
-      this.map.sel.on('click.start_reaction', () => {
+      this.map.sel.on('click.start_reaction', (e) => {
         // TODO fix this hack
         if (this.direction_arrow.dragging) return
+
+        const [x, y] = d3Pointer(e, node)
         // reload the reaction input
         var coords = {
-          x: d3Mouse(node)[0],
-          y: d3Mouse(node)[1]
+          x,
+          y
         }
         // unselect metabolites
         this.map.deselect_nodes()

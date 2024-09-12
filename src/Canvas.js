@@ -2,7 +2,6 @@ import * as utils from './utils'
 import CallbackManager from './CallbackManager'
 
 import { drag as d3Drag } from 'd3-drag'
-import { selection as d3Selection, event } from 'd3-selection'
 import _ from 'underscore'
 
 /**
@@ -49,8 +48,8 @@ export default class Canvas {
           .classed('canvas-group', true)
           .data([ { x: this.x, y: this.y } ])
 
-    const stopPropagation = () => {
-      event.sourceEvent.stopPropagation()
+    const stopPropagation = (d) => {
+      d.sourceEvent.stopPropagation()
     }
 
     const transformString = (x, y, currentTransform) => {
@@ -85,7 +84,7 @@ export default class Canvas {
 
     const dragLeft = d3Drag()
           .on('start', stopPropagation)
-          .on('drag', d => {
+          .on('drag', (event, d) => {
             const oldX = d.x
             d.x = Math.min(d.x + this.width - (dragbarWidth / 2), event.x)
             this.x = d.x
@@ -117,12 +116,18 @@ export default class Canvas {
           .classed('resize-rect', true)
           .call(dragLeft)
 
+    let lastRightX
     const dragRight = d3Drag()
-          .on('start', stopPropagation)
-          .on('drag', d => {
+          .on('start', (d) => {
+            lastRightX = d.x
+            stopPropagation(d)
+          })
+          .on('drag', (event, d) => {
             event.sourceEvent.stopPropagation()
+            const dx = event.x - lastRightX
+            lastRightX = event.x
             const dragX = Math.max(d.x + (dragbarWidth / 2),
-                                   d.x + this.width + event.dx)
+                                   d.x + this.width + dx)
             // recalculate width
             this.width = dragX - d.x
             // move the right drag handle
@@ -155,7 +160,7 @@ export default class Canvas {
 
     const dragTop = d3Drag()
           .on('start', stopPropagation)
-          .on('drag', d => {
+          .on('drag', (event, d) => {
             event.sourceEvent.stopPropagation()
             const oldY = d.y
             d.y = Math.min(d.y + this.height - (dragbarWidth / 2), event.y)
@@ -193,12 +198,18 @@ export default class Canvas {
         .classed('resize-rect', true)
         .call(dragTop)
 
+    let lastBottomY
     const dragBottom = d3Drag()
-          .on('start', stopPropagation)
-          .on('drag', d => {
+          .on('start', (d) => {
+            lastBottomY = d.y
+            stopPropagation(d)
+          })
+          .on('drag', (event, d) => {
             event.sourceEvent.stopPropagation()
+            const dy = event.y - lastBottomY
+            lastBottomY = event.y
             const dragY = Math.max(d.y + (dragbarWidth / 2),
-                                   d.y + this.height + event.dy)
+                                   d.y + this.height + dy)
             // recalculate width
             this.height = dragY - d.y
             // move the right drag handle

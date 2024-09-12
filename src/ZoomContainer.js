@@ -2,7 +2,6 @@ import utils from './utils'
 import CallbackManager from './CallbackManager'
 
 import _ from 'underscore'
-import { event } from 'd3-selection'
 import {
   zoom as d3Zoom,
   zoomIdentity as d3ZoomIdentity
@@ -29,8 +28,8 @@ export default class ZoomContainer {
     // Only necessary for Safari because touch-action CSS is supported by all other browsers
     // TODO Zak needs to figure out why this doesn't work on Safari
     if (navigator && navigator.userAgent && navigator.userAgent.indexOf('Safari') !== -1 && navigator.userAgent.indexOf('Mozilla') === -1) {
-      selection.on('touchstart touchmove', function () {
-        event.stopPropagation()
+      selection.on('touchstart touchmove', function (e) {
+        e.sourceEvent.stopPropagation()
       })
     }
 
@@ -144,17 +143,17 @@ export default class ZoomContainer {
     // exception in node, so catch that during testing. This may be a bug with
     // d3 related to d3 using the global this.document. TODO look into this.
     this._zoomBehavior = d3Zoom()
-      .on('start', () => {
+      .on('start', (e) => {
         // Prevent default zoom behavior, specifically for mobile pinch zoom
-        if (event.sourceEvent !== null) {
-          event.sourceEvent.stopPropagation()
-          event.sourceEvent.preventDefault()
+        if (e.sourceEvent !== null) {
+          e.sourceEvent.stopPropagation()
+          e.sourceEvent.preventDefault()
         }
       })
-      .on('zoom', () => {
-        this._goToCallback(event.transform.k, {
-          x: event.transform.x,
-          y: event.transform.y
+      .on('zoom', (e) => {
+        this._goToCallback(e.transform.k, {
+          x: e.transform.x,
+          y: e.transform.y
         })
       })
 
@@ -183,8 +182,8 @@ export default class ZoomContainer {
     // add listeners for scrolling to pan
     if (this._scrollBehavior === 'pan') {
       // Add the wheel listener
-      const wheelFn = () => {
-        const ev = event
+      const wheelFn = (e) => {
+        const ev = e.sourceEvent
         const sensitivity = 0.5
         // stop scroll in parent elements
         ev.stopPropagation()
