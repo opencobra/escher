@@ -3,7 +3,7 @@ import { assert } from 'chai'
 import d3Body from './helpers/d3Body'
 import get_map from "./helpers/get_map";
 import Brush from "../Brush";
-import {Map} from "../Map";
+import Map from "../Map";
 import Settings from "../Settings";
 
 function getMap () {
