@@ -1,6 +1,6 @@
 import UndoStack from '../UndoStack'
 
-import { describe, it } from 'mocha'
+import { describe, it } from 'vitest'
 import { assert } from 'chai'
 
 describe('UndoStack', () => {

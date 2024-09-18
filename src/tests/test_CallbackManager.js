@@ -1,4 +1,4 @@
-import { describe, it, beforeEach } from 'mocha'
+import { describe, it, beforeEach } from 'vitest'
 import { assert } from 'chai'
 import CallbackManager from '../CallbackManager'
 
@@ -21,16 +21,16 @@ describe('CallbackManager', () => {
     assert.isTrue(called2)
   })
 
-  it('passes args and this', done => {
+  it('passes args and this', async () => {
     const thisObj = {}
     const fn = function (arg1, arg2) {
       assert.strictEqual(this, thisObj)
       assert.strictEqual(arg1, 1)
       assert.strictEqual(arg2, 2)
-      done()
     }
+
     cb.set('my_cb', fn)
-    cb.run('my_cb', thisObj, 1, 2)
+    await cb.run('my_cb', thisObj, 1, 2)
   })
 
   it('can remove function', () => {

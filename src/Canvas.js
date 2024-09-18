@@ -1,4 +1,4 @@
-import * as utils from './utils'
+import utils from './utils'
 import CallbackManager from './CallbackManager'
 
 import { drag as d3Drag } from 'd3-drag'

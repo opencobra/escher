@@ -1,6 +1,6 @@
-import * as dataStyles from '../dataStyles'
+import dataStyles from '../dataStyles'
 
-import { describe, it } from 'mocha'
+import { describe, it } from 'vitest'
 import { assert } from 'chai'
 
 describe('dataStyles.importAndCheck', () => {

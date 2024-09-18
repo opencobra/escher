@@ -1,6 +1,6 @@
 import SearchIndex from '../SearchIndex'
 
-import { describe, it, beforeEach } from 'mocha'
+import { describe, it, beforeEach } from 'vitest'
 import { assert } from 'chai'
 
 describe('SearchIndex', () => {

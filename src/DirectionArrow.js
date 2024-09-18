@@ -1,4 +1,4 @@
-import * as utils from './utils'
+import utils from './utils'
 import { drag as d3Drag } from 'd3-drag'
 import { pointer as d3Pointer } from 'd3-selection';
 

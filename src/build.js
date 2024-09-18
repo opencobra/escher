@@ -2,7 +2,7 @@
  * Functions for building new reactions.
  */
 
-import * as utils from './utils'
+import utils from './utils'
 import _ from 'underscore'
 
 function getLabelLoc (angle) {

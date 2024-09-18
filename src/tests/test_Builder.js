@@ -6,11 +6,11 @@ import d3Body from './helpers/d3Body'
 import getMap from './helpers/get_map'
 import getModel from './helpers/get_model'
 
-import { describe, it } from 'mocha'
+import { describe, it } from 'vitest'
 import { assert } from 'chai'
 import { utils } from "../main";
 
-function makeParentSel (s) {
+function makeParentSel(s) {
   const element = s.append('div')
   const width = 100
   const height = 100
@@ -29,20 +29,22 @@ function makeParentSel (s) {
 }
 
 describe('Builder', () => {
-  it('Small map, no model. Async tests.', (done) => {
+  it('Small map, no model. Async tests.', async () => {
     const sel = makeParentSel(d3Body)
-    const b = Builder(getMap(), null, '', sel, {
-      never_ask_before_quit: true,
-      first_load_callback: () => {
-        assert.strictEqual(sel.select('svg').node(), b.map.svg.node())
-        assert.strictEqual(sel.selectAll('#nodes').size(), 1)
-        assert.strictEqual(sel.selectAll('.node').size(), 79)
-        assert.strictEqual(sel.selectAll('#reactions').size(), 1)
-        assert.strictEqual(sel.selectAll('.reaction').size(), 18)
-        assert.strictEqual(sel.selectAll('#text-labels').size(), 1)
-        sel.remove()
-        done()
-      }
+    const b = await new Promise(resolve => {
+      Builder(getMap(), null, '', sel, {
+        never_ask_before_quit: true,
+        first_load_callback: (builder) => {
+          assert.strictEqual(sel.select('svg').node(), builder.map.svg.node())
+          assert.strictEqual(sel.selectAll('#nodes').size(), 1)
+          assert.strictEqual(sel.selectAll('.node').size(), 79)
+          assert.strictEqual(sel.selectAll('#reactions').size(), 1)
+          assert.strictEqual(sel.selectAll('.reaction').size(), 18)
+          assert.strictEqual(sel.selectAll('#text-labels').size(), 1)
+          sel.remove()
+          resolve()
+        }
+      })
     })
   })
 
@@ -59,7 +61,7 @@ describe('Builder', () => {
 
   it('check for model+highlight_missing bug', () => {
     Builder(getMap(), getModel(), '', makeParentSel(d3Body),
-            { never_ask_before_quit: true, highlight_missing: true })
+      { never_ask_before_quit: true, highlight_missing: true })
   })
 
   it('SVG selection error', () => {
@@ -109,86 +111,91 @@ describe('Builder', () => {
     assert.deepEqual(b.settings.get('reaction_scale'), reactionScale)
   })
 
-  it('set_reaction_data', done => {
+  it('set_reaction_data', async () => {
     const sel = makeParentSel(d3Body)
-    Builder(getMap(), null, '', sel, {
-      first_load_callback: builder => {
-        // These just need to run right now
-        const data = { GAPD: 2.0 }
-        builder.set_reaction_data(data)
-        assert.deepEqual(builder.settings.get('reaction_data'), utils.process_reaction_data(data))
-        builder.set_reaction_data(null)
-        assert.strictEqual(builder.settings.get('reaction_data'), null)
-        done()
-      }
+    await new Promise(resolve => {
+      Builder(getMap(), null, '', sel, {
+        first_load_callback: builder => {
+          const data = { GAPD: 2.0 }
+          builder.set_reaction_data(data)
+          assert.deepEqual(builder.settings.get('reaction_data'), utils.process_reaction_data(data))
+          builder.set_reaction_data(null)
+          assert.strictEqual(builder.settings.get('reaction_data'), null)
+          resolve()
+        }
+      })
     })
   })
 
-  it('set_metabolite_data', done => {
+  it('set_metabolite_data', async () => {
     const sel = makeParentSel(d3Body)
-    Builder(getMap(), null, '', sel, {
-      first_load_callback: builder => {
-        // These just need to run right now
-        const data = { g3p: 2.0 }
-        builder.set_metabolite_data(data)
-        assert.deepEqual(builder.settings.get('metabolite_data'), data)
-        builder.set_metabolite_data(null)
-        assert.strictEqual(builder.settings.get('metabolite_data'), null)
-        done()
-      }
+    await new Promise(resolve => {
+      Builder(getMap(), null, '', sel, {
+        first_load_callback: builder => {
+          const data = { g3p: 2.0 }
+          builder.set_metabolite_data(data)
+          assert.deepEqual(builder.settings.get('metabolite_data'), data)
+          builder.set_metabolite_data(null)
+          assert.strictEqual(builder.settings.get('metabolite_data'), null)
+          resolve()
+        }
+      })
     })
   })
 
-  it('set_gene_data', done => {
+  it('set_gene_data', async () => {
     const sel = makeParentSel(d3Body)
-    Builder(getMap(), null, '', sel, {
-      first_load_callback: builder => {
-        // These just need to run right now
-        const data = { b1779: 2.0 }
-        builder.set_gene_data(data)
-        assert.deepEqual(builder.settings.get('gene_data'), data)
-        builder.set_gene_data(null)
-        assert.strictEqual(builder.settings.get('gene_data'), null)
-        done()
-      }
+    await new Promise(resolve => {
+      Builder(getMap(), null, '', sel, {
+        first_load_callback: builder => {
+          const data = { b1779: 2.0 }
+          builder.set_gene_data(data)
+          assert.deepEqual(builder.settings.get('gene_data'), data)
+          builder.set_gene_data(null)
+          assert.strictEqual(builder.settings.get('gene_data'), null)
+          resolve()
+        }
+      })
     })
   })
 
-  it('sets reaction then gene data', done => {
+  it('sets reaction then gene data', async () => {
     const sel = makeParentSel(d3Body)
-    Builder(getMap(), null, '', sel, {
-      first_load_callback: builder => {
-        // These just need to run right now
-        const reactionData = { GAPD: 2.0 }
-        const geneData = { b1779: 2.0 }
-        builder.set_reaction_data(reactionData)
-        assert.deepEqual(builder.settings.get('reaction_data'), utils.process_reaction_data(reactionData))
-        builder.set_gene_data(geneData)
-        assert.strictEqual(builder.settings.get('reaction_data'), null)
-        assert.deepEqual(builder.settings.get('gene_data'), geneData)
-        builder.set_gene_data(null)
-        assert.strictEqual(builder.settings.get('gene_data'), null)
-        done()
-      }
+    await new Promise(resolve => {
+      Builder(getMap(), null, '', sel, {
+        first_load_callback: builder => {
+          const reactionData = { GAPD: 2.0 }
+          const geneData = { b1779: 2.0 }
+          builder.set_reaction_data(reactionData)
+          assert.deepEqual(builder.settings.get('reaction_data'), utils.process_reaction_data(reactionData))
+          builder.set_gene_data(geneData)
+          assert.strictEqual(builder.settings.get('reaction_data'), null)
+          assert.deepEqual(builder.settings.get('gene_data'), geneData)
+          builder.set_gene_data(null)
+          assert.strictEqual(builder.settings.get('gene_data'), null)
+          resolve()
+        }
+      })
     })
   })
 
-  it('sets gene then reaction data', done => {
+  it('sets gene then reaction data', async () => {
     const sel = makeParentSel(d3Body)
-    Builder(getMap(), null, '', sel, {
-      first_load_callback: builder => {
-        // These just need to run right now
-        const reactionData = { GAPD: 2.0 }
-        const geneData = { b1779: 2.0 }
-        builder.set_gene_data(geneData)
-        assert.deepEqual(builder.settings.get('gene_data'), geneData)
-        builder.set_reaction_data(reactionData)
-        assert.strictEqual(builder.settings.get('gene_data'), null)
-        assert.deepEqual(builder.settings.get('reaction_data'), utils.process_reaction_data(reactionData))
-        builder.set_reaction_data(null)
-        assert.strictEqual(builder.settings.get('reaction_data'), null)
-        done()
-      }
+    await new Promise(resolve => {
+      Builder(getMap(), null, '', sel, {
+        first_load_callback: builder => {
+          const reactionData = { GAPD: 2.0 }
+          const geneData = { b1779: 2.0 }
+          builder.set_gene_data(geneData)
+          assert.deepEqual(builder.settings.get('gene_data'), geneData)
+          builder.set_reaction_data(reactionData)
+          assert.strictEqual(builder.settings.get('gene_data'), null)
+          assert.deepEqual(builder.settings.get('reaction_data'), utils.process_reaction_data(reactionData))
+          builder.set_reaction_data(null)
+          assert.strictEqual(builder.settings.get('reaction_data'), null)
+          resolve()
+        }
+      })
     })
   })
 })

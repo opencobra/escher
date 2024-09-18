@@ -1,10 +1,9 @@
-import {describe, it, beforeEach} from "mocha";
+import {describe, it, beforeEach} from "vitest";
 import {assert} from 'chai'
 
-const Draw = require('../Draw')
-
-const d3Body = require('./helpers/d3Body')
-const d3_select = require('d3-selection').select
+import Draw from "../Draw";
+import d3Body from "./helpers/d3Body";
+import {select as d3_select} from 'd3-selection'
 
 const draw = new Draw()
 

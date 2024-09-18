@@ -33,7 +33,8 @@
     "@babel/plugin-transform-react-jsx": "^7.25.2",
     "@babel/preset-env": "^7.25.4",
     "@jupyter-widgets/base": "^6.0.10",
-    "babel-loader": "^9.1.3",
+    "@vitest/coverage-v8": "^2.1.1",
+    "babel-loader": "^9.2.1",
     "chai": "^4.3.7",
     "coveralls": "^3.1.1",
     "cross-env": "^7.0.3",
@@ -42,8 +43,6 @@
     "intersection-observer": "^0.12.2",
     "istanbul-instrumenter-loader": "^3.0.1",
     "jsdom": "^25.0.0",
-    "mocha": "^10.7.3",
-    "mochapack": "^2.1.4",
     "null-loader": "^4.0.1",
     "nyc": "^17.0.0",
     "raw-loader": "^4.0.2",
@@ -51,6 +50,8 @@
     "style-loader": "^4.0.0",
     "uglifyjs-webpack-plugin": "^2.2.0",
     "url-loader": "^4.1.1",
+    "vite-plugin-raw": "^1.0.3",
+    "vitest": "^2.1.1",
     "webpack": "^5.94.0",
     "webpack-cli": "^5.1.4",
     "webpack-dev-server": "^5.1.0",
@@ -81,9 +82,9 @@
     "watch": "./node_modules/.bin/webpack --config webpack.prod.js --watch",
     "start": "./node_modules/.bin/webpack-dev-server --config webpack.dev.js",
     "clean": "rm -r dist/*; rm -r py/escher/static/*",
-    "test": "./node_modules/.bin/mochapack --webpack-config webpack.test.js \"src/tests/*.js\"",
+    "test": "VITE_ESCHER_VERSION=$(npm pkg get version | tr -d '\"') vitest run src/tests/*.js",
     "copy": "cp dist/escher.min.js dist/index.js && cp package.json py/escher/static/ && cp jupyter/notebook-extension.js py/escher/static/extension.js && cp dist/escher.min.* py/escher/static/ && mkdir -p py/escher/static/jsonschema; cp jsonschema/* py/escher/static/jsonschema/",
-    "coverage": "./node_modules/.bin/cross-env NODE_ENV=coverage ./node_modules/.bin/nyc --reporter=text-lcov npm run test | ./node_modules/.bin/coveralls"
+    "coverage": "vitest run --coverage && cat ./coverage/lcov.info | coveralls"
   },
   "nyc": {
     "include": [

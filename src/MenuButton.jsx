@@ -9,7 +9,7 @@
 import { h, Component } from 'preact'
 import _ from 'underscore'
 import utils from './utils'
-import * as dataStyles from './dataStyles'
+import dataStyles from './dataStyles'
 
 class MenuButton extends Component {
   constructor (props) {

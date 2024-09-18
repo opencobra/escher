@@ -3,7 +3,7 @@
  * SVG element.
  */
 
-var utils = require('./utils')
+import utils from "./utils";
 
 var PlacedDiv = utils.make_class()
 // instance methods
@@ -13,7 +13,6 @@ PlacedDiv.prototype = {
   place: place,
   hide: hide,
 }
-module.exports = PlacedDiv
 
 function init (div, map, displacement = { x: 0, y: 0 }, shouldReposition = true) {
   this.div = div
@@ -79,3 +78,5 @@ function hide () {
     this.visible = false
   }
 }
+
+export default PlacedDiv;

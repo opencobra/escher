@@ -1,6 +1,6 @@
 import Builder, * as escher from '../main'
 
-import {describe, it} from 'mocha'
+import {describe, it} from 'vitest'
 import {assert} from 'chai'
 
 describe('main', () => {

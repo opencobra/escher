@@ -1,7 +1,7 @@
-import { describe, it} from "mocha";
+import { describe, it} from "vitest";
 import { assert } from 'chai'
-var DataMenu = require('../DataMenu')
-var d3Body = require('./helpers/d3Body')
+import DataMenu from "../DataMenu";
+import d3Body from './helpers/d3Body'
 
 describe('DataMenu', () => {
   it('initializes',() => {

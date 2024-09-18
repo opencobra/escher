@@ -1,7 +1,6 @@
-import {describe, it} from "mocha";
+import {describe, it} from "vitest";
 import {assert} from 'chai'
-
-const Settings = require('../Settings').default
+import Settings from "../Settings";
 
 describe('Settings', () => {
   it('initializes', () => {

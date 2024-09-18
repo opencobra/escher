@@ -1,8 +1,8 @@
 /* global global */
+import {select as d3Select} from 'd3-selection'
 
 const jsdom = require('jsdom')
 const { JSDOM } = jsdom
-const d3Select = require('d3-selection').select
 
 // body selection
 const dom = new JSDOM('', { pretendToBeVisual: true })

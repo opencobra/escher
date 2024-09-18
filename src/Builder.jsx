@@ -3,7 +3,7 @@
  */
 
 /** @jsx h */
-import * as utils from './utils'
+import utils from './utils'
 import BuildInput from './BuildInput'
 import ZoomContainer from './ZoomContainer'
 import Map from './Map'
@@ -12,7 +12,7 @@ import Brush from './Brush'
 import CallbackManager from './CallbackManager'
 import Settings from './Settings'
 import TextEditInput from './TextEditInput'
-import * as dataStyles from './dataStyles'
+import dataStyles from './dataStyles'
 import renderWrapper from './renderWrapper'
 import SettingsMenu from './SettingsMenu'
 import MenuBar from './MenuBar'
@@ -34,8 +34,7 @@ import './Builder.css'
 
 // Import CSS as a string to embed. This also works from lib because css/src get
 // uploaded to NPM.
-// eslint-disable-next-line import/no-webpack-loader-syntax
-import builderEmbed from '!!raw-loader!./Builder-embed.css'
+import builderEmbed from './Builder-embed.css?raw';
 
 class Builder {
   constructor (mapData, modelData, embeddedCss, selection, options) {

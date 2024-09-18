@@ -1,5 +1,5 @@
-var CobraModel = require('../CobraModel')
-import {describe, it } from 'mocha'
+import CobraModel from "../CobraModel";
+import {describe, it } from 'vitest'
 import {assert} from 'chai'
 
 describe('CobraModel', function () {

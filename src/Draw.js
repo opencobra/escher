@@ -28,10 +28,10 @@
  *
  */
 
-var utils = require('./utils')
-var dataStyles = require('./dataStyles')
-var CallbackManager = require('./CallbackManager').default
-var d3_format = require('d3-format').format
+import utils from './utils'
+import dataStyles from './dataStyles'
+import CallbackManager from './CallbackManager'
+import {format as d3_format} from 'd3-format'
 
 var Draw = utils.make_class()
 // instance methods
@@ -52,7 +52,6 @@ Draw.prototype = {
   create_segment: create_segment,
   update_segment: update_segment
 }
-module.exports = Draw
 
 function init (behavior, settings, map) {
   this.behavior = behavior
@@ -976,3 +975,5 @@ function displacedCoords (reactionArrowDisplacement, start, end, displace) {
     console.error('bad displace value: ' + displace)
   }
 }
+
+export default Draw

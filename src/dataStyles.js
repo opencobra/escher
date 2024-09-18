@@ -1,4 +1,4 @@
-import * as utils from './utils'
+import utils from './utils'
 import _ from 'underscore'
 import { format as d3Format } from 'd3-format'
 
@@ -94,7 +94,7 @@ function log2Fold (x, y, takeAbs) {
  * @param allReactions - Required for name == 'gene_data'. Must include all GPRs
  *                       for the map and model.
  */
-export function importAndCheck (data, name, allReactions) {
+function importAndCheck (data, name, allReactions) {
   // check arguments
   if (!data) return null
 
@@ -132,7 +132,7 @@ export function importAndCheck (data, name, allReactions) {
   return data
 }
 
-export function floatForData (d, styles, compareStyle) {
+function floatForData (d, styles, compareStyle) {
   // all null
   if (d === null) return null
 
@@ -162,7 +162,7 @@ export function floatForData (d, styles, compareStyle) {
   throw new Error('Bad data compare_style: ' + compareStyle)
 }
 
-export function reverse_flux_for_data (d) {
+function reverse_flux_for_data (d) {
   if (d === null || d[0] === null) {
     return false
   }
@@ -188,7 +188,7 @@ export function reverse_flux_for_data (d) {
  *
  * The text elements should each appear on a new line.
  */
-export function gene_string_for_data (rule, gene_values, genes, styles,
+function gene_string_for_data (rule, gene_values, genes, styles,
                                identifiers_on_map, compare_style) {
   var out_text = rule
   var no_data = (gene_values === null)
@@ -258,12 +258,17 @@ export function gene_string_for_data (rule, gene_values, genes, styles,
   return result
 
   // definitions
-  function null_or_d (d, format) {
-    return d === null ? 'nd' : format(d)
+  function null_or_d(d, format) {
+    if (d === null) {
+      return 'nd';
+    }
+    const formatted = format(d);
+    // Replace Unicode minus sign (U+2212) with regular hyphen-minus
+    return formatted.replace('−', '-');
   }
 }
 
-export function text_for_data (d, f) {
+function text_for_data (d, f) {
   if (d === null) {
     return null_or_d(null)
   }
@@ -281,12 +286,17 @@ export function text_for_data (d, f) {
   return ''
 
   // definitions
-  function null_or_d (d, format) {
-    return d === null ? '(nd)' : format(d)
+  function null_or_d(d, format) {
+    if (d === null) {
+      return '(nd)';
+    }
+    const formatted = format(d);
+    // Replace Unicode minus sign (U+2212) with regular hyphen-minus
+    return formatted.replace('−', '-');
   }
 }
 
-export function csv_converter(csv_rows) {
+function csv_converter(csv_rows) {
   /** Convert data from a csv file to json-style data.
 
       File must include a header row.
@@ -310,7 +320,7 @@ export function csv_converter(csv_rows) {
   return converted
 }
 
-export function genes_for_gene_reaction_rule(rule) {
+function genes_for_gene_reaction_rule(rule) {
   /** Find unique genes in gene_reaction_rule string.
 
       Arguments
@@ -337,7 +347,7 @@ export function genes_for_gene_reaction_rule(rule) {
   return utils.unique_strings_array(genes)
 }
 
-export function evaluate_gene_reaction_rule(rule, gene_values, and_method_in_gene_reaction_rule) {
+function evaluate_gene_reaction_rule(rule, gene_values, and_method_in_gene_reaction_rule) {
   /** Return a value given the rule and gene_values object.
 
       Arguments
@@ -426,7 +436,7 @@ export function evaluate_gene_reaction_rule(rule, gene_values, and_method_in_gen
   return out
 }
 
-export function replace_gene_in_rule (rule, gene_id, val) {
+function replace_gene_in_rule (rule, gene_id, val) {
   // get the escaped string, with surrounding space or parentheses
   var space_or_par_start = '(^|[\\\s\\\(\\\)])'
   var space_or_par_finish = '([\\\s\\\(\\\)]|$)'
@@ -447,7 +457,7 @@ export function replace_gene_in_rule (rule, gene_id, val) {
  * @param {String} compare_style -
  * @param {Array} keys - (Optional) The keys in reactions to apply data to.
  */
-export function apply_reaction_data_to_reactions (reactions, data, styles,
+function apply_reaction_data_to_reactions (reactions, data, styles,
                                            compare_style, keys) {
   if (_.isUndefined(keys)) keys = Object.keys(reactions)
 
@@ -500,7 +510,7 @@ export function apply_reaction_data_to_reactions (reactions, data, styles,
  * @param {String} compare_style -
  * @param {Array} keys - (Optional) The keys in nodes to apply data to.
  */
-export function apply_metabolite_data_to_nodes (nodes, data, styles, compareStyle, keys) {
+function apply_metabolite_data_to_nodes (nodes, data, styles, compareStyle, keys) {
   if (_.isUndefined(keys)) keys = Object.keys(nodes)
 
   if (data === null) {
@@ -535,7 +545,7 @@ export function apply_metabolite_data_to_nodes (nodes, data, styles, compareStyl
  * and_method_in_gene_reaction_rule:
  * @param {Array} keys - (Optional) The keys in reactions to apply data to.
  */
-export function apply_gene_data_to_reactions (
+function apply_gene_data_to_reactions (
   reactions,
   gene_data_obj,
   styles,
@@ -609,4 +619,19 @@ export function apply_gene_data_to_reactions (
                                                 compare_style)
   })
   return true
+}
+
+export default {
+  importAndCheck,
+  floatForData,
+  reverse_flux_for_data,
+  gene_string_for_data,
+  text_for_data,
+  csv_converter,
+  genes_for_gene_reaction_rule,
+  evaluate_gene_reaction_rule,
+  replace_gene_in_rule,
+  apply_reaction_data_to_reactions,
+  apply_metabolite_data_to_nodes,
+  apply_gene_data_to_reactions
 }

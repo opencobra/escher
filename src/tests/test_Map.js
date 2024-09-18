@@ -1,15 +1,13 @@
-import { describe, it, beforeEach} from "mocha";
+import { describe, it, beforeEach} from "vitest";
 import {assert} from "chai";
 import 'intersection-observer';
 
-const Map = require('../Map').default
-const Settings = require('../Settings').default
-const CobraModel = require('../CobraModel')
-
-const d3Body = require('./helpers/d3Body')
-const get_map = require('./helpers/get_map')
-
-const _ = require('underscore')
+import Map from "../Map";
+import Settings from "../Settings";
+import CobraModel from "../CobraModel";
+import d3Body from "./helpers/d3Body";
+import get_map from "./helpers/get_map";
+import _ from "underscore";
 
 function matching_reaction (reactions, id) {
   let match = null
