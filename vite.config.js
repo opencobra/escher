@@ -15,7 +15,6 @@ export default defineConfig({
     globals: true,
     environment: 'jsdom',
     include: ['src/tests/*.js'], // Include your test file pattern
-    exclude: ['webpack.test.js'], // Add this to exclude the file
     coverage: {
       provider: 'v8',
       reporter: ['text', 'lcov'], // Output both text and lcov for Coveralls
