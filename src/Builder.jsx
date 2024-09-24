@@ -34,7 +34,8 @@ import './Builder.css'
 
 // Import CSS as a string to embed. This also works from lib because css/src get
 // uploaded to NPM.
-import builderEmbed from './Builder-embed.css?raw';
+// eslint-disable-next-line import/no-webpack-loader-syntax
+import builderEmbed from '!!raw-loader!./Builder-embed.css'
 
 class Builder {
   constructor (mapData, modelData, embeddedCss, selection, options) {

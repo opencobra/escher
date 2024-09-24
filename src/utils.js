@@ -1,6 +1,6 @@
 /* global Blob, XMLSerializer, Image, btoa */
 import {csvParseRows as d3_csvParseRows } from "d3-dsv";
-import {vkbeautify} from "vkbeautify";
+import vkbeautify from "vkbeautify";
 import _ from "underscore";
 import GIF from "gif.js";
 import {json as d3_json, text as d3_text} from "d3-request";
