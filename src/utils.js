@@ -1296,6 +1296,8 @@ function update_color_legends(reaction_color_scale, has_data_on_reactions) {
   const legend = svg.select(".legend-group");
   const gradient = legend.select(".legend-defs linearGradient");
   // define the linear gradient data for the color rectangle
+
+  gradient.selectAll("stop").remove();
   gradient.selectAll("stop").data(_get_color_linearGradient_data(domain, range)).enter().append('stop')
     .attr("offset", d => d.offset)
     .attr("stop-color", d => d.color);
