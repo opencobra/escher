@@ -787,7 +787,22 @@ function downloadGif(name, svg_sel) {
     return DOMURL.createObjectURL(svgBlob);
   }
 
+  const processLegendSVGToCanvas = () => {
+    let legendSvgElement = document.querySelector('.legend-container').cloneNode(true);
+    legendSvgElement.setAttribute('viewBox', `0 0 225 36`);
+    legendSvgElement.setAttribute('width', 225);
+    legendSvgElement.setAttribute('height', 36);
+    let svgData = new XMLSerializer().serializeToString(legendSvgElement);
+    let svgBlob = new Blob([svgData], { type: 'image/svg+xml;charset=utf-8' });
+
+    return DOMURL.createObjectURL(svgBlob);
+  }
+
   const base_image = new Image()
+  const legend_image = new Image();
+  let legend_url = processLegendSVGToCanvas();
+  legend_image.src = legend_url;
+
   fetch('https://cdn.jsdelivr.net/npm/gif.js@0.2.0/dist/gif.worker.js')
     .then((response) => {
       if (!response.ok)
@@ -803,6 +818,7 @@ function downloadGif(name, svg_sel) {
     });
 
     const captureFrame = (index) => {
+
       if (index < frameCount) {
         let url = processSVGToCanvas();
 
@@ -810,8 +826,12 @@ function downloadGif(name, svg_sel) {
           // Clear the canvas before drawing
           context.clearRect(0, 0, picWidth, picHeight);
           context.drawImage(base_image, 0, 0, picWidth, picHeight);
-          gif.addFrame(context, { copy: true, delay });
+          // Draw the legend
+          context.drawImage(legend_image, picWidth - 230, picHeight - 41, 225, 36);
+
+          gif.addFrame(context, {copy: true, delay});
           DOMURL.revokeObjectURL(url);
+          DOMURL.revokeObjectURL(legend_url);
           setTimeout(() => {
             requestAnimationFrame(() => captureFrame(index + 1));
           }, delay);
@@ -820,6 +840,8 @@ function downloadGif(name, svg_sel) {
         base_image.src = url;
       } else {
         gif.on('finished', function (blob) {
+          DOMURL.revokeObjectURL(legend_url);
+
           const downloadUrl = URL.createObjectURL(blob);
           const a = document.createElement('a');
           a.href = downloadUrl;
