@@ -648,6 +648,9 @@ class Builder {
       save_png: () => this.map.save_png(),
       save_gif: () => this.map.save_gif(),
       import_background: (file) => this.map.import_background(file),
+      assignKeyImportBackground: fn => {
+        this.map.key_manager.assignedKeys.import_background.fn = fn
+      },
       clear_background: () => this.map.clear_background(),
       clear_map: () => { this.clear_map() },
       loadModel: file => this.load_model(file, true),
@@ -1142,7 +1145,7 @@ class Builder {
       },
       import_background: {
         key: 'ctrl+i',
-        fn: () => document.getElementById('canvasBackgroundInput').click()
+        fn: null // defined by button
       },
       clear_background: {
         key: 'ctrl+shift+i',

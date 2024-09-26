@@ -2441,6 +2441,7 @@ export default class Map {
       reader.onload = (e) => {
         const imageUrl = e.target.result;
         document.getElementById('canvas-background').setAttribute('href', imageUrl);
+        document.getElementById('canvas-background').setAttribute('display', '');
       };
       reader.readAsDataURL(file);
     }
@@ -2453,7 +2454,8 @@ export default class Map {
   clear_background () {
     this.callback_manager.run('before_clear_background')
     document.getElementById('canvas-background').setAttribute('href', '');
-    document.getElementById('canvasBackgroundInput').value = '';
+    // clear the background
+    document.getElementById('canvas-background').setAttribute('display', 'none');
     this.callback_manager.run('after_clear_background')
   }
 }
