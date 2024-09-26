@@ -755,9 +755,14 @@ function downloadGif(name, svg_sel) {
   var context = canvas.getContext('2d', { willReadFrequently: true })
   const DOMURL = window.URL || window.webkitURL || window;
   // total frames
-  const frameCount = 20;
+  const FRAME_COUNT = 20;
   // delay between frames
-  const delay = 100;
+  const DELAY = 100;
+  // Legend size
+  const LEGEND_HEIGHT = 36;
+  const LEGEND_WIDTH = 225;
+  const LEGEND_PADDING = 5;
+  
   // Calculate the size of the picture
   const boundingClientRect= document.querySelector('rect#canvas').getBoundingClientRect()
   const { width, height, x, y, left, top } = boundingClientRect
@@ -789,9 +794,9 @@ function downloadGif(name, svg_sel) {
 
   const processLegendSVGToCanvas = () => {
     let legendSvgElement = document.querySelector('.legend-container').cloneNode(true);
-    legendSvgElement.setAttribute('viewBox', `0 0 225 36`);
-    legendSvgElement.setAttribute('width', 225);
-    legendSvgElement.setAttribute('height', 36);
+    legendSvgElement.setAttribute('viewBox', `0 0 ${LEGEND_WIDTH} ${LEGEND_HEIGHT}`);
+    legendSvgElement.setAttribute('width', LEGEND_WIDTH);
+    legendSvgElement.setAttribute('height', LEGEND_HEIGHT);
     let svgData = new XMLSerializer().serializeToString(legendSvgElement);
     let svgBlob = new Blob([svgData], { type: 'image/svg+xml;charset=utf-8' });
 
@@ -819,7 +824,7 @@ function downloadGif(name, svg_sel) {
 
     const captureFrame = (index) => {
 
-      if (index < frameCount) {
+      if (index < FRAME_COUNT) {
         let url = processSVGToCanvas();
 
         base_image.onload = function () {
@@ -827,14 +832,14 @@ function downloadGif(name, svg_sel) {
           context.clearRect(0, 0, picWidth, picHeight);
           context.drawImage(base_image, 0, 0, picWidth, picHeight);
           // Draw the legend
-          context.drawImage(legend_image, picWidth - 230, picHeight - 41, 225, 36);
+          context.drawImage(legend_image, picWidth - LEGEND_WIDTH - LEGEND_PADDING, picHeight - LEGEND_HEIGHT - LEGEND_PADDING, LEGEND_WIDTH, LEGEND_HEIGHT);
 
-          gif.addFrame(context, {copy: true, delay});
+          gif.addFrame(context, {copy: true, DELAY});
           DOMURL.revokeObjectURL(url);
           DOMURL.revokeObjectURL(legend_url);
           setTimeout(() => {
             requestAnimationFrame(() => captureFrame(index + 1));
-          }, delay);
+          }, DELAY);
         };
 
         base_image.src = url;
