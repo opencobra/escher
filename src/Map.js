@@ -2446,6 +2446,8 @@ export default class Map {
         const imageUrl = e.target.result;
         document.getElementById('canvas-background').setAttribute('href', imageUrl);
         document.getElementById('canvas-background').setAttribute('display', '');
+        // Run after_import_background only after the image has been successfully loaded
+        this.callback_manager.run('after_import_background');
       };
       reader.readAsDataURL(input);
     }
@@ -2455,6 +2457,8 @@ export default class Map {
       img.onload = () => {
         document.getElementById('canvas-background').setAttribute('href', input);
         document.getElementById('canvas-background').setAttribute('display', '');
+        // Run after_import_background only after the image has been successfully loaded
+        this.callback_manager.run('after_import_background');
       };
       img.onerror = () => {
         console.error(`Failed to load image from URL: ${input}`);
@@ -2462,7 +2466,6 @@ export default class Map {
       img.src = input; // Try loading the image from the URL
     }
 
-    this.callback_manager.run('after_import_background');
   }
 
 
