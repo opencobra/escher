@@ -118,6 +118,8 @@ class Builder {
       animation_line_style: 'dashed',
       reaction_data_threshold: Math.pow(10, -6),
       hide_no_data_reaction: false,
+      // background path
+      background_image_url: '',
       // gene
       gene_data: null,
       and_method_in_gene_reaction_rule: 'mean',
@@ -406,6 +408,10 @@ class Builder {
                          this.cobra_model,
                          this.settings.get('canvas_size_and_loc'),
                          this.settings.get('enable_search'))
+    }
+
+    if (this.settings.get('background_image_url')) {
+      this.map.import_background(this.settings.get('background_image_url'))
     }
 
     // Connect status bar
