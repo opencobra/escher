@@ -2432,21 +2432,42 @@ export default class Map {
 
   /**
    * Import a image as the background of the map.
-   * @param {Object} file - The data from the file input.
+   * @param {File|string} input - The image file or URL to import.
+   *         File: A File object from an input element, for the `Import Background` button
+   *         string: A URL string, for the `background_image_url` setting
    */
-  import_background (file) {
-    this.callback_manager.run('before_import_background')
-    if (file) {
+  import_background(input) {
+    this.callback_manager.run('before_import_background');
+
+    // If input is a file (File object)
+    if (input instanceof File) {
       const reader = new FileReader();
       reader.onload = (e) => {
         const imageUrl = e.target.result;
         document.getElementById('canvas-background').setAttribute('href', imageUrl);
         document.getElementById('canvas-background').setAttribute('display', '');
+        // Run after_import_background only after the image has been successfully loaded
+        this.callback_manager.run('after_import_background');
       };
-      reader.readAsDataURL(file);
+      reader.readAsDataURL(input);
     }
-    this.callback_manager.run('after_import_background')
+    // If input is a URL (string)
+    else if (typeof input === 'string') {
+      const img = new Image();
+      img.onload = () => {
+        document.getElementById('canvas-background').setAttribute('href', input);
+        document.getElementById('canvas-background').setAttribute('display', '');
+        // Run after_import_background only after the image has been successfully loaded
+        this.callback_manager.run('after_import_background');
+      };
+      img.onerror = () => {
+        console.error(`Failed to load image from URL: ${input}`);
+      };
+      img.src = input; // Try loading the image from the URL
+    }
+
   }
+
 
   /**
    * Clear the background of the map.

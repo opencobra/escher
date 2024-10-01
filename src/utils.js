@@ -755,9 +755,14 @@ function downloadGif(name, svg_sel) {
   var context = canvas.getContext('2d', { willReadFrequently: true })
   const DOMURL = window.URL || window.webkitURL || window;
   // total frames
-  const frameCount = 20;
+  const FRAME_COUNT = 20;
   // delay between frames
-  const delay = 100;
+  const DELAY = 100;
+  // Legend size
+  const LEGEND_HEIGHT = 36;
+  const LEGEND_WIDTH = 225;
+  const LEGEND_PADDING = 5;
+  
   // Calculate the size of the picture
   const boundingClientRect= document.querySelector('rect#canvas').getBoundingClientRect()
   const { width, height, x, y, left, top } = boundingClientRect
@@ -787,7 +792,22 @@ function downloadGif(name, svg_sel) {
     return DOMURL.createObjectURL(svgBlob);
   }
 
+  const processLegendSVGToCanvas = () => {
+    let legendSvgElement = document.querySelector('.legend-container').cloneNode(true);
+    legendSvgElement.setAttribute('viewBox', `0 0 ${LEGEND_WIDTH} ${LEGEND_HEIGHT}`);
+    legendSvgElement.setAttribute('width', LEGEND_WIDTH);
+    legendSvgElement.setAttribute('height', LEGEND_HEIGHT);
+    let svgData = new XMLSerializer().serializeToString(legendSvgElement);
+    let svgBlob = new Blob([svgData], { type: 'image/svg+xml;charset=utf-8' });
+
+    return DOMURL.createObjectURL(svgBlob);
+  }
+
   const base_image = new Image()
+  const legend_image = new Image();
+  let legend_url = processLegendSVGToCanvas();
+  legend_image.src = legend_url;
+
   fetch('https://cdn.jsdelivr.net/npm/gif.js@0.2.0/dist/gif.worker.js')
     .then((response) => {
       if (!response.ok)
@@ -803,23 +823,30 @@ function downloadGif(name, svg_sel) {
     });
 
     const captureFrame = (index) => {
-      if (index < frameCount) {
+
+      if (index < FRAME_COUNT) {
         let url = processSVGToCanvas();
 
         base_image.onload = function () {
           // Clear the canvas before drawing
           context.clearRect(0, 0, picWidth, picHeight);
           context.drawImage(base_image, 0, 0, picWidth, picHeight);
-          gif.addFrame(context, { copy: true, delay });
+          // Draw the legend
+          context.drawImage(legend_image, picWidth - LEGEND_WIDTH - LEGEND_PADDING, picHeight - LEGEND_HEIGHT - LEGEND_PADDING, LEGEND_WIDTH, LEGEND_HEIGHT);
+
+          gif.addFrame(context, {copy: true, DELAY});
           DOMURL.revokeObjectURL(url);
+          DOMURL.revokeObjectURL(legend_url);
           setTimeout(() => {
             requestAnimationFrame(() => captureFrame(index + 1));
-          }, delay);
+          }, DELAY);
         };
 
         base_image.src = url;
       } else {
         gif.on('finished', function (blob) {
+          DOMURL.revokeObjectURL(legend_url);
+
           const downloadUrl = URL.createObjectURL(blob);
           const a = document.createElement('a');
           a.href = downloadUrl;
@@ -1296,6 +1323,8 @@ function update_color_legends(reaction_color_scale, has_data_on_reactions) {
   const legend = svg.select(".legend-group");
   const gradient = legend.select(".legend-defs linearGradient");
   // define the linear gradient data for the color rectangle
+
+  gradient.selectAll("stop").remove();
   gradient.selectAll("stop").data(_get_color_linearGradient_data(domain, range)).enter().append('stop')
     .attr("offset", d => d.offset)
     .attr("stop-color", d => d.color);
