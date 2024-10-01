@@ -2,9 +2,8 @@
  * CobraModel
  */
 
-var utils = require('./utils')
-var dataStyles = require('./dataStyles')
-
+import utils from './utils'
+import dataStyles from './dataStyles'
 var CobraModel = utils.make_class()
 // class methods
 CobraModel.from_cobra_json = from_cobra_json
@@ -16,7 +15,6 @@ CobraModel.prototype = {
   apply_metabolite_data: apply_metabolite_data,
   apply_gene_data: apply_gene_data
 }
-module.exports = CobraModel
 
 // class methods
 
@@ -164,3 +162,5 @@ function apply_gene_data (gene_data_obj, styles, identifiers_on_map,
                                            compare_style,
                                            and_method_in_gene_reaction_rule)
 }
+
+export default CobraModel

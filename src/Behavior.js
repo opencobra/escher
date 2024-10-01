@@ -1,11 +1,7 @@
 import utils from './utils'
 import * as build from './build'
 import { drag as d3Drag } from 'd3-drag'
-import * as d3Selection from 'd3-selection'
-
-const d3Select = d3Selection.select
-const d3Mouse = d3Selection.mouse
-const d3Touch = d3Selection.touch
+import { select as d3Select, pointer as d3Pointer } from 'd3-selection'
 
 /**
  * Behavior. Defines the set of click and drag behaviors for the map, and keeps
@@ -78,7 +74,7 @@ export default class Behavior {
       .attr('class', 'rotation-center-line')
 
     const updateSel = enterSel.merge(sel)
-
+    let lastX, lastY
     updateSel.attr('transform',
                    'translate(' + this.center.x + ',' + this.center.y + ')')
       .attr('visibility', 'visible')
@@ -89,11 +85,19 @@ export default class Behavior {
       .on('mouseout', function () {
         updateSel.selectAll('path').style('stroke-width', null)
       })
-      .call(d3Drag().on('drag', () => {
+      .call(d3Drag().on('start', (e) => {
+        lastX = e.x
+        lastY = e.y
+      }).on('drag', (e) => {
         const cur = utils.d3_transform_catch(updateSel.attr('transform'))
+        const dx = e.x - lastX
+        lastX = e.x
+        const dy = e.y - lastY
+        lastY = e.y
+
         const newLoc = [
-          d3Selection.event.dx + cur.translate[0],
-          d3Selection.event.dy + cur.translate[1]
+          dx + cur.translate[0],
+          dy + cur.translate[1]
         ]
         updateSel.attr('transform', 'translate(' + newLoc + ')')
         this.center = { x: newLoc[0], y: newLoc[1] }
@@ -136,18 +140,18 @@ export default class Behavior {
       const nodes = this.map.nodes
       const beziers = this.map.beziers
 
-      const startFn = d => {
+      const startFn = (e, d) => {
         // silence other listeners
-        d3Selection.event.sourceEvent.stopPropagation()
+        e.sourceEvent.stopPropagation()
       }
-      const dragFn = (d, angle, totalAngle, center) => {
+      const dragFn = (e, d, angle, totalAngle, center) => {
         const updated = build.rotateNodes(selectedNodes, reactions,
                                           beziers, angle, center)
         map.draw_these_nodes(updated.node_ids)
         map.draw_these_reactions(updated.reaction_ids)
       }
-      const endFn = d => {}
-      const undoFn = (d, totalAngle, center) => {
+      const endFn = () => {}
+      const undoFn = (e, d, totalAngle, center) => {
         // undo
         const theseNodes = {}
         selectedNodeIds.forEach(function (id) {
@@ -159,7 +163,7 @@ export default class Behavior {
         map.draw_these_nodes(updated.node_ids)
         map.draw_these_reactions(updated.reaction_ids)
       }
-      const redoFn = (d, totalAngle, center) => {
+      const redoFn = (e, d, totalAngle, center) => {
         // redo
         const theseNodes = {}
         selectedNodeIds.forEach(id => {
@@ -200,22 +204,22 @@ export default class Behavior {
     }
     if (onOff) {
       const map = this.map
-      this.selectableMousedown = d => {
+      this.selectableMousedown = e => {
         // stop propogation for the buildinput to work right
-        d3Selection.event.stopPropagation()
+        e.stopPropagation()
         // this.parentNode.__data__.wasSelected = d3Select(this.parentNode).classed('selected')
         // d3Select(this.parentNode).classed('selected', true)
       }
-      this.selectableClick = function (d) {
+      this.selectableClick = function (e, d) {
         // stop propogation for the buildinput to work right
-        d3Selection.event.stopPropagation()
+        e.stopPropagation()
         // click suppressed. This DOES have en effect.
-        if (d3Selection.event.defaultPrevented) return
+        if (e.defaultPrevented) return
         // turn off the temporary selection so select_selectable
         // works. This is a bit of a hack.
         // if (!this.parentNode.__data__.wasSelected)
         //     d3Select(this.parentNode).classed('selected', false)
-        map.select_selectable(this, d, d3Selection.event.shiftKey)
+        map.select_selectable(this, d, e.shiftKey)
         // this.parentNode.__data__.wasSelected = false
       }
       this.nodeMouseover = function (d) {
@@ -249,27 +253,29 @@ export default class Behavior {
     }
     if (onOff) {
       const map = this.map
-      this.textLabelMousedown = function () {
-        if (d3Selection.event.defaultPrevented) {
+      this.textLabelMousedown = function (e) {
+        if (e.defaultPrevented) {
           return // mousedown suppressed
         }
         // run the callback
         const coordsA = utils.d3_transform_catch(d3Select(this).attr('transform')).translate
         const coords = { x: coordsA[0], y: coordsA[1] }
         map.callback_manager.run('edit_text_label', null, d3Select(this), coords)
-        d3Selection.event.stopPropagation()
+        e.stopPropagation()
       }
       this.textLabelClick = null
       this.map.sel.select('#text-labels')
         .selectAll('.label')
         .style('cursor', 'text')
       // add the new-label listener
-      this.map.sel.on('mousedown.new_text_label', function (node) {
+      this.map.sel.on('mousedown.new_text_label', function (node, e) {
         // silence other listeners
-        d3Selection.event.preventDefault()
+        e.preventDefault()
+
+        const [x, y] = d3Pointer(e, node)
         const coords = {
-          x: d3Mouse(node)[0],
-          y: d3Mouse(node)[1]
+          x,
+          y
         }
         this.map.callback_manager.run('new_text_label', null, coords)
       }.bind(this, this.map.sel.node()))
@@ -333,7 +339,7 @@ export default class Behavior {
       // Show/hide tooltip.
       // @param {String} type - 'reactionLabel' or 'nodeLabel'
       // @param {Object} d - D3 data for DOM element
-      const getMouseover = type => d => {
+      const getMouseover = type => (e, d) => {
         if (!this.dragging) {
           this.map.callback_manager.run('show_tooltip', null, type, d)
         }
@@ -378,13 +384,13 @@ export default class Behavior {
       // @param {Object} d - D3 data for DOM element
       const getMouseover = type => {
         const behavior = this
-        return function (d) {
+        return function (e, d) {
           if (!behavior.dragging) {
+            const [x, y] = d3Pointer(e, d)
             if (type === 'reaction_object') {
-              const mouseEvent = d3Mouse(this)
               // Add the current mouse position to the segment's datum
               const newD = Object.assign(
-                {}, d, { xPos: mouseEvent[0], yPos: mouseEvent[1] }
+                {}, d, { xPos: x, yPos: y }
               )
               behavior.map.callback_manager.run('show_tooltip', null, type, newD)
             } else {
@@ -515,11 +521,11 @@ export default class Behavior {
       this.dragging = onOff
     }
 
-    behavior.on('start', function (d) {
+    behavior.on('start', function (e) {
       setDragging(true)
 
       // silence other listeners (e.g. nodes BELOW this one)
-      d3Selection.event.sourceEvent.stopPropagation()
+      e.sourceEvent.stopPropagation()
       // remember the total displacement for later
       totalDisplacement = { x: 0, y: 0 }
 
@@ -538,12 +544,12 @@ export default class Behavior {
         }, 200)
         // prepare to combine metabolites
         map.sel.selectAll('.metabolite-circle')
-          .on('mouseover.combine', function (d) {
+          .on('mouseover.combine', function (e, d) {
             if (d.bigg_id === biggId && d.node_id !== data.node_id) {
               d3Select(this).classed('node-to-combine', true)
             }
           })
-          .on('mouseout.combine', d => {
+          .on('mouseout.combine', (e, d) => {
             if (d.bigg_id === biggId) {
               map.sel.selectAll('.node-to-combine').classed('node-to-combine', false)
             }
@@ -551,7 +557,11 @@ export default class Behavior {
       }
     })
 
-    behavior.on('drag', function (d) {
+    let lastX, lastY
+    behavior.on('start', (e) => {
+      lastX = e.x
+      lastY = e.y
+    }).on('drag', function (e, d) {
       // if this node is not already selected, then select this one and
       // deselect all other nodes. Otherwise, leave the selection alone.
       if (!d3Select(this.parentNode).classed('selected')) {
@@ -586,9 +596,14 @@ export default class Behavior {
         textLabelIdsToDrag = selectedTextLabelIds
       }
       reactionIds = []
+      const dx = e.x - lastX
+      lastX = e.x
+      const dy = e.y - lastY
+      lastY = e.y
+
       const displacement = {
-        x: d3Selection.event.dx,
-        y: d3Selection.event.dy
+        x: dx,
+        y: dy
       }
       totalDisplacement = utils.c_plus_c(totalDisplacement, displacement)
       nodeIdsToDrag.forEach(nodeId => {
@@ -869,25 +884,34 @@ export default class Behavior {
     const undoStack = this.undoStack
     const rel = relativeToSelection.node()
     let totalDisplacement
+    let lastX, lastY
 
-    behavior.on('start', d => {
+    behavior.on('start', (e, d) => {
       this.dragging = true
 
       // silence other listeners
-      d3Selection.event.sourceEvent.stopPropagation()
+      e.sourceEvent.stopPropagation()
       totalDisplacement = { x: 0, y: 0 }
       startFn(d)
+      lastX = e.x
+      lastY = e.y
     })
 
-    behavior.on('drag', d => {
+    behavior.on('drag', (e,d) => {
+      const dx = e.x - lastX
+      lastX = e.x
+      const dy = e.y - lastY
+      lastY = e.y
+
       // update data
       const displacement = {
-        x: d3Selection.event.dx,
-        y: d3Selection.event.dy
+        x: dx,
+        y: dy
       }
+      const [x, y] = d3Pointer(e, d)
       const location = {
-        x: d3Mouse(rel)[0],
-        y: d3Mouse(rel)[1]
+        x,
+        y
       }
 
       // remember the displacement
@@ -895,16 +919,17 @@ export default class Behavior {
       dragFn(d, displacement, totalDisplacement, location)
     })
 
-    behavior.on('end', d => {
+    behavior.on('end', (e, d) => {
       this.dragging = false
+      const [x, y] = d3Pointer(e, d)
 
       // add to undo/redo stack
       // remember the displacement, dragged nodes, and reactions
       const savedD = utils.clone(d)
       const savedDisplacement = utils.clone(totalDisplacement) // BUG TODO this variable disappears!
       const savedLocation = {
-        x: d3Mouse(rel)[0],
-        y: d3Mouse(rel)[1]
+        x,
+        y
       }
 
       undoStack.push(function () {
@@ -914,7 +939,7 @@ export default class Behavior {
         // redo
         redoFn(savedD, savedDisplacement, savedLocation)
       })
-      endFn(d)
+      endFn()
     })
 
     return behavior
@@ -946,34 +971,44 @@ export default class Behavior {
     const undoStack = this.undoStack
     const rel = relativeToSelection.node()
     let totalAngle
+    let lastX, lastY
 
-    behavior.on('start', d => {
+    behavior.on('start', (e, d) => {
       this.dragging = true
 
       // silence other listeners
-      d3Selection.event.sourceEvent.stopPropagation()
+      e.sourceEvent.stopPropagation()
       totalAngle = 0
-      startFn(d)
+      startFn(e, d)
+      lastX = e.x
+      lastY = e.y
     })
 
-    behavior.on('drag', d => {
+    behavior.on('drag', (e, d) => {
+      const dx = e.x - lastX
+      lastX = e.x
+      const dy = e.y - lastY
+      lastY = e.y
+
       // update data
       const displacement = {
-        x: d3Selection.event.dx,
-        y: d3Selection.event.dy
+        x: dx,
+        y: dy
       }
+      const [x, y] = d3Pointer(e, rel)
       const location = {
-        x: d3Mouse(rel)[0],
-        y: d3Mouse(rel)[1]
+        x,
+        y
       }
       const center = getCenter()
       const angle = utils.angle_for_event(displacement, location, center)
       // remember the displacement
       totalAngle = totalAngle + angle
-      dragFn(d, angle, totalAngle, center)
+
+      dragFn(e, d, angle, totalAngle, center)
     })
 
-    behavior.on('end', d => {
+    behavior.on('end', (e, d) => {
       this.dragging = false
 
       // add to undo/redo stack
@@ -983,11 +1018,11 @@ export default class Behavior {
       const savedCenter = utils.clone(getCenter())
 
       undoStack.push(
-        () => undoFn(savedD, savedAngle, savedCenter),
-        () => redoFn(savedD, savedAngle, savedCenter)
+        () => undoFn(e, savedD, savedAngle, savedCenter),
+        () => redoFn(e, savedD, savedAngle, savedCenter)
       )
 
-      endFn(d)
+      endFn()
     })
 
     return behavior

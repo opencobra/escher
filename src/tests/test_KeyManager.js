@@ -2,7 +2,7 @@ import d3Body from './helpers/d3Body'
 import triggerKeyEvent from './helpers/triggerKeyEvent'
 import KeyManager from '../KeyManager'
 
-import { describe, it, afterEach } from 'mocha'
+import { describe, it, afterEach } from 'vitest'
 import { assert } from 'chai'
 import Mousetrap from 'mousetrap'
 

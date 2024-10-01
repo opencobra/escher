@@ -44,15 +44,11 @@ class MenuBar extends Component {
           />
           <MenuButton
             name={'Import Background' + (enableKeys ? ' (Ctrl+I)' : '')}
-            onClick={() => document.getElementById('canvasBackgroundInput').click()}
-            disabledButtons={disabledButtons}
-          />
-          <input
-            type="file"
-            id="canvasBackgroundInput"
-            style={{display: 'none'}}
+            fileInputProcessor={file => this.props.import_background(file)}
             accept="image/*"
-            onChange={e => this.props.import_background(e.target.files[0])}
+            type='load'
+            assignKey={this.props.assignKeyImportBackground}
+            disabledButtons={disabledButtons}
           />
           <MenuButton
             name={'Clear Background' + (enableKeys ? ' (Ctrl+Shift+I)' : '')}

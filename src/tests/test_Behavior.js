@@ -1,5 +1,5 @@
 import Behavior from '../Behavior'
-import { describe, it, beforeEach } from 'mocha'
+import { describe, it, beforeEach } from 'vitest'
 import { assert } from 'chai'
 import d3Body from './helpers/d3Body'
 

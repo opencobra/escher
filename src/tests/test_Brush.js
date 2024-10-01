@@ -1,10 +1,10 @@
-import { describe, it} from "mocha";
+import { describe, it} from "vitest";
 import { assert } from 'chai'
-const d3Body = require('./helpers/d3Body')
-const get_map = require('./helpers/get_map')
-const Brush = require('../Brush')
-const Map = require('../Map').default
-const Settings = require('../Settings')
+import d3Body from './helpers/d3Body'
+import get_map from "./helpers/get_map";
+import Brush from "../Brush";
+import Map from "../Map";
+import Settings from "../Settings";
 
 function getMap () {
   const svg = d3Body.append('svg')

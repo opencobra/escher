@@ -1,7 +1,7 @@
 /** @jsx h */
 
 import { h, Component } from 'preact'
-import { select as d3Select, event } from 'd3-selection'
+import { select as d3Select } from 'd3-selection'
 import { drag as d3Drag } from 'd3-drag'
 
 import './Picker.css'
@@ -13,20 +13,26 @@ class Picker extends Component {
     d3Select(this.base).select('.pickerBox').on('mousedown.drag', null)
 
     if (!this.props.disabled) {
+      let lastX = 0;
+
       const drag = d3Drag()
-        .on('start', () => {
+        .on('start', (e) => {
+          lastX = e.x
           if (this.props.focus) this.props.focus()
         })
-        .on('drag', () => {
+        .on('drag', (e) => {
           // If it was not a value slider before, make it one
           if (this.props.type !== 'value') {
             if (this.props.onChange) this.props.onChange('type', 'value')
           }
 
+          const dx = e.x - lastX;
+          lastX = e.x;
+
           // New location
           const newValue = (
             this.props.value + (
-              (event.dx / this.props.trackWidth) *
+              (dx / this.props.trackWidth) *
               (this.props.max - this.props.min)
             )
           )

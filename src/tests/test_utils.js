@@ -1,11 +1,11 @@
 /* global global */
 
-import { describe, it, before, after } from 'mocha'
+import { describe, it, before, after } from 'vitest'
 import { assert } from 'chai'
 
-const utils = require('../utils')
-const dataStyles = require('../dataStyles')
-const d3Body = require('./helpers/d3Body')
+import utils from "../utils";
+import dataStyles from "../dataStyles";
+import d3Body from "./helpers/d3Body";
 
 describe('utils.set_options', () => {
   it('defaults to null', () => {

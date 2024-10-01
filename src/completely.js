@@ -12,7 +12,7 @@
  *
  **/
 
-import * as utils from './utils'
+import utils from './utils'
 
 export default function(container, config) {
   const thisDocument = utils.get_document(container)

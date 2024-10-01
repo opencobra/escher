@@ -1,1 +1,1 @@
-var BuildInput = require('../BuildInput')
+import  BuildInput  from '../BuildInput'

@@ -32,8 +32,8 @@
 /* global ESCHER_VERSION */
 
 import underscore from 'underscore'
-import preact from 'preact'
-import baconjs from 'baconjs'
+import * as preact from 'preact'
+import * as baconjs from 'baconjs'
 import mousetrap from 'mousetrap'
 import vkbeautify from 'vkbeautify'
 import { select as d3_select, selection as d3_selection } from 'd3-selection'

@@ -6,7 +6,7 @@
  */
 import { h, Component } from 'preact'
 import './DefaultTooltip.css'
-import * as utils from './utils'
+import utils from './utils'
 
 class DefaultTooltip extends Component {
   constructor () {

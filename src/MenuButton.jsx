@@ -9,7 +9,7 @@
 import { h, Component } from 'preact'
 import _ from 'underscore'
 import utils from './utils'
-import * as dataStyles from './dataStyles'
+import dataStyles from './dataStyles'
 
 class MenuButton extends Component {
   constructor (props) {
@@ -19,12 +19,17 @@ class MenuButton extends Component {
 
   handleFileInput (target) {
     const file = target.files[0]
-    const reader = new window.FileReader()
-    reader.onload = () => {
-      utils.load_json_or_csv(file, dataStyles.csv_converter, (e, d) => this.props.onClick(d))
-    }
-    if (file !== undefined) {
-      reader.readAsText(file)
+    const { fileInputProcessor } = this.props
+    if (fileInputProcessor) {
+      fileInputProcessor(file)
+    }else {
+      const reader = new window.FileReader()
+      reader.onload = () => {
+        utils.load_json_or_csv(file, dataStyles.csv_converter, (e, d) => this.props.onClick(d))
+      }
+      if (file !== undefined) {
+        reader.readAsText(file)
+      }
     }
     // reset input
     target.value = null
@@ -48,6 +53,7 @@ class MenuButton extends Component {
           <input
             type='file'
             onChange={event => this.handleFileInput(event.target)}
+            accept={this.props.accept || '.json,.csv'}
             disabled={disabled}
             ref={this.assignKeyForInput}
           />

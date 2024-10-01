@@ -1,83 +1,21 @@
 /* global Blob, XMLSerializer, Image, btoa */
-
-var vkbeautify = require('vkbeautify')
-var _ = require('underscore')
-const GIF = require("gif.js");
-var d3_json = require('d3-request').json
-var d3_text = require('d3-request').text
-var d3_csvParseRows = require('d3-dsv').csvParseRows
-var d3_selection = require('d3-selection').selection
-var d3_select = require('d3-selection').select
-const { gsap } = require('gsap')
-const d3_scale = require('d3-scale')
-const {axisBottom: d3_axis_bottom} = require('d3-axis')
+import {csvParseRows as d3_csvParseRows } from "d3-dsv";
+import vkbeautify from "vkbeautify";
+import _ from "underscore";
+import GIF from "gif.js";
+import {json as d3_json, text as d3_text} from "d3-request";
+import { selection as d3_selection, select as d3_select } from "d3-selection";
+import {gsap} from "gsap";
+import * as d3_scale from "d3-scale";
+import { axisBottom as d3_axis_bottom } from "d3-axis";
+import { saveAs } from "file-saver";
 
 try {
-  var saveAs = require('file-saver').saveAs
+  var isFileSaverSupported = !!new Blob;
 } catch (e) {
   console.warn('Not a browser, so FileSaver.js not available.')
 }
 
-module.exports = {
-  set_options: set_options,
-  remove_child_nodes: remove_child_nodes,
-  load_css: load_css,
-  load_files: load_files,
-  load_the_file: load_the_file,
-  make_class: make_class,
-  class_with_optional_new: class_with_optional_new,
-  setup_defs: setup_defs,
-  draw_an_object: draw_an_object,
-  draw_a_nested_object: draw_a_nested_object,
-  make_array: make_array,
-  make_array_ref: make_array_ref,
-  compare_arrays: compare_arrays,
-  arrayToObject: arrayToObject,
-  clone: clone,
-  extend: extend,
-  uniqueConcat: uniqueConcat,
-  unique_strings_array: unique_strings_array,
-  debounce: debounce,
-  object_slice_for_ids: object_slice_for_ids,
-  object_slice_for_ids_ref: object_slice_for_ids_ref,
-  c_plus_c: c_plus_c,
-  c_minus_c: c_minus_c,
-  c_times_scalar: c_times_scalar,
-  download_json: download_json,
-  load_json: load_json,
-  load_json_or_csv: load_json_or_csv,
-  downloadSvg: downloadSvg,
-  downloadPng: downloadPng,
-  downloadGif: downloadGif,
-  rotate_coords_recursive: rotate_coords_recursive,
-  rotate_coords: rotate_coords,
-  get_angle: get_angle,
-  to_degrees: to_degrees,
-  angleNorm: angleNorm,
-  to_radians: to_radians,
-  to_radians_norm: to_radians_norm,
-  angle_for_event: angle_for_event,
-  distance: distance,
-  check_undefined: check_undefined,
-  compartmentalize: compartmentalize,
-  decompartmentalize: decompartmentalize,
-  mean: mean,
-  median: median,
-  quartiles: quartiles,
-  random_characters: random_characters,
-  generate_map_id: generate_map_id,
-  check_for_parent_tag: check_for_parent_tag,
-  name_to_url: name_to_url,
-  get_document: get_document,
-  get_window: get_window,
-  d3_transform_catch: d3_transform_catch,
-  process_reaction_data: process_reaction_data,
-  // check_browser: check_browser
-  handle_animation: handle_animation,
-  update_color_legends: update_color_legends,
-  get_current_date: get_current_date,
-  get_local_storage_item: get_local_storage_item,
-}
 
 /**
  * Check if Blob is available, and alert if it is not.
@@ -1433,4 +1371,66 @@ function get_local_storage_item(key, defaultValue = null) {
     console.warn('LocalStorage is not available.', e);
   }
   return defaultValue;
+}
+
+
+export default {
+  set_options,
+  remove_child_nodes,
+  load_css,
+  load_files,
+  load_the_file,
+  make_class,
+  class_with_optional_new,
+  setup_defs,
+  draw_an_object,
+  draw_a_nested_object,
+  make_array,
+  make_array_ref,
+  compare_arrays,
+  arrayToObject,
+  clone,
+  extend,
+  uniqueConcat,
+  unique_strings_array,
+  debounce,
+  object_slice_for_ids,
+  object_slice_for_ids_ref,
+  c_plus_c,
+  c_minus_c,
+  c_times_scalar,
+  download_json,
+  load_json,
+  load_json_or_csv,
+  downloadSvg,
+  downloadPng,
+  downloadGif,
+  rotate_coords_recursive,
+  rotate_coords,
+  get_angle,
+  to_degrees,
+  angleNorm,
+  to_radians,
+  to_radians_norm,
+  angle_for_event,
+  distance,
+  check_undefined,
+  compartmentalize,
+  decompartmentalize,
+  mean,
+  median,
+  quartiles,
+  random_characters,
+  generate_map_id,
+  check_for_parent_tag,
+  name_to_url,
+  get_document,
+  get_window,
+  d3_transform_catch,
+  process_reaction_data,
+  // check_browser,
+  handle_animation,
+  update_color_legends,
+  get_current_date,
+  get_local_storage_item,
 }
