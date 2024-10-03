@@ -1341,9 +1341,17 @@ function update_color_legends(reaction_color_scale, has_data_on_reactions) {
     .range([0, LEGEND_WIDTH]);
 
   // define the axis and text for the color legend
+  const formatNumber = (d) => {
+    if (d >= 1e9) return (d / 1e9).toFixed(1) + 'G';
+    if (d >= 1e6) return (d / 1e6).toFixed(1) + 'M';
+    if (d >= 1e3) return (d / 1e3).toFixed(1) + 'K';
+    return d.toFixed(2);
+  };
+
   const legendAxis = d3_axis_bottom(legendScale)
-    .tickValues([domain[0], domain[domain.length - 1]])
-    .tickFormat(d => d === domain[0] ? 'min' : d === domain[domain.length - 1] ? 'max' : '');
+    .ticks(domain.length)
+    .tickValues(domain)
+    .tickFormat(formatNumber);
 
   // draw the color legend axis
   legend.select(".legend-axis")
