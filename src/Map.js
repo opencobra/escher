@@ -2453,19 +2453,23 @@ export default class Map {
     }
     // If input is a URL (string)
     else if (typeof input === 'string') {
-      const img = new Image();
-      img.onload = () => {
-        document.getElementById('canvas-background').setAttribute('href', input);
-        document.getElementById('canvas-background').setAttribute('display', '');
-        // Run after_import_background only after the image has been successfully loaded
-        this.callback_manager.run('after_import_background');
-      };
-      img.onerror = () => {
-        console.error(`Failed to load image from URL: ${input}`);
-      };
-      img.src = input; // Try loading the image from the URL
+      fetch(input)
+        .then(response => response.blob())
+        .then(blob => {
+          const reader = new FileReader();
+          reader.onloadend = () => {
+            const base64data = reader.result;
+            document.getElementById('canvas-background').setAttribute('href', base64data);
+            document.getElementById('canvas-background').setAttribute('display', '');
+            // Run after_import_background only after the image has been successfully loaded
+            this.callback_manager.run('after_import_background');
+          };
+          reader.readAsDataURL(blob);
+        })
+        .catch(error => {
+          console.error(`Failed to load image from URL: ${input}`, error);
+        });
     }
-
   }
 
 
