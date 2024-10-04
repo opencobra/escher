@@ -742,10 +742,10 @@ function downloadPng (name, svg_sel) {
 /**
  * Download a png file using FileSaver.js.
  * @param {String} name - The filename (without extension).
- * @param {D3 Selection} svg_sel - The d3 selection for the SVG element.
+ * @param {String} legendPosition - The position of the legend.
+ * @param {String} legendOrientation - The orientation of the legend.
  */
-function downloadGif(name, svg_sel) {
-  // Alert if blob isn't going to work
+function downloadGif(name, legendPosition = 'right-top', legendOrientation = 'vertical') {
   _check_filesaver()
   // Create a loading indicator
   const {removeLoadingIndicator} = _create_loading_indicator()
@@ -794,9 +794,20 @@ function downloadGif(name, svg_sel) {
 
   const processLegendSVGToCanvas = () => {
     let legendSvgElement = document.querySelector('.legend-container').cloneNode(true);
-    legendSvgElement.setAttribute('viewBox', `0 0 ${LEGEND_WIDTH} ${LEGEND_HEIGHT}`);
-    legendSvgElement.setAttribute('width', LEGEND_WIDTH);
-    legendSvgElement.setAttribute('height', LEGEND_HEIGHT);
+    if (legendOrientation === 'vertical') {
+      let legendGroup = legendSvgElement.querySelector('.legend-group');
+      if (legendPosition === 'left-top' || legendPosition === 'left-bottom') {
+        legendGroup.setAttribute('transform', `translate(0, ${LEGEND_WIDTH - 2 * LEGEND_PADDING}) rotate(-90)`);
+      }else {
+        legendGroup.setAttribute('transform', `translate(${LEGEND_HEIGHT}, ${2 * LEGEND_PADDING}) rotate(90)`);
+      }
+    }
+
+    const [width, height] = legendOrientation === 'horizontal' ? [LEGEND_WIDTH, LEGEND_HEIGHT] : [LEGEND_HEIGHT, LEGEND_WIDTH];
+
+    legendSvgElement.setAttribute('viewBox', `0 0 ${width} ${height}`);
+    legendSvgElement.setAttribute('width', width);
+    legendSvgElement.setAttribute('height', height);
     let svgData = new XMLSerializer().serializeToString(legendSvgElement);
     let svgBlob = new Blob([svgData], { type: 'image/svg+xml;charset=utf-8' });
 
@@ -831,8 +842,31 @@ function downloadGif(name, svg_sel) {
           // Clear the canvas before drawing
           context.clearRect(0, 0, picWidth, picHeight);
           context.drawImage(base_image, 0, 0, picWidth, picHeight);
-          // Draw the legend
-          context.drawImage(legend_image, picWidth - LEGEND_WIDTH - LEGEND_PADDING, picHeight - LEGEND_HEIGHT - LEGEND_PADDING, LEGEND_WIDTH, LEGEND_HEIGHT);
+
+          let legendX, legendY;
+
+          const [legendWidth, legendHeight] = legendOrientation === 'horizontal' ? [LEGEND_WIDTH, LEGEND_HEIGHT] : [LEGEND_HEIGHT, LEGEND_WIDTH];
+          
+          switch (legendPosition) {
+            case 'left-top':
+              legendX = LEGEND_PADDING;
+              legendY = LEGEND_PADDING;
+              break;
+            case 'right-top':
+              legendX = picWidth - legendWidth - LEGEND_PADDING;
+              legendY = LEGEND_PADDING;
+              break;
+            case 'left-bottom':
+              legendX = LEGEND_PADDING;
+              legendY = picHeight - legendHeight - LEGEND_PADDING;
+              break;
+            case 'right-bottom':
+              legendX = picWidth - legendWidth - LEGEND_PADDING;
+              legendY = picHeight - legendHeight - LEGEND_PADDING;
+              break;
+          }
+
+          context.drawImage(legend_image, legendX, legendY, legendWidth, legendHeight);
 
           gif.addFrame(context, {copy: true, DELAY});
           DOMURL.revokeObjectURL(url);

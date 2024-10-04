@@ -2239,7 +2239,7 @@ export default class Map {
     if (mapType === 'gif') {
       const reaction_data = this.settings.get('reaction_data')
       // only save gif if there is reaction data
-      reaction_data && utils.downloadGif(`${utils.get_current_date()}_${this.map_name}`, this.svg)
+      reaction_data && utils.downloadGif(`${utils.get_current_date()}_${this.map_name}`)
     }else {
       this.zoomContainer._goToSvg(
         1.0,
