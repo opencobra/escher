@@ -7,7 +7,7 @@ import {json as d3_json, text as d3_text} from "d3-request";
 import { selection as d3_selection, select as d3_select } from "d3-selection";
 import {gsap} from "gsap";
 import * as d3_scale from "d3-scale";
-import { axisBottom as d3_axis_bottom } from "d3-axis";
+import { axisBottom as d3_axis_bottom, axisLeft as d3_axis_left, axisRight as d3_axis_right} from "d3-axis";
 import { saveAs } from "file-saver";
 
 try {
@@ -16,6 +16,24 @@ try {
   console.warn('Not a browser, so FileSaver.js not available.')
 }
 
+const LEFT_BOTTOM = 'left-bottom';
+const LEFT_TOP = 'left-top';
+const RIGHT_BOTTOM = 'right-bottom';
+const RIGHT_TOP = 'right-top';
+const HORIZONTAL = 'horizontal';
+const VERTICAL = 'vertical';
+
+const orientation = {
+  HORIZONTAL,
+  VERTICAL
+}
+
+const lengendPosition = {
+  LEFT_BOTTOM,
+  LEFT_TOP,
+  RIGHT_BOTTOM,
+  RIGHT_TOP
+}
 
 /**
  * Check if Blob is available, and alert if it is not.
@@ -742,13 +760,44 @@ function downloadPng (name, svg_sel) {
 /**
  * Download a png file using FileSaver.js.
  * @param {String} name - The filename (without extension).
- * @param {D3 Selection} svg_sel - The d3 selection for the SVG element.
+ * @param {D3_Scale } reaction_color_scale - The color scale for the reactions.
  */
-function downloadGif(name, svg_sel) {
-  // Alert if blob isn't going to work
+function downloadGif(name, reaction_color_scale) {
   _check_filesaver()
-  // Create a loading indicator
-  const {removeLoadingIndicator} = _create_loading_indicator()
+  if (!document.querySelector('#legend-config-modal').children.length) {
+    _set_legend_modal_html()
+    document.getElementById('confirm-btn').addEventListener('click', function() {
+      const legendPosition = document.getElementById('legendPosition').value;
+      const legendOrientation = document.getElementById('legendOrientation').value;
+
+      document.getElementById('legend-config-modal').style.display = 'none';
+      document.getElementById('legend-config-modal-overlay').style.display = 'none';
+
+      _gif_export_worker(name, reaction_color_scale, legendPosition, legendOrientation);
+    });
+
+    document.getElementById('cancel-btn').addEventListener('click', function() {
+      document.getElementById('legend-config-modal').style.display = 'none';
+      document.getElementById('legend-config-modal-overlay').style.display = 'none';
+    });
+  }
+
+  document.getElementById('legend-config-modal').style.display = 'block';
+  document.getElementById('legend-config-modal-overlay').style.display = 'block';
+}
+
+/**
+ * Worker function to create a gif.
+ *
+ * @param {String} name - The name of the gif.
+ * @param {D3_Scale} reaction_color_scale - The color scale for the reactions.
+ * @param {String} legendPosition - The position of the legend.
+ * @param {String} legendOrientation - The orientation of the legend.
+ * @private
+ */
+function _gif_export_worker (name, reaction_color_scale, legendPosition = lengendPosition.LEFT_BOTTOM, legendOrientation = orientation.VERTICAL) {
+  // Create a loading indicator and proceed with GIF generation
+  const { removeLoadingIndicator } = _create_loading_indicator();
 
   // Canvas to hold the image
   var canvas = document.createElement('canvas')
@@ -761,8 +810,10 @@ function downloadGif(name, svg_sel) {
   // Legend size
   const LEGEND_HEIGHT = 36;
   const LEGEND_WIDTH = 225;
+  const VERTICAL_LEGEND_WIDTH = 56;
+  const VERTICAL_LEGEND_HEIGHT = 225;
   const LEGEND_PADDING = 5;
-  
+
   // Calculate the size of the picture
   const boundingClientRect= document.querySelector('rect#canvas').getBoundingClientRect()
   const { width, height, x, y, left, top } = boundingClientRect
@@ -791,12 +842,27 @@ function downloadGif(name, svg_sel) {
 
     return DOMURL.createObjectURL(svgBlob);
   }
-
+  let clear_vertical_legend
   const processLegendSVGToCanvas = () => {
-    let legendSvgElement = document.querySelector('.legend-container').cloneNode(true);
-    legendSvgElement.setAttribute('viewBox', `0 0 ${LEGEND_WIDTH} ${LEGEND_HEIGHT}`);
-    legendSvgElement.setAttribute('width', LEGEND_WIDTH);
-    legendSvgElement.setAttribute('height', LEGEND_HEIGHT);
+    let legendSvgElement;
+    if (legendOrientation === 'vertical') {
+      if (legendPosition === 'left-top' || legendPosition === 'left-bottom') {
+        clear_vertical_legend = _update_color_legends(reaction_color_scale, d3_axis_right, 'left')
+      }else {
+        clear_vertical_legend = _update_color_legends(reaction_color_scale, d3_axis_left, 'right')
+      }
+
+      legendSvgElement = document.querySelector('.vertical-legend-container').cloneNode(true);
+    }else {
+      legendSvgElement = document.querySelector('.legend-container').cloneNode(true);
+    }
+
+    const [width, height] = legendOrientation === orientation.HORIZONTAL ? [LEGEND_WIDTH, LEGEND_HEIGHT] : [VERTICAL_LEGEND_WIDTH, VERTICAL_LEGEND_HEIGHT];
+
+    legendSvgElement.setAttribute('viewBox', `0 0 ${width} ${height}`);
+    legendSvgElement.setAttribute('width',  width);
+    legendSvgElement.setAttribute('height', height);
+
     let svgData = new XMLSerializer().serializeToString(legendSvgElement);
     let svgBlob = new Blob([svgData], { type: 'image/svg+xml;charset=utf-8' });
 
@@ -831,8 +897,31 @@ function downloadGif(name, svg_sel) {
           // Clear the canvas before drawing
           context.clearRect(0, 0, picWidth, picHeight);
           context.drawImage(base_image, 0, 0, picWidth, picHeight);
-          // Draw the legend
-          context.drawImage(legend_image, picWidth - LEGEND_WIDTH - LEGEND_PADDING, picHeight - LEGEND_HEIGHT - LEGEND_PADDING, LEGEND_WIDTH, LEGEND_HEIGHT);
+
+          let legendX, legendY;
+
+          const [legendWidth, legendHeight] = legendOrientation === orientation.HORIZONTAL ? [LEGEND_WIDTH, LEGEND_HEIGHT] : [VERTICAL_LEGEND_WIDTH, VERTICAL_LEGEND_HEIGHT];
+
+          switch (legendPosition) {
+            case 'left-top':
+              legendX = LEGEND_PADDING;
+              legendY = LEGEND_PADDING;
+              break;
+            case 'right-top':
+              legendX = picWidth - legendWidth - LEGEND_PADDING;
+              legendY = LEGEND_PADDING;
+              break;
+            case 'left-bottom':
+              legendX = LEGEND_PADDING;
+              legendY = picHeight - legendHeight - LEGEND_PADDING;
+              break;
+            case 'right-bottom':
+              legendX = picWidth - legendWidth - LEGEND_PADDING;
+              legendY = picHeight - legendHeight - LEGEND_PADDING;
+              break;
+          }
+
+          context.drawImage(legend_image, legendX, legendY, legendWidth , legendHeight);
 
           gif.addFrame(context, {copy: true, DELAY});
           DOMURL.revokeObjectURL(url);
@@ -856,6 +945,7 @@ function downloadGif(name, svg_sel) {
           document.body.removeChild(a);
           // Remove or hide the loading indicator
           removeLoadingIndicator();
+          clear_vertical_legend && clear_vertical_legend();
         });
 
         gif.render();
@@ -1341,9 +1431,17 @@ function update_color_legends(reaction_color_scale, has_data_on_reactions) {
     .range([0, LEGEND_WIDTH]);
 
   // define the axis and text for the color legend
+  const formatNumber = (d) => {
+    if (d >= 1e9) return (d / 1e9).toFixed(1) + 'G';
+    if (d >= 1e6) return (d / 1e6).toFixed(1) + 'M';
+    if (d >= 1e3) return (d / 1e3).toFixed(1) + 'K';
+    return d.toFixed(2);
+  };
+
   const legendAxis = d3_axis_bottom(legendScale)
-    .tickValues([domain[0], domain[domain.length - 1]])
-    .tickFormat(d => d === domain[0] ? 'min' : d === domain[domain.length - 1] ? 'max' : '');
+    .ticks(domain.length)
+    .tickValues(domain)
+    .tickFormat(formatNumber);
 
   // draw the color legend axis
   legend.select(".legend-axis")
@@ -1351,6 +1449,75 @@ function update_color_legends(reaction_color_scale, has_data_on_reactions) {
     .call(legendAxis);
 
   has_data_on_reactions ? svg.style("display", "block") : svg.style("display", "none");
+}
+
+/**
+ * update the vertical color legends for export the gif with the legend
+ * @param reaction_color_scale - The color scale for reactions.
+ * @param axis_function - The axis function for the color legend.
+ * @param lengend_position - The direction of the axis.
+ * @returns void
+ */
+function _update_color_legends(reaction_color_scale, axis_function, lengend_position) {
+  // get the domain and range of the color scale
+  const domain = reaction_color_scale.domain();
+  const range = reaction_color_scale.range();
+  // get elements for the color legends
+  const LEGEND_WIDTH = 19;
+  const LEGEND_HEIGHT = 200;
+  const svg = d3_select(".vertical-legend-container")
+
+  const group = svg.append('g').attr('class', 'legend-group')
+  const legend = svg.select(".legend-group").attr('transform', `translate(0, 10)`);
+  legend.append('defs').attr('class', 'legend-defs').append("linearGradient")
+    .attr("id", "legend-gradient").attr('x', '0%').attr('y', '0%').attr('x2', '0%').attr('y2', '100%')
+  legend.append('rect').attr('class', 'legend-rect')
+  legend.append('g').attr('class', 'legend-axis')
+
+  const gradient = legend.select(".legend-defs linearGradient");
+  // define the linear gradient data for the color rectangle
+
+  gradient.selectAll("stop").remove();
+  gradient.selectAll("stop").data(_get_color_linearGradient_data(domain, range)).enter().append('stop')
+    .attr("offset", d => d.offset)
+    .attr("stop-color", d => d.color);
+
+  // draw the color rectangle
+  legend.select(".legend-rect")
+    .attr("x", 0)
+    .attr("y", 0)
+    .attr("width", LEGEND_WIDTH)
+    .attr("height", LEGEND_HEIGHT)
+    .style("fill", "url(#legend-gradient)");
+
+  const legendScale = d3_scale.scaleLinear()
+    .domain([Math.min(...domain), Math.max(...domain)])
+    .range([0, LEGEND_HEIGHT]);
+
+  // define the axis and text for the color legend
+  const formatNumber = (d) => {
+    if (d >= 1e9) return (d / 1e9).toFixed(1) + 'G';
+    if (d >= 1e6) return (d / 1e6).toFixed(1) + 'M';
+    if (d >= 1e3) return (d / 1e3).toFixed(1) + 'K';
+    return d.toFixed(2);
+  };
+
+  const legendAxis = axis_function(legendScale)
+    .ticks(domain.length)
+    .tickValues(domain)
+    .tickFormat(formatNumber);
+
+  // draw the color legend axis
+  legend.select(".legend-axis")
+    .attr("transform", `translate(${LEGEND_WIDTH}, 0)`)
+    .call(legendAxis);
+
+  if (lengend_position === 'right') {
+    legend.select(".legend-axis").attr("transform", `translate(${LEGEND_WIDTH * 2}, 0)`);
+    legend.select(".legend-rect").attr("transform", `translate(${LEGEND_WIDTH * 2}, 0)`)
+  }
+
+  return () => svg.selectAll('*').remove();
 }
 
 // get the linear gradient data for the color rectangle, used by update_color_legends(internal function)
@@ -1402,6 +1569,45 @@ function get_local_storage_item(key, defaultValue = null) {
   return defaultValue;
 }
 
+/**
+ * Set the options HTML for the legend modal.
+ *
+ * @private
+ */
+function _set_legend_modal_html() {
+  const modalContainer = document.getElementById('legend-config-modal');
+
+  if (modalContainer) {
+    modalContainer.innerHTML = `
+    <div class="modal-content">
+      <h3>Select Legend Options</h3>
+
+      <label for="legendPosition">Legend Position:</label>
+      <select id="legendPosition">
+        <option value="${lengendPosition.RIGHT_BOTTOM}">Right Bottom</option>
+        <option value="${lengendPosition.LEFT_BOTTOM}">Left Bottom</option>
+        <option value="${lengendPosition.RIGHT_TOP}">Right Top</option>
+        <option value="${lengendPosition.LEFT_TOP}">Left Top</option>
+      </select>
+
+      <br>
+
+      <label for="legendOrientation">Legend Orientation:</label>
+      <select id="legendOrientation">
+        <option value="${orientation.VERTICAL}">Vertical</option>
+        <option value="${orientation.HORIZONTAL}">Horizontal</option>
+      </select>
+
+      <br>
+
+      <div class="modal-actions">
+        <button id="confirm-btn" class="modal-button confirm">Confirm</button>
+        <button id="cancel-btn" class="modal-button cancel">Cancel</button>
+      </div>
+    </div>
+  `;
+  }
+}
 
 export default {
   set_options,

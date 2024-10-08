@@ -290,6 +290,10 @@ class Builder {
     this.menu_div = s.append('div')
     this.search_bar_div = s.append('div')
     this.button_div = this.selection.append('div')
+    if (this.selection.select('#legend-config-modal').empty()) {
+      this.selection.append('div').attr('id', 'legend-config-modal')
+      this.selection.append('div').attr('id', 'legend-config-modal-overlay')
+    }
 
     // Need to defer map loading to let webpack CSS load properly. Hack:
     // Delaying 50ms to make sure the css calculations on map size take
@@ -452,10 +456,14 @@ class Builder {
     const sel = menu_container.append('div').attr('class', 'search-menu-container-inline')
     // Set up the reaction color legend
     const legend_g = menu_container.append('svg').attr('class', 'legend-container').append('g').attr('class', 'legend-group').attr('transform', 'translate(10, 0)')
+
     legend_g.append('defs').attr('class', 'legend-defs').append("linearGradient")
       .attr("id", "legend-gradient")
     legend_g.append('rect').attr('class', 'legend-rect')
     legend_g.append('g').attr('class', 'legend-axis')
+
+    // Set up the vertical color legend for export as gif
+    menu_container.append('svg').attr('class', 'vertical-legend-container')
 
     this.setUpMenuBar(sel)
     this.setUpSearchBar(sel)
