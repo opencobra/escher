@@ -222,6 +222,6 @@ resizes. */
 }
 
 #legend-config-modal .modal-button.cancel {
-  background-color: #f44336;
-  color: white;
+  background-color: #f2f2f2;
+  color: #000;
 }
