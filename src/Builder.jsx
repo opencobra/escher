@@ -290,6 +290,10 @@ class Builder {
     this.menu_div = s.append('div')
     this.search_bar_div = s.append('div')
     this.button_div = this.selection.append('div')
+    if (this.selection.select('#legend-config-modal').empty()) {
+      this.selection.append('div').attr('id', 'legend-config-modal')
+      this.selection.append('div').attr('id', 'legend-config-modal-overlay')
+    }
 
     // Need to defer map loading to let webpack CSS load properly. Hack:
     // Delaying 50ms to make sure the css calculations on map size take

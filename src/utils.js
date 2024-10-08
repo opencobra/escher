@@ -16,6 +16,24 @@ try {
   console.warn('Not a browser, so FileSaver.js not available.')
 }
 
+const LEFT_BOTTOM = 'left-bottom';
+const LEFT_TOP = 'left-top';
+const RIGHT_BOTTOM = 'right-bottom';
+const RIGHT_TOP = 'right-top';
+const HORIZONTAL = 'horizontal';
+const VERTICAL = 'vertical';
+
+const legendOrientation = {
+  HORIZONTAL,
+  VERTICAL
+}
+
+const lengendPosition = {
+  LEFT_BOTTOM,
+  LEFT_TOP,
+  RIGHT_BOTTOM,
+  RIGHT_TOP
+}
 
 /**
  * Check if Blob is available, and alert if it is not.
@@ -743,13 +761,43 @@ function downloadPng (name, svg_sel) {
  * Download a png file using FileSaver.js.
  * @param {String} name - The filename (without extension).
  * @param {D3_Scale } reaction_color_scale - The color scale for the reactions.
+ */
+function downloadGif(name, reaction_color_scale) {
+  _check_filesaver()
+  if (!document.querySelector('#legend-config-modal').children.length) {
+    _set_legend_modal_html()
+    document.getElementById('confirm-btn').addEventListener('click', function() {
+      const legendPosition = document.getElementById('legendPosition').value;
+      const legendOrientation = document.getElementById('legendOrientation').value;
+
+      document.getElementById('legend-config-modal').style.display = 'none';
+      document.getElementById('legend-config-modal-overlay').style.display = 'none';
+
+      _gif_export_worker(name, reaction_color_scale, legendPosition, legendOrientation);
+    });
+
+    document.getElementById('cancel-btn').addEventListener('click', function() {
+      document.getElementById('legend-config-modal').style.display = 'none';
+      document.getElementById('legend-config-modal-overlay').style.display = 'none';
+    });
+  }
+
+  document.getElementById('legend-config-modal').style.display = 'block';
+  document.getElementById('legend-config-modal-overlay').style.display = 'block';
+}
+
+/**
+ * Worker function to create a gif.
+ *
+ * @param {String} name - The name of the gif.
+ * @param {D3_Scale} reaction_color_scale - The color scale for the reactions.
  * @param {String} legendPosition - The position of the legend.
  * @param {String} legendOrientation - The orientation of the legend.
+ * @private
  */
-function downloadGif(name, reaction_color_scale, legendPosition = 'right-bottom', legendOrientation = 'vertical') {
-  _check_filesaver()
-  // Create a loading indicator
-  const {removeLoadingIndicator} = _create_loading_indicator()
+function _gif_export_worker (name, reaction_color_scale, legendPosition = lengendPosition.RIGHT_BOTTOM, legendOrientation = legendOrientation.VERTICAL) {
+  // Create a loading indicator and proceed with GIF generation
+  const { removeLoadingIndicator } = _create_loading_indicator();
 
   // Canvas to hold the image
   var canvas = document.createElement('canvas')
@@ -765,7 +813,7 @@ function downloadGif(name, reaction_color_scale, legendPosition = 'right-bottom'
   const VERTICAL_LEGEND_WIDTH = 56;
   const VERTICAL_LEGEND_HEIGHT = 225;
   const LEGEND_PADDING = 5;
-  
+
   // Calculate the size of the picture
   const boundingClientRect= document.querySelector('rect#canvas').getBoundingClientRect()
   const { width, height, x, y, left, top } = boundingClientRect
@@ -853,7 +901,7 @@ function downloadGif(name, reaction_color_scale, legendPosition = 'right-bottom'
           let legendX, legendY;
 
           const [legendWidth, legendHeight] = legendOrientation === 'horizontal' ? [LEGEND_WIDTH, LEGEND_HEIGHT] : [VERTICAL_LEGEND_WIDTH, VERTICAL_LEGEND_HEIGHT];
-          
+
           switch (legendPosition) {
             case 'left-top':
               legendX = LEGEND_PADDING;
@@ -1521,6 +1569,45 @@ function get_local_storage_item(key, defaultValue = null) {
   return defaultValue;
 }
 
+/**
+ * Set the options HTML for the legend modal.
+ *
+ * @private
+ */
+function _set_legend_modal_html() {
+  const modalContainer = document.getElementById('legend-config-modal');
+
+  if (modalContainer) {
+    modalContainer.innerHTML = `
+    <div class="modal-content">
+      <h3>Select Legend Options</h3>
+
+      <label for="legendPosition">Legend Position:</label>
+      <select id="legendPosition">
+        <option value="${lengendPosition.RIGHT_BOTTOM}">Right Bottom</option>
+        <option value="${lengendPosition.LEFT_BOTTOM}">Left Bottom</option>
+        <option value="${lengendPosition.RIGHT_TOP}">Right Top</option>
+        <option value="${lengendPosition.LEFT_TOP}">Left Top</option>
+      </select>
+
+      <br>
+
+      <label for="legendOrientation">Legend Orientation:</label>
+      <select id="legendOrientation">
+        <option value="${legendOrientation.VERTICAL}">Vertical</option>
+        <option value="${legendOrientation.HORIZONTAL}">Horizontal</option>
+      </select>
+
+      <br>
+
+      <div class="modal-actions">
+        <button id="confirm-btn" class="modal-button confirm">Confirm</button>
+        <button id="cancel-btn" class="modal-button cancel">Cancel</button>
+      </div>
+    </div>
+  `;
+  }
+}
 
 export default {
   set_options,
