@@ -87,6 +87,10 @@ resizes. */
   height: 35.5px;
 }
 
+.escher-container .search-menu-container .vertical-legend-container{
+  display: none;
+}
+
 .escher-container .search-menu-container-inline {
   box-sizing: border-box;
   width: 320px;

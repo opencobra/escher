@@ -452,10 +452,14 @@ class Builder {
     const sel = menu_container.append('div').attr('class', 'search-menu-container-inline')
     // Set up the reaction color legend
     const legend_g = menu_container.append('svg').attr('class', 'legend-container').append('g').attr('class', 'legend-group').attr('transform', 'translate(10, 0)')
+
     legend_g.append('defs').attr('class', 'legend-defs').append("linearGradient")
       .attr("id", "legend-gradient")
     legend_g.append('rect').attr('class', 'legend-rect')
     legend_g.append('g').attr('class', 'legend-axis')
+
+    // Set up the vertical color legend for export as gif
+    menu_container.append('svg').attr('class', 'vertical-legend-container')
 
     this.setUpMenuBar(sel)
     this.setUpSearchBar(sel)
