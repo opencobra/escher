@@ -23,7 +23,7 @@ const RIGHT_TOP = 'right-top';
 const HORIZONTAL = 'horizontal';
 const VERTICAL = 'vertical';
 
-const legendOrientation = {
+const orientation = {
   HORIZONTAL,
   VERTICAL
 }
@@ -795,7 +795,7 @@ function downloadGif(name, reaction_color_scale) {
  * @param {String} legendOrientation - The orientation of the legend.
  * @private
  */
-function _gif_export_worker (name, reaction_color_scale, legendPosition = lengendPosition.RIGHT_BOTTOM, legendOrientation = legendOrientation.VERTICAL) {
+function _gif_export_worker (name, reaction_color_scale, legendPosition = lengendPosition.LEFT_BOTTOM, legendOrientation = orientation.VERTICAL) {
   // Create a loading indicator and proceed with GIF generation
   const { removeLoadingIndicator } = _create_loading_indicator();
 
@@ -857,7 +857,7 @@ function _gif_export_worker (name, reaction_color_scale, legendPosition = lengen
       legendSvgElement = document.querySelector('.legend-container').cloneNode(true);
     }
 
-    const [width, height] = legendOrientation === 'horizontal' ? [LEGEND_WIDTH, LEGEND_HEIGHT] : [VERTICAL_LEGEND_WIDTH, VERTICAL_LEGEND_HEIGHT];
+    const [width, height] = legendOrientation === orientation.HORIZONTAL ? [LEGEND_WIDTH, LEGEND_HEIGHT] : [VERTICAL_LEGEND_WIDTH, VERTICAL_LEGEND_HEIGHT];
 
     legendSvgElement.setAttribute('viewBox', `0 0 ${width} ${height}`);
     legendSvgElement.setAttribute('width',  width);
@@ -900,7 +900,7 @@ function _gif_export_worker (name, reaction_color_scale, legendPosition = lengen
 
           let legendX, legendY;
 
-          const [legendWidth, legendHeight] = legendOrientation === 'horizontal' ? [LEGEND_WIDTH, LEGEND_HEIGHT] : [VERTICAL_LEGEND_WIDTH, VERTICAL_LEGEND_HEIGHT];
+          const [legendWidth, legendHeight] = legendOrientation === orientation.HORIZONTAL ? [LEGEND_WIDTH, LEGEND_HEIGHT] : [VERTICAL_LEGEND_WIDTH, VERTICAL_LEGEND_HEIGHT];
 
           switch (legendPosition) {
             case 'left-top':
@@ -1517,7 +1517,7 @@ function _update_color_legends(reaction_color_scale, axis_function, lengend_posi
     legend.select(".legend-rect").attr("transform", `translate(${LEGEND_WIDTH * 2}, 0)`)
   }
 
-  return () => svg.empty()
+  return () => svg.selectAll('*').remove();
 }
 
 // get the linear gradient data for the color rectangle, used by update_color_legends(internal function)
@@ -1594,8 +1594,8 @@ function _set_legend_modal_html() {
 
       <label for="legendOrientation">Legend Orientation:</label>
       <select id="legendOrientation">
-        <option value="${legendOrientation.VERTICAL}">Vertical</option>
-        <option value="${legendOrientation.HORIZONTAL}">Horizontal</option>
+        <option value="${orientation.VERTICAL}">Vertical</option>
+        <option value="${orientation.HORIZONTAL}">Horizontal</option>
       </select>
 
       <br>
