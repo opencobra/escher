@@ -151,46 +151,35 @@ JavaScript API
           (Default: ``null``) An object with attributes x, y, width, and height.
 
        .. js:attribute:: options.show_reaction_data_animation
-          :type: Boolean
-          :default: false
 
-          Controls whether the reaction data animation is enabled. If set to `true`, reaction data animations will be displayed.
+          (Default: ``false``) Controls whether the reaction data animation is enabled. When set to ``true``, the reactions will be animated based on their data values.
 
        .. js:attribute:: options.animation_line_style
-          :type: String
-          :default: 'dashed'
 
-          Sets the line style for the animated reactions. Valid values are `'dashed'` and `'dotted'`.
+          (Default: ``'dashed'``) Defines the line style for animated reactions. Available options are:
+
+          - ``'dashed'``: Dashed lines for the animation.
+          - ``'dotted'``: Dotted lines for the animation.
 
        .. js:attribute:: options.reaction_data_threshold
-          :type: Number
-          :default: Math.pow(10, -6)
 
-          Specifies the threshold for displaying reaction data. Only reactions with data above this threshold will be animated.
+          (Default: ``Math.pow(10, -6)``) Specifies the threshold for displaying reaction data. Only reactions with data values greater than this threshold will be animated.
 
        .. js:attribute:: options.hidden_no_data_reaction
-          :type: Boolean
-          :default: false
 
-          Determines whether reactions without any data should be hidden. If set to `true`, reactions with no data will not be displayed.
+          (Default: ``false``) Determines whether reactions with no associated data should be hidden. When set to ``true``, reactions without data will not be displayed on the map.
 
        .. js:attribute:: options.open_in_vmh
-          :type: Boolean
-          :default: window.localStorage.getItem('open_in_vmh') === 'true'
 
-          Indicates whether reactions should be opened in the Virtual Metabolic Human (vmh) database by default.
+          (Default: ``window.localStorage.getItem('open_in_vmh') === 'true'``) Indicates whether the reactions should open in the Virtual Metabolic Human (VMH) database. When enabled, clicking on reactions will link to VMH entries.
 
        .. js:attribute:: options.vmh_basic_url
-          :type: String
-          :default: 'https://www.vmh.life/#allsearch/'
 
-          The base URL for linking to the Virtual Metabolic Human (vmh) database.
+          (Default: ``'https://www.vmh.life/#allsearch/'``) Defines the base URL for the Virtual Metabolic Human (VMH) database. This URL is used when opening VMH links for reactions.
 
        .. js:attribute:: options.background_image_url
-          :type: String
-          :default: ''
 
-          Specifies the URL for the background image used on the canvas. This allows users to set a background image for compartment simulation.
+          (Default: ``''``) The URL of the image used as the background for the map canvas. Users can upload an image to simulate different compartments on the canvas.
 
        **Applied data**
 
