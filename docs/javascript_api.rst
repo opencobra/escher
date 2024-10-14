@@ -150,6 +150,48 @@ JavaScript API
 
           (Default: ``null``) An object with attributes x, y, width, and height.
 
+       .. js:attribute:: options.show_reaction_data_animation
+          :type: Boolean
+          :default: false
+
+          Controls whether the reaction data animation is enabled. If set to `true`, reaction data animations will be displayed.
+
+       .. js:attribute:: options.animation_line_style
+          :type: String
+          :default: 'dashed'
+
+          Sets the line style for the animated reactions. Valid values are `'dashed'` and `'dotted'`.
+
+       .. js:attribute:: options.reaction_data_threshold
+          :type: Number
+          :default: Math.pow(10, -6)
+
+          Specifies the threshold for displaying reaction data. Only reactions with data above this threshold will be animated.
+
+       .. js:attribute:: options.hidden_no_data_reaction
+          :type: Boolean
+          :default: false
+
+          Determines whether reactions without any data should be hidden. If set to `true`, reactions with no data will not be displayed.
+
+       .. js:attribute:: options.open_in_vmh
+          :type: Boolean
+          :default: window.localStorage.getItem('open_in_vmh') === 'true'
+
+          Indicates whether reactions should be opened in the Virtual Metabolic Human (vmh) database by default.
+
+       .. js:attribute:: options.vmh_basic_url
+          :type: String
+          :default: 'https://www.vmh.life/#allsearch/'
+
+          The base URL for linking to the Virtual Metabolic Human (vmh) database.
+
+       .. js:attribute:: options.background_image_url
+          :type: String
+          :default: ''
+
+          Specifies the URL for the background image used on the canvas. This allows users to set a background image for compartment simulation.
+
        **Applied data**
 
        .. js:attribute:: options.reaction_data
