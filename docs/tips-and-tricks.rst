@@ -30,6 +30,17 @@ Once you have a COBRA model, you can follow these steps:
 
     iMM904.Amino acid biosynthesis.json
 
+Using `sbml2escher`_
+--------------------
+
+The `sbml2escher.py`_ script provides an automated way to convert SBML models (with layout extensions) into Escher maps. This can save time and effort in building maps from scratch. Here’s how to use it effectively:
+
+1. Prepare Your SBML Model: Ensure your SBML model (with layout extensions) is correctly formatted and compatible with Escher.
+
+2. Run `sbml2escher.py`: Execute the script with your SBML model as input. It will generate a corresponding Escher map.
+
+3. Load in Escher Builder: Once you have your Escher map, load it in the Escher Builder to visualize and make any necessary modifications.
+
 
 Building from an existing map for a similar organism
 ----------------------------------------------------
@@ -50,8 +61,6 @@ and move on.
 Finally, when there are no highlighted reactions left, you can repeat this for
 other subsystems.
 
-.. _escher.github.io: https://www.github.com/escher/escher.github.io/
-.. _`BiGG Database`: http://bigg.ucsd.edu
 
 Escher performance with large maps
 ----------------------------------
@@ -72,3 +81,8 @@ performance:
 
 We are always trying to make Escher faster, so let us know if you find any
 unexpected performance issues.
+
+.. _`sbml2escher`: https://github.com/opencobra/escher/blob/master/py/io/README.md
+.. _`sbml2escher.py`: https://github.com/opencobra/escher/blob/master/py/io/sbml2escher.py
+.. _escher.github.io: https://www.github.com/escher/escher.github.io/
+.. _`BiGG Database`: http://bigg.ucsd.edu
