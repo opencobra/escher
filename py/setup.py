@@ -11,7 +11,7 @@ package = __import__('version').package
 port = 8789
 
 setup(
-    name='Escher',
+    name='VMH_Escher',
     version=full_version,
     author=package['author'],
     url=package['homepage'],
@@ -47,7 +47,7 @@ setup(
     ],
     install_requires=[
         'Jinja2>=3.0.3,<4',
-        'pytest>=4.0.1,<5',
+        'pytest>=6.0.0,<9',
         'cobra>=0.5.0',
         'jsonschema>=4.17.3,<5',
         'ipywidgets>=7.7.0,<8',
@@ -55,12 +55,12 @@ setup(
     ],
     extras_require={
         'test': [
-            'pytest>=4.3.0,<8',
+            'pytest>=6.0.0,<9',
         ],
         'docs': [
-            'sphinx>=2.1.1,<3',
-            'sphinx-rtd-theme>=0.4.3,<0.5',
-            'nbsphinx>=0.4.2,<0.5'
+            'sphinx>=8.1.3,<9',
+            'sphinx-rtd-theme>=3.0.1,<4',
+            'nbsphinx>=0.9.5,<1',
         ],
         'jupyter': [
             'jupyterlab-widgets==1.1.1',

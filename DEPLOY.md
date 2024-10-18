@@ -1,5 +1,6 @@
 # npm
 
+```
 source .venv/bin/activate
 (update version in package.json)
 yarn clean
@@ -11,11 +12,12 @@ git tag <version>
 git push
 npm login # last time i tried, yarn wasn't working for login & publish
 npm publish
+```
 
 # pypi
 
 after the above
-
+```
 cd py
 pip install -U pip setuptools wheel twine
 rm -rf dist build
@@ -30,6 +32,7 @@ ipython, jupyter, etc.
 cd -
 deactivate
 twine upload --repository-url https://upload.pypi.org/legacy/ dist/*
+```
 
 # Docs
 

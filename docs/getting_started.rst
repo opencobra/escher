@@ -70,7 +70,7 @@ Loading and saving maps
 
 Using the map menu, you can load and save maps at any time:
 
-.. image:: _static/map_menu.png
+.. image:: _static/map_menu_new.png
 
 Click **Save map JSON** to save the Escher map as a JSON file, which is the
 standard file representing an Escher map.
@@ -89,6 +89,10 @@ export), and click Save.
 Later, you can can load a JSON file to view and edit a map by clicking **Load map
 JSON**.
 
+Click **Import Background** to upload an image as the canvas background. This feature allows users to simulate different biological compartments, enhancing the visual representation of the map.
+
+Click **Clear Background** to remove the current background image from the canvas, restoring it to a blank background.
+
 Click **Export as SVG** to generate a `SVG`_ file for editing in tools like
 `Adobe Illustrator`_ and `Inkscape`_. This is the best way to generate figures
 for presentations and publications. Unlike a JSON file, a SVG file maintains the
@@ -97,6 +101,8 @@ Escher after you generate them.
 
 Click **Export as PNG** to generate a `PNG`_ file for sharing finished
 visualizations quickly (e.g. in PowerPoint).
+
+Click **Export as GIF** to export the Escher map as a GIF file, including any animations. The exported GIF can also feature a color legend, which can be positioned according to the user’s preference (horizontal, vertical, or in any of the four corners).
 
 Click **Clear Map** to empty the whole map, leaving a blank canvas. **NOTE**: You
 cannot undo **Clear Map**.
@@ -251,6 +257,29 @@ AND rules, Escher will either take the mean (the default) or the minimum of the
 components. The AND behavior (mean vs. minimum) is defined in the
 :ref:`settings` menu.
 
+Reaction Data Animation
+^^^^^^^^^^^^^^^^^^^^^^^
+To enhance the visualization of reaction data, the Escher map now supports **animated reactions**. This feature uses GSAP (GreenSock Animation Platform) to animate the flow of reaction data by varying the strokeDashoffset property of SVG paths. The animation helps visualize the intensity and direction of reactions more effectively.
+
+**Key Features**:
+
+- **Animation Speed Control**: Users can adjust the speed of the animation through Settings_.
+- **Line Style Customization**: The style of the animated lines can be configured based on user Settings_.
+- **Viewpoint-Based Animation**: The animation automatically pauses for nodes and reactions that are outside the visible area of the canvas.
+
+This feature makes it easier to analyze dynamic metabolic flows across different pathways, helping users better understand the behavior of their data.
+
+Color Legend for Reaction Data
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+In conjunction with the animated reactions, a **color legend** is provided to visually represent the scale of reaction data. The legend helps users interpret the intensity of the reactions at a glance.
+
+**Key Features**:
+
+- **Seamless Integration with GIF Export**: When exporting the map as a GIF, the color legend is automatically included to provide context for the animation.The color legend can be positioned horizontally, vertically, or in any of the four corners of the canvas, depending on user preferences.
+
+.. image:: _static/animation_demo.gif
+
 .. _editing-and-building:
 
 Editing and building
@@ -366,10 +395,14 @@ Settings
 View and build options
 ^^^^^^^^^^^^^^^^^^^^^^
 
-.. image:: _static/settings.png
+.. image:: _static/settings_new.png
 
 - **Identifiers:** Choose whether to show BiGG IDs or descriptive names for
   reactions, metabolites, and genes.
+
+- **Open in vmh/biGG:** Choose the database for looking up reactions. Users can select to open reaction details in either `Virtual Metabolic Human (vmh)`_ or **BiGG** databases. This setting allows users to quickly navigate to relevant entries in these databases.
+
+- **Line Style:** Configure the style of the animated reaction lines. Users can choose between **Dash** or **Dot** styles for the lines representing reaction pathways. This option allows customization of the line display based on user preferences.
 
 - **Scroll to zoom:** If checked, then the scroll wheel and trackpad will
   control zoom rather than pan.
@@ -391,6 +424,8 @@ View and build options
   the map but are not in the model. This is useful when you are adapting a map
   from one model for use with another model
 
+- **Hide no data reactions:** Hide reactions that have no associated data. When enabled, reactions without any data will be hidden from the map, simplifying the visualization and focusing on pathways with data.
+
 - **Use 3D transform for responsive panning and zooming:** If true, then use
   CSS3 3D transforms to speed up panning and zooming.
 
@@ -400,7 +435,7 @@ View and build options
 Reaction data settings
 ^^^^^^^^^^^^^^^^^^^^^^
 
-.. image:: _static/reaction_settings.png
+.. image:: _static/reaction_settings_new.png
 
 When reaction or gene data is loaded, this section can be used to change visual
 settings for reactions.
@@ -415,6 +450,8 @@ color scale that will adapt to your dataset.
 For each control point, you can choose a color by entering a `CSS-style color`_
 (e.g. red, #ff0000, rgba(20, 20, 255, 0.5), and you can choose a size that will
 scale the thickness of reactions.
+
+**Speed:** Defines the duration of the reaction animation in seconds. A higher value results in a slower animation. The value must be greater than 0.
 
 There are also color and size options for reactions that do not have any data
 value.
@@ -450,6 +487,7 @@ metabolite circles.
 .. _`Systems Biology Research Group`: http://systemsbiology.ucsd.edu/
 .. _`website`: http://escher.github.io
 .. _`drive`: http://youtu.be/wghznH7Jtbw?t=1m
+.. _`PNG`: https://www.wikiwand.com/en/articles/PNG
 .. _`SVG`: http://www.wikiwand.com/en/Scalable_Vector_Graphics
 .. _`Adobe Illustrator`: http://www.adobe.com/products/illustrator.html
 .. _`Inkscape`: https://inkscape.org/
@@ -457,6 +495,7 @@ metabolite circles.
 .. _`example code`: http://nbviewer.ipython.org/github/zakandrewking/escher/blob/master/docs/notebooks/Generate%20JSON%20models%20in%20COBRApy.ipynb
 .. _hex: http://en.wikipedia.org/wiki/Web_colors#Hex_triplet
 .. _`CSS-style color`: https://developer.mozilla.org/en-US/docs/Web/CSS/color
+.. _`Virtual Metabolic Human (vmh)`: https://www.vmh.life/
 .. _`S3_iJO1366_anaerobic_FBA_flux.json`: _static/example_data/S3_iJO1366_anaerobic_FBA_flux.json
 .. _`reaction_data_iJO1366.json`: _static/example_data/reaction_data_iJO1366.json
 .. _`reaction_data_diff_iJO1366.json`: _static/example_data/reaction_data_diff_iJO1366.json
