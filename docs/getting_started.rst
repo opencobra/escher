@@ -262,18 +262,20 @@ Reaction Data Animation
 To enhance the visualization of reaction data, the Escher map now supports **animated reactions**. This feature uses GSAP (GreenSock Animation Platform) to animate the flow of reaction data by varying the strokeDashoffset property of SVG paths. The animation helps visualize the intensity and direction of reactions more effectively.
 
 **Key Features**:
+
 - **Animation Speed Control**: Users can adjust the speed of the animation through Settings_.
 - **Line Style Customization**: The style of the animated lines can be configured based on user Settings_.
 - **Viewpoint-Based Animation**: The animation automatically pauses for nodes and reactions that are outside the visible area of the canvas.
 
 This feature makes it easier to analyze dynamic metabolic flows across different pathways, helping users better understand the behavior of their data.
 
- Color Legend for Reaction Data
+Color Legend for Reaction Data
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 In conjunction with the animated reactions, a **color legend** is provided to visually represent the scale of reaction data. The legend helps users interpret the intensity of the reactions at a glance.
 
 **Key Features**:
+
 - **Seamless Integration with GIF Export**: When exporting the map as a GIF, the color legend is automatically included to provide context for the animation.The color legend can be positioned horizontally, vertically, or in any of the four corners of the canvas, depending on user preferences.
 
 .. image:: _static/animation_demo.gif
@@ -398,7 +400,7 @@ View and build options
 - **Identifiers:** Choose whether to show BiGG IDs or descriptive names for
   reactions, metabolites, and genes.
 
-- **Open in vmh/biGG:** Choose the database for looking up reactions. Users can select to open reaction details in either **Virtual Metabolic Human (vmh)** or **BiGG** databases. This setting allows users to quickly navigate to relevant entries in these databases.
+- **Open in vmh/biGG:** Choose the database for looking up reactions. Users can select to open reaction details in either `Virtual Metabolic Human (vmh)`_ or **BiGG** databases. This setting allows users to quickly navigate to relevant entries in these databases.
 
 - **Line Style:** Configure the style of the animated reaction lines. Users can choose between **Dash** or **Dot** styles for the lines representing reaction pathways. This option allows customization of the line display based on user preferences.
 
@@ -485,6 +487,7 @@ metabolite circles.
 .. _`Systems Biology Research Group`: http://systemsbiology.ucsd.edu/
 .. _`website`: http://escher.github.io
 .. _`drive`: http://youtu.be/wghznH7Jtbw?t=1m
+.. _`PNG`: https://www.wikiwand.com/en/articles/PNG
 .. _`SVG`: http://www.wikiwand.com/en/Scalable_Vector_Graphics
 .. _`Adobe Illustrator`: http://www.adobe.com/products/illustrator.html
 .. _`Inkscape`: https://inkscape.org/
@@ -492,6 +495,7 @@ metabolite circles.
 .. _`example code`: http://nbviewer.ipython.org/github/zakandrewking/escher/blob/master/docs/notebooks/Generate%20JSON%20models%20in%20COBRApy.ipynb
 .. _hex: http://en.wikipedia.org/wiki/Web_colors#Hex_triplet
 .. _`CSS-style color`: https://developer.mozilla.org/en-US/docs/Web/CSS/color
+.. _`Virtual Metabolic Human (vmh)`: https://www.vmh.life/
 .. _`S3_iJO1366_anaerobic_FBA_flux.json`: _static/example_data/S3_iJO1366_anaerobic_FBA_flux.json
 .. _`reaction_data_iJO1366.json`: _static/example_data/reaction_data_iJO1366.json
 .. _`reaction_data_diff_iJO1366.json`: _static/example_data/reaction_data_diff_iJO1366.json
