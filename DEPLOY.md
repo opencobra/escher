@@ -1,12 +1,11 @@
 # npm
 
 ```
-source .venv/bin/activate
 (update version in package.json)
-yarn clean
-yarn install
-yarn build
-yarn copy # for docs to build
+npm run clean
+npm install
+npm run build
+npm run copy # for docs to build
 git commit -m "version change"
 git tag <version>
 git push
