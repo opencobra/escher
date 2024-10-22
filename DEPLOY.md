@@ -8,7 +8,7 @@ npm run build
 npm run copy # for docs to build
 git commit -m "version change"
 git tag <version>
-git push
+git push commit & tags
 npm login # last time i tried, yarn wasn't working for login & publish
 npm publish
 ```
