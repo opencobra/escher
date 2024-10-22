@@ -50,12 +50,6 @@ First, install dependencies with [npm](https://www.npmjs.com) (or you can use
 [yarn](https://yarnpkg.com)):
 
 ```
-brew install nvm pyenv
-pyenv install 3.10.11
-pyenv shell 3.10.11
-python -m venv .venv
-source .venv/bin/activate
-nvm use
 npm install
 ```
 
