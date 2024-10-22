@@ -1,21 +1,22 @@
 # npm
 
-source .venv/bin/activate
+```
 (update version in package.json)
-yarn clean
-yarn install
-yarn build
-yarn copy # for docs to build
+npm run clean
+npm install
+npm run build
+npm run copy # for docs to build
 git commit -m "version change"
 git tag <version>
-git push
+git push commit & tags
 npm login # last time i tried, yarn wasn't working for login & publish
 npm publish
+```
 
 # pypi
 
 after the above
-
+```
 cd py
 pip install -U pip setuptools wheel twine
 rm -rf dist build
@@ -30,6 +31,7 @@ ipython, jupyter, etc.
 cd -
 deactivate
 twine upload --repository-url https://upload.pypi.org/legacy/ dist/*
+```
 
 # Docs
 
