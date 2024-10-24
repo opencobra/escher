@@ -24,7 +24,7 @@ Once you have a COBRA model, you can follow these steps:
    Escher viewer, especially on old browsers. Rather than building one giant
    map, Escher is designed for building many, smaller subsystem maps.
 
-4. When you have built a map for your a subsystem, save the map as JSON with a
+4. When you have built a map for your subsystem, save the map as JSON with a
    name that includes the model ID, followed by a period, followed by the name
    of the subsystem. For example::
 
@@ -65,7 +65,7 @@ other subsystems.
 Escher performance with large maps
 ----------------------------------
 
-Escher works best with maps that have less than about 200 reactions. If you are
+Escher works best with maps that have less than approximately 200 reactions. If you are
 working with more reactions, we recommend splitting your map into multiple small
 maps. A trick for splitting up a map is to first select the reactions you want
 to keep, then choose "Edit > Invert Selection" and then "Edit > Delete".

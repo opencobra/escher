@@ -120,13 +120,13 @@ see the :doc:`escher-python`.
 
 Once you have loaded a COBRA model, there may be inconsistencies between the
 content in the map and the model (e.g. reaction IDs, descriptive names and gene
-reaction rules). You click **Update names and gene reaction rules using model**
+reaction rules). Click **Update names and gene reaction rules using model**
 to find matching reactions and metabolites between the map and the model (based
 on their IDs) and then apply the names and gene reaction rules from the model to
 the map. The reactions that do not match will be highlighted in red. (This can
 be turned off again in the settings menu by deselecting *Highlight reactions not
 in model*.)  More advice on building maps is available in
-:doc:`contribute_maps`.
+:doc:`tips-and-tricks`.
 
 Click **Clear Model** to clear the current model.
 
@@ -242,12 +242,12 @@ reaction data comparisons::
 Gene data and gene reaction rules
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Escher uses *gene reaction rules* to connect gene data to the reactions on a
+Escher uses *gene reaction rules* to connect gene data to the reactions in a
 metabolic pathway. You can see these gene reaction rules on the map by selecting
 *Show gene reaction rules* in the :ref:`settings` menu.
 
 Gene reaction rules show the genes whose gene products are required to catalyze
-a reaction. Gene are connected using AND and OR rules. AND rules are
+a reaction. Genes are connected using AND and OR rules. AND rules are
 used when two genes are required for enzymatic activity, e.g. they are members
 of a protein complex. OR rules are used when either gene can catalyze the
 enzymatic activity, e.g. they are isozymes.
@@ -285,7 +285,7 @@ In conjunction with the animated reactions, a **color legend** is provided to vi
 Editing and building
 ====================
 
-The Edit menu gives you access to function for editing the map:
+The Edit menu gives you access to functions for editing the map:
 
 .. image:: _static/edit_menu.png
 
@@ -375,8 +375,8 @@ View options
 
 - **Find:** Search for a reaction, metabolite, or gene on the map.
 
-- **Show control points:** Show the control points; you can drag these red and
-  blue circle to adjust the shapes of the reactions curves.
+- **Show control points:** Show the control points; you can drag the red and
+  blue circles to adjust the shapes of the reactions curves.
 
 - **Settings:** Open the Settings_ menu.
 
