@@ -20,4 +20,4 @@ python:
     - method: pip
       path: py/
       extra_requirements:
-        - docs
+        - requirements.txt
