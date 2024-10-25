@@ -6,7 +6,7 @@ on_rtd = os.environ.get('READTHEDOCS', None) == 'True'
 
 def get_full_version(main_version, post_version=None):
     """Generate a PEP440 compliant version with an optional post-release."""
-    if post_version is None:
+    if not post_version:
         return main_version
     else:
         return '%s.post%s' % (main_version, post_version)
@@ -29,6 +29,6 @@ __map_model_version__ = package['map_model_version']
 
 # post-release version (required by PyPI & PEP440)
 __post_version__ = package.get('post_version', None)
-print(f"__post_version__ = {__post_version__}")
+
 # full version with post-release
 __full_version__ = get_full_version(__version__, __post_version__)
