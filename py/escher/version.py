@@ -5,13 +5,10 @@ from os.path import join, dirname
 on_rtd = os.environ.get('READTHEDOCS', None) == 'True'
 
 def get_full_version(main_version, post_version=None):
-    print(f"main_version = {main_version} {post_version} ------------ main_version")
     """Generate a PEP440 compliant version with an optional post-release."""
     if not post_version:
-        print(f"main_version = {main_version} ------------ 111main_version")
         return main_version
     else:
-        print(f"main_version = {main_version} ------------ 22main_version")
         return '%s.post%s' % (main_version, post_version)
 
 if on_rtd:
@@ -24,7 +21,6 @@ else:
 
 # software version
 __version__ = package['version']
-print(f"__version__ = {__version__} ------------ version")
 # Escher schema and map version. The schema version determines the version of
 # the map specification, and the map version is an additional level so that maps
 # can be released with the same spec but new layouts.
@@ -33,6 +29,5 @@ __map_model_version__ = package['map_model_version']
 
 # post-release version (required by PyPI & PEP440)
 __post_version__ = package.get('post_version', None)
-print(f"__post_version__ = {__post_version__} ------------ post_version")
 # full version with post-release
 __full_version__ = get_full_version(__version__, __post_version__)
