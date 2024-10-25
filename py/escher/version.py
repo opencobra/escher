@@ -29,5 +29,6 @@ __map_model_version__ = package['map_model_version']
 
 # post-release version (required by PyPI & PEP440)
 __post_version__ = package.get('post_version', None)
+print(f"__post_version__ = {__post_version__}")
 # full version with post-release
 __full_version__ = get_full_version(__version__, __post_version__)
