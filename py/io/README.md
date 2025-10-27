@@ -104,7 +104,7 @@ The entire process involves converting the `CellDesigner` or `SBML` file format 
 
 > Note: Ensure that the file names do not contain any spaces.
 
-If the input file format is `CellDesigner`, the script will utilize the public API provided by [MINERVA](https://minerva.pages.uni.lu/doc/api/16.4/index.html) to convert the `CellDesigner` file format to the `SBML` file format. This intermediate step is handled behind the scenes.
+If the input file format is `CellDesigner`, the script will utilize the public API provided by [MINERVA](https://minerva.pages.uni.lu/api/16.4/index.html) to convert the `CellDesigner` file format to the `SBML` file format. This intermediate step is handled behind the scenes.
 
 If the input file format is `SBML`, the script will directly convert the `SBML` file format to the `Escher JSON` file format.
 
