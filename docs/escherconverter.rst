@@ -1,6 +1,9 @@
-***************
+************
+Conversion
+************
+
 EscherConverter
-***************
+===============
 
 EscherConverter is a standalone program that reads files created with the
 graphical network editor Escher and converts them to files in community standard
@@ -11,7 +14,7 @@ formats.
 Download `EscherConverter 1.2`_ (20.3 MB).
 
 Using EscherConverter
-=====================
+---------------------
 
 Escher uses a JSON file format to represent its networks. This format has been
 developed because of its very small file size and its compatibility to online
@@ -47,7 +50,7 @@ arcs and node positions.  However, it is important to know that none of the
 changes made in this preview are stored in the export file.
 
 Download and Installation
--------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~
 
 You can obtain local copy of EscherConverter by clicking here_.
 
@@ -67,7 +70,7 @@ somewhere on your local computer, for instance in the folder
 - ``C:\Program Files\`` if you are using Windows
 
 Launching the program
----------------------
+~~~~~~~~~~~~~~~~~~~~~
 
 You can launch EscherConverter simply by double-clicking on the application JAR
 file. This will open a following graphical user interface as described in the
@@ -119,7 +122,7 @@ of those changes are stored when exporting the file. In this current version,
 EscherConver only exports layouts as given in the original JSON file.
 
 Included third-party software
------------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 EscherConverter includes several third-party libraries, which we here list and
 acknowledge:
@@ -131,7 +134,7 @@ acknowledge:
 - yFiles
 
 Command-line interface API
-==========================
+---------------------------
 
 You can launch EscherConverter from the command-line. On a Unix system (such as
 Linux, MacOS, or Solaris, etc.), use a command like::
@@ -148,7 +151,7 @@ files are to be converted in a batch mode. It is even possible to completely
 disable the graphical user interface.
 
 Input and output files
-----------------------
+~~~~~~~~~~~~~~~~~~~~~~~
 
 Definition of input and output data files as well as the format for the output.
 
@@ -168,7 +171,7 @@ directory, this must also be a directory in order to perform a recursive
 conversion. Accepts SBML, SBGN.
 
 Escher layout
--------------
+~~~~~~~~~~~~~
 
 The options in this group allow you to influence how large certain elements
 should be displayed.
@@ -272,7 +275,7 @@ The position on the z-axis where the entire two-dimensional graph should be
 drawn. Arguments must fit into the range {[-1E9,1E9]}. (Default value: 0.0)
 
 Escher Components and their naming
-----------------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Here you can influence, which elements are to be included in the layout and how
 elements in the layout are to be called or identified.
@@ -332,7 +335,7 @@ actually further outside. For this reason, this option is deactivated by
 default. (Default value: false)
 
 Options for the graphical user interface
-----------------------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 ::
 
@@ -359,3 +362,117 @@ program will be written. Accepts (*.bp2, *.bp3, *.log, *.owl, *.xml).
 
 .. _here: https://github.com/SBRG/EscherConverter/releases/download/1.2/EscherConverter-1.2.0.jar
 .. _`EscherConverter 1.2`: here_
+
+CellDesigner conversion
+=======================
+
+Converting CellDesigner and SBML XML to Escher JSON format
+-----------------------------------------------------------
+
+Escher provides a Python script that allows you to convert CellDesigner XML files or SBML XML files to Escher JSON format. This conversion process enables you to import pathway maps created in external tools into Escher.
+
+The script is available at `github.com/opencobra/escher/blob/master/py/io/sbml2escher.py`_.
+
+.. _github.com/opencobra/escher/blob/master/py/io/sbml2escher.py: https://github.com/opencobra/escher/blob/master/py/io/sbml2escher.py
+
+Introduction
+~~~~~~~~~~~~
+
+The `sbml2escher.py` script is a Python-based tool that converts:
+- **CellDesigner XML** files to Escher JSON format
+- **SBML XML** files to Escher JSON format
+
+CellDesigner is a structured diagram editor for drawing gene-regulatory and biochemical networks. If the input file format is CellDesigner, the script utilizes the public API provided by `MINERVA <https://minerva.pages.uni.lu/api/16.4/index.html>`_ to convert the CellDesigner file format to SBML first, then proceeds with the conversion to Escher JSON format.
+
+Installation
+~~~~~~~~~~~~
+
+Prerequisites
+^^^^^^^^^^^^^
+
+Before starting, make sure you have Python 3 and pip installed. Verify by running:
+
+.. code-block:: bash
+
+   python3 --version
+   pip --version
+
+If not installed, follow the installation instructions for your operating system:
+
+- **Windows**: Follow the guide at `Installing Python on Windows <https://www.dataquest.io/blog/installing-python-on-windows/>`_
+- **macOS**: Install using Homebrew: ``brew install python3``
+- **Linux (Debian/Ubuntu)**: ``sudo apt update && sudo apt install python3 python3-pip``
+
+Setting up the environment
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+1. **Download the script**: Get the `sbml2escher.py` file from the project repository.
+
+2. **Create a virtual environment**:
+
+   .. code-block:: bash
+   
+      python3 -m venv venv
+
+3. **Activate the virtual environment**:
+
+   - On Windows: ``.\venv\Scripts\activate``
+   - On macOS/Linux: ``source venv/bin/activate``
+
+4. **Install dependencies**:
+
+   .. code-block:: bash
+   
+      pip install xmltodict requests
+
+Usage
+~~~~~
+
+Running the script
+^^^^^^^^^^^^^^^^^^
+
+The script can be run from the command line as follows:
+
+.. code-block:: bash
+
+   python3 sbml2escher.py --input=<input_file> --output=<output_file>
+
+Command-line options
+^^^^^^^^^^^^^^^^^^^^
+
+.. list-table::
+   :header-rows: 1
+   :widths: 20 60 20
+
+   * - Argument
+     - Description
+     - Default
+   * - ``--input``
+     - The input file path (CellDesigner or SBML XML)
+     - ``sbml.xml``
+   * - ``--output``
+     - The output file path (Escher JSON)
+     - ``sbml2escher_output.json``
+
+Example usage
+~~~~~~~~~~~~~
+
+Convert a CellDesigner file:
+
+.. code-block:: bash
+
+   python3 sbml2escher.py --input=pathway.xml --output=pathway_escher.json
+
+Convert an SBML file:
+
+.. code-block:: bash
+
+   python3 sbml2escher.py --input=model_sbml.xml --output=model_escher.json
+
+Important notes
+~~~~~~~~~~~~~~~
+
+- Ensure that file names do not contain any spaces
+- If you don't specify the input file, the default input file will be `sbml.xml` in the current directory.
+- If you don't specify the output file, the default output file will be `sbml2escher_output.json` in the current directory.
+- When converting CellDesigner files, the intermediate SBML conversion is handled automatically
