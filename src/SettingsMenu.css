@@ -201,3 +201,10 @@
 .escher-container .settingsBox .tooltipOption {
   margin-left: 10px;
 }
+
+.settingsSubtitle {
+  font-size: 14px;
+  font-weight: 600;
+  margin-top: 12px;
+  margin-bottom: 4px;
+}
