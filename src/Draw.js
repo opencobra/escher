@@ -169,6 +169,7 @@ function update_reaction_label (update_selection, has_data_on_reactions) {
   const show_gene_reaction_rules = this.settings.get('show_gene_reaction_rules')
   const hide_all_labels = this.settings.get('hide_all_labels')
   const gene_font_size = this.settings.get('gene_font_size')
+  const reaction_font_size = this.settings.get('reaction_font_size')
   // hide_no_data_reaction should only work when there is data on reactions
   const hide_no_data_reaction = has_data_on_reactions && this.settings.get('hide_no_data_reaction')
   const reactionLabelMouseover = this.behavior.reactionLabelMouseover
@@ -198,6 +199,7 @@ function update_reaction_label (update_selection, has_data_on_reactions) {
 
   if (!hide_all_labels) {
     label
+      .style('font-size', reaction_font_size + 'px')
       .text(function (d) {
         var t = d[identifiers_on_map]
         if (has_data_on_reactions &&
@@ -264,6 +266,7 @@ function update_reaction_label (update_selection, has_data_on_reactions) {
   // update text
   gene_update
     .select('text')
+    .style('font-size', gene_font_size + 'px')
     .text(d => d.text)
     .on('mouseover', geneLabelMouseover)
     .on('mouseout', geneLabelMouseout)
@@ -793,6 +796,7 @@ function update_node (update_selection, scale, has_data_on_nodes,
   var secondary_r = this.settings.get('secondary_metabolite_radius')
   var marker_r = this.settings.get('marker_radius')
   var hide_all_labels = this.settings.get('hide_all_labels')
+  var node_font_size = this.settings.get('node_font_size')
   var identifiers_on_map = this.settings.get('identifiers_on_map')
   var metabolite_data_styles = this.settings.get('metabolite_styles')
   var no_data_style = { color: this.settings.get('metabolite_no_data_color'),
@@ -867,6 +871,7 @@ function update_node (update_selection, scale, has_data_on_nodes,
       .attr('visibility', hide_all_labels ? 'hidden' : 'visible')
   if (!hide_all_labels) {
     node_label
+      .style('font-size', node_font_size + 'px')
       .style('visibility', function(d) {
         if (hideNode(d, hide_secondary_metabolites)) {
           return 'hidden'
@@ -936,12 +941,14 @@ function create_text_label (enter_selection) {
 
 function update_text_label (update_selection) {
   const mousedown = this.behavior.textLabelMousedown
+  const text_label_font_size = this.settings.get('text_label_font_size')
   const click = this.behavior.textLabelClick
   const turnOffDrag = this.behavior.turnOffDrag
   const drag = this.behavior.selectableDrag
 
   update_selection
     .select('.label')
+    .style('font-size', text_label_font_size + 'px')
     .text(function (d) { return d.text })
     .attr('transform', function (d) {
       return 'translate(' + d.x + ',' + d.y + ')'

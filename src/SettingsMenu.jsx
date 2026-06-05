@@ -13,7 +13,7 @@ import scalePresets from './scalePresets'
  * Preact.
  */
 class SettingsMenu extends Component {
-  componentWillMount () {
+  componentWillMount() {
     this.props.settings.holdChanges()
     this.setState({
       clearEscape: this.props.map.key_manager.addEscapeListener(
@@ -28,17 +28,17 @@ class SettingsMenu extends Component {
     })
   }
 
-  componentWillUnmount () {
+  componentWillUnmount() {
     this.state.clearEscape()
     this.state.clearEnter()
   }
 
-  abandonChanges () {
+  abandonChanges() {
     this.props.settings.abandonChanges()
     this.props.setDisplay(false)
   }
 
-  saveChanges () {
+  saveChanges() {
     this.props.settings.acceptChanges()
     this.props.setDisplay(false)
   }
@@ -48,7 +48,7 @@ class SettingsMenu extends Component {
    * @param {String} value - the style option to be added or removed
    * @param {String} type - reaction_style or metabolite_style
    */
-  handleStyle (value, type) {
+  handleStyle(value, type) {
     const currentSetting = this.props.settings.get(type)
     const index = currentSetting.indexOf(value)
     if (index === -1) {
@@ -61,7 +61,7 @@ class SettingsMenu extends Component {
     }
   }
 
-  render () {
+  render() {
     const settings = this.props.settings
     const enableTooltips = settings.get('enable_tooltips') || []
     const dataStatistics = this.props.map.get_data_statistics()
@@ -208,8 +208,8 @@ class SettingsMenu extends Component {
                     )
                   }
                   checked={settings.get('show_gene_reaction_rules')}
-                  />
-                  Show gene reaction rules
+                />
+                Show gene reaction rules
               </label>
               <label title='If checked, hide all reaction, gene, and metabolite labels'>
                 <input
@@ -224,6 +224,61 @@ class SettingsMenu extends Component {
                 />
                 Hide reaction, gene, and metabolite labels
               </label>
+              <div className='settingsSubtitle'>Label font sizes</div>
+              <table className='radioSelection'>
+                <tr title='Font size for reaction name labels on the map'>
+                  <td className='optionLabel'>Reaction labels:</td>
+                  <td>
+                    <input
+                      type='number'
+                      min='6'
+                      max='100'
+                      value={settings.get('reaction_font_size')}
+                      onChange={(e) => settings.set('reaction_font_size', parseInt(e.target.value) || 30)}
+                      style={{ width: '60px' }}
+                    /> px
+                  </td>
+                </tr>
+                <tr title='Font size for metabolite name labels on the map'>
+                  <td className='optionLabel'>Metabolite labels:</td>
+                  <td>
+                    <input
+                      type='number'
+                      min='6'
+                      max='100'
+                      value={settings.get('node_font_size')}
+                      onChange={(e) => settings.set('node_font_size', parseInt(e.target.value) || 20)}
+                      style={{ width: '60px' }}
+                    /> px
+                  </td>
+                </tr>
+                <tr title='Font size for gene labels shown under reactions'>
+                  <td className='optionLabel'>Gene labels:</td>
+                  <td>
+                    <input
+                      type='number'
+                      min='6'
+                      max='100'
+                      value={settings.get('gene_font_size')}
+                      onChange={(e) => settings.set('gene_font_size', parseInt(e.target.value) || 18)}
+                      style={{ width: '60px' }}
+                    /> px
+                  </td>
+                </tr>
+                <tr title='Font size for free text labels added to the map'>
+                  <td className='optionLabel'>Text labels:</td>
+                  <td>
+                    <input
+                      type='number'
+                      min='6'
+                      max='200'
+                      value={settings.get('text_label_font_size')}
+                      onChange={(e) => settings.set('text_label_font_size', parseInt(e.target.value) || 50)}
+                      style={{ width: '60px' }}
+                    /> px
+                  </td>
+                </tr>
+              </table>
               <label title='If checked, then allow duplicate reactions during model building.'>
                 <input
                   type='checkbox'
@@ -277,10 +332,10 @@ class SettingsMenu extends Component {
                 />
                 Use 3D transform for responsive panning and zooming
               </label>
-              <table style={{marginTop: '5px'}}>
+              <table style={{ marginTop: '5px' }}>
                 <tr title='Determines over which elements tooltips will display for reactions, metabolites, and genes'>
                   <td>
-                      Show tooltips over:
+                    Show tooltips over:
                   </td>
                   <td className='singleLine' >
                     <label className='tooltipOption' title='If checked, tooltips will display over the gene, reaction, and metabolite labels'>
@@ -289,8 +344,8 @@ class SettingsMenu extends Component {
                         onClick={() => {
                           const type = 'label'
                           const newEnableTooltips = _.contains(enableTooltips, type)
-                                                  ? _.filter(enableTooltips, x => x !== type)
-                                                  : [...enableTooltips, type]
+                            ? _.filter(enableTooltips, x => x !== type)
+                            : [...enableTooltips, type]
                           settings.set('enable_tooltips', newEnableTooltips)
                         }}
                         checked={_.contains(enableTooltips, 'label')}
@@ -303,8 +358,8 @@ class SettingsMenu extends Component {
                         onClick={() => {
                           const type = 'object'
                           const newEnableTooltips = _.contains(enableTooltips, type)
-                                                  ? _.filter(enableTooltips, x => x !== type)
-                                                  : [...enableTooltips, type]
+                            ? _.filter(enableTooltips, x => x !== type)
+                            : [...enableTooltips, type]
                           settings.set('enable_tooltips', newEnableTooltips)
                         }}
                         checked={_.contains(enableTooltips, 'object')}
@@ -315,7 +370,7 @@ class SettingsMenu extends Component {
                 </tr>
               </table>
             </div>
-            <div className='settingsTip' style={{marginTop: '16px'}}>
+            <div className='settingsTip' style={{ marginTop: '16px' }}>
               <i>Tip: To increase map performance, turn off text boxes (i.e. labels and gene reaction rules).</i>
             </div>
             <hr />
@@ -364,7 +419,7 @@ class SettingsMenu extends Component {
                   className='optionLabel'
                   title='Options for reactions data'
                 >
-                Options:
+                  Options:
                 </td>
                 <td>
                   <label
@@ -525,7 +580,7 @@ class SettingsMenu extends Component {
                   className='optionLabel'
                   title='Options for metabolite data'
                 >
-                Options:
+                  Options:
                 </td>
                 <td>
                   <label

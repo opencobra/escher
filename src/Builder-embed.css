@@ -15,32 +15,22 @@ svg.escher-svg .label {
   font-family: sans-serif;
   font-style: italic;
   font-weight: bold;
-  font-size: 8px;
   fill: black;
   stroke: none;
   text-rendering: optimizelegibility;
   cursor: default;
 }
 svg.escher-svg .reaction-label {
-  font-size: 30px;
   fill: rgb(32, 32, 120);
   text-rendering: optimizelegibility;
 }
-svg.escher-svg .node-label {
-  font-size: 20px;
-}
+
 svg.escher-svg .gene-label {
-  font-size: 18px;
   fill: rgb(32, 32, 120);
   text-rendering: optimizelegibility;
   cursor: default;
 }
-svg.escher-svg .text-label .label {
-  font-size: 50px;
-}
-svg.escher-svg .text-label-input {
-  font-size: 50px;
-}
+
 svg.escher-svg .node-circle {
   stroke-width: 2px;
 }
