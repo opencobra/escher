@@ -3,60 +3,76 @@
 import Builder from './Builder.jsx'
 import { select as d3Select } from 'd3-selection'
 import _ from 'underscore'
-// eslint-disable-next-line import/no-webpack-loader-syntax
-import embeddedCss from '!!raw-loader!./Builder-embed.css'
 
-// Options that take effect without redrawing the whole map. Matches the list
-// used by the previous ipywidgets implementation.
+// These options can be set without explicitly redrawing the map. List is
+// probably not complete.
 const NO_DRAW_OPTIONS = [
   'menu',
   'scroll_behavior',
   'use_3d_transform',
   'enable_editing',
   'enable_keys',
-  'full_screen_button'
+  'full_screen_button',
+  // these already redraw
+  'reaction_data',
+  'metabolite_data',
+  'gene_data'
 ]
 
+const WITH_API_FUNCTIONS = {
+  reaction_data: 'set_reaction_data',
+  metabolite_data: 'set_metabolite_data',
+  gene_data: 'set_gene_data'
+}
+
+const parseJson = json => json ? JSON.parse(json) : null
+
 /**
- * anywidget ESM module for the Escher Builder.
+ * anywidget front end for the Escher Builder (see py/escher/plots.py).
  *
- * anywidget calls render({ model, el }) when the widget is displayed.
- * model.get/set/on mirrors the Python traitlet schema in plots.py.
+ * anywidget calls render({ model, el }) for each view of the widget, and calls
+ * the returned function when the view is removed.
  */
-export function render ({ model, el }) {
-  // Set height as an inline style on the host element directly so that
-  // ZoomContainer.getSize() (which uses getBoundingClientRect) has a non-zero
-  // height before the Builder initializes — regardless of whether external CSS loads.
-  const height = model.get('height')
-  el.style.height = height + 'px'
-  el.style.display = 'block'
-  const container = d3Select(el).append('div')
-  container.style('height', height + 'px')
-  container.style('width', '100%')
-
-  const parseJson = s => (s && s !== 'null' ? JSON.parse(s) : null)
-
-  const optionsJson = model.get('_options_json')
-  const extraOptions = optionsJson ? JSON.parse(optionsJson) : {}
-  let selectionEventId = 0
-
-  const selectionPayload = biggId => ({
-    bigg_id: biggId,
-    event_id: ++selectionEventId
-  })
-
-  const emitSelection = (kind, biggId) => {
-    if (!biggId) return
-    model.set(`selected_${kind}`, biggId)
-    model.set(`selected_${kind}_event`, selectionPayload(biggId))
-    model.save_changes()
+function render ({ model, el }) {
+  // everything to undo when the view is removed
+  const listeners = []
+  const unsubscribers = []
+  const listen = (eventName, callback) => {
+    model.on(eventName, callback)
+    listeners.push([eventName, callback])
   }
 
-  // Hover updates the legacy string trait only — the *_event trait is
-  // reserved for click so observers fire on intentional selection.
-  const setLegacySelection = (kind, biggId) => {
+  // Give the container an explicit height before the Builder measures it
+  const sel = d3Select(el).append('div').style('width', '100%')
+  const setHeight = () => {
+    const height = `${model.get('height')}px`
+    el.style.display = 'block'
+    el.style.height = height
+    sel.style('height', height)
+  }
+  setHeight()
+
+  // Options set in Python. Unset (null) options use the JavaScript defaults.
+  const optionNames = model.get('_option_names')
+  const options = {}
+  optionNames.forEach(key => {
+    const val = model.get(key)
+    if (val !== null && val !== undefined) options[key] = val
+  })
+
+  // Hover and click update selected_*; only clicks update selected_*_event.
+  // The event_id continues from the current value so that it keeps
+  // increasing across all views of the widget.
+  const setSelection = (kind, biggId, isClick) => {
     if (!biggId) return
     model.set(`selected_${kind}`, biggId)
+    if (isClick) {
+      const lastEvent = model.get(`selected_${kind}_event`) || {}
+      model.set(`selected_${kind}_event`, {
+        bigg_id: biggId,
+        event_id: (lastEvent.event_id || 0) + 1
+      })
+    }
     model.save_changes()
   }
 
@@ -69,103 +85,122 @@ export function render ({ model, el }) {
     return null
   }
 
-  const wireReactionClickEvents = b => {
-    if (!b.map || !b.map.sel) return
-    b.map.sel.selectAll('.reaction-label,.segment')
+  const wireReactionClicks = builder => {
+    builder.map.sel.selectAll('.reaction-label,.segment')
       .on('click.escher_widget', function (event, d) {
         const reaction = (d && d.bigg_id) ? d : reactionDatumForElement(this)
-        if (reaction) emitSelection('reaction', reaction.bigg_id)
+        if (reaction) setSelection('reaction', reaction.bigg_id, true)
       })
   }
 
-  const builder = new Builder(
-    parseJson(model.get('map_json')),
-    parseJson(model.get('model_json')),
-    embeddedCss, // scopes CSS inside the widget container for notebook environments
-    container,
-    {
-      ...extraOptions,
-      reaction_data: parseJson(model.get('reaction_data')),
-      metabolite_data: parseJson(model.get('metabolite_data')),
-      gene_data: parseJson(model.get('gene_data')),
-      first_load_callback: b => {
-        // Re-fit the map after the browser has laid out the container, since
-        // getBoundingClientRect() returns 0 during synchronous initialization
-        // in anywidget (layout hasn't been calculated yet when render() runs).
-        requestAnimationFrame(() => {
-          if (b.map) b.map.zoom_extent_canvas()
-        })
+  const firstLoad = builder => {
+    const map = builder.map
 
-        // Scope keyboard shortcuts to the map: only active while the mouse
-        // is over the Escher container, so typing in other notebook cells
-        // is unaffected. Start disabled; enable on mouseenter.
-        b.map.key_manager.toggle(false)
-        const containerNode = container.node()
-        containerNode.addEventListener('mouseenter', () => b.map.key_manager.toggle(true))
-        containerNode.addEventListener('mouseleave', () => b.map.key_manager.toggle(false))
+    // Zoom to fit once the browser has laid out the container. During
+    // render() the container can still measure 0 x 0.
+    requestAnimationFrame(() => map.zoom_extent_canvas())
 
-        // Wire metabolite selection: fires when a node is clicked
-        b.map.callback_manager.set('select_selectable', (nodeCount, node) => {
-          if (node && node.node_type === 'metabolite' && node.bigg_id) {
-            emitSelection('metabolite', node.bigg_id)
-          }
-        })
-        // Reaction hover updates the legacy string trait only; the click
-        // path below emits the *_event trait that observers watch.
-        b.map.callback_manager.set('show_tooltip.escher_widget', (type, d) => {
-          if ((type === 'reaction_object' || type === 'reaction_label') && d && d.bigg_id) {
-            setLegacySelection('reaction', d.bigg_id)
-          }
-        })
-        // Also wire explicit reaction clicks for notebook callbacks.
-        wireReactionClickEvents(b)
-        b.map.draw.callback_manager.set('update_reaction.escher_widget', () => {
-          wireReactionClickEvents(b)
-        })
-        b.map.draw.callback_manager.set('update_reaction_label.escher_widget', () => {
-          wireReactionClickEvents(b)
-        })
+    // Only listen to keyboard shortcuts while the mouse is over the map, so
+    // typing elsewhere in the notebook is unaffected.
+    map.key_manager.toggle(false)
+    el.addEventListener('mouseenter', () => map.key_manager.toggle(true))
+    el.addEventListener('mouseleave', () => map.key_manager.toggle(false))
+    unsubscribers.push(() => map.key_manager.toggle(false))
+
+    // reset map and model json in widget
+    builder.callback_manager.set('clear_map.escher_widget', () => {
+      model.set('_loaded_map_json', null)
+      model.save_changes()
+    })
+    builder.callback_manager.set('clear_model.escher_widget', () => {
+      model.set('_loaded_model_json', null)
+      model.save_changes()
+    })
+
+    // selections
+    map.callback_manager.set('select_selectable.escher_widget', (count, node) => {
+      if (node && node.node_type === 'metabolite') {
+        setSelection('metabolite', node.bigg_id, true)
+      }
+    })
+    map.callback_manager.set('show_tooltip.escher_widget', (type, d) => {
+      if ((type === 'reaction_object' || type === 'reaction_label') && d) {
+        setSelection('reaction', d.bigg_id, false)
+      }
+    })
+    wireReactionClicks(builder)
+    const rewireClicks = () => wireReactionClicks(builder)
+    map.draw.callback_manager.set('update_reaction.escher_widget', rewireClicks)
+    map.draw.callback_manager.set('update_reaction_label.escher_widget', rewireClicks)
+
+    // update functions
+    listen('change:height', () => {
+      setHeight()
+      requestAnimationFrame(() => builder.map.zoom_extent_canvas())
+    })
+    listen('change:_loaded_map_json', () => {
+      builder.load_map(parseJson(model.get('_loaded_map_json')))
+    })
+    listen('change:_loaded_model_json', () => {
+      builder.load_model(parseJson(model.get('_loaded_model_json')))
+    })
+
+    // apply an option set in Python
+    const applyOption = key => {
+      const val = model.get(key)
+      // stop if hasn't changed
+      if (_.isEqual(val, builder.settings.get(key))) return
+      if (key in WITH_API_FUNCTIONS) {
+        builder[WITH_API_FUNCTIONS[key]](val)
+      } else {
+        builder.settings.set(key, val)
+      }
+      // default to drawing everything, unless it's a common option where
+      // that's not necessary
+      if (!NO_DRAW_OPTIONS.includes(key)) {
+        builder.map.draw_everything()
       }
     }
+
+    // sync options in both directions (changes made in JavaScript are synced
+    // only after they have been accepted)
+    optionNames.forEach(key => {
+      const stream = builder.settings.acceptedStreams[key]
+      if (!stream) return
+
+      if (model.get(key) === null) {
+        // report the JavaScript default for options that are unset in Python
+        model.set(key, builder.settings.get(key))
+        model.save_changes()
+      } else {
+        // catch up on changes made in Python while the map was loading
+        applyOption(key)
+      }
+
+      listen(`change:${key}`, () => applyOption(key))
+
+      unsubscribers.push(stream.onValue(val => {
+        // avoid a loop with a deep comparison
+        if (!_.isEqual(val, model.get(key))) {
+          model.set(key, val)
+          model.save_changes()
+        }
+      }))
+    })
+  }
+
+  new Builder( // eslint-disable-line no-new
+    parseJson(model.get('_loaded_map_json')),
+    parseJson(model.get('_loaded_model_json')),
+    model.get('embedded_css'),
+    sel,
+    { ...options, first_load_callback: firstLoad }
   )
 
-  // Reactive updates pushed from Python
-  model.on('change:height', () => {
-    const newHeight = model.get('height')
-    el.style.height = newHeight + 'px'
-    container.style('height', newHeight + 'px')
-    requestAnimationFrame(() => {
-      if (builder.map) builder.map.zoom_extent_canvas()
-    })
-  })
-  model.on('change:model_json', () => {
-    builder.load_model(parseJson(model.get('model_json')))
-  })
-  model.on('change:map_json', () => {
-    builder.load_map(parseJson(model.get('map_json')))
-    requestAnimationFrame(() => {
-      if (builder.map) builder.map.zoom_extent_canvas()
-      wireReactionClickEvents(builder)
-    })
-  })
-  model.on('change:reaction_data', () => {
-    builder.set_reaction_data(parseJson(model.get('reaction_data')))
-  })
-  model.on('change:metabolite_data', () => {
-    builder.set_metabolite_data(parseJson(model.get('metabolite_data')))
-  })
-  model.on('change:gene_data', () => {
-    builder.set_gene_data(parseJson(model.get('gene_data')))
-  })
-  model.on('change:_options_json', () => {
-    const options = JSON.parse(model.get('_options_json') || '{}')
-    let redraw = false
-    Object.keys(options).forEach(key => {
-      if (!(key in builder.settings.busses)) return
-      if (_.isEqual(options[key], builder.settings.get(key))) return
-      builder.settings.set(key, options[key])
-      if (!NO_DRAW_OPTIONS.includes(key)) redraw = true
-    })
-    if (redraw && builder.map) builder.map.draw_everything()
-  })
+  return () => {
+    listeners.forEach(([eventName, callback]) => model.off(eventName, callback))
+    unsubscribers.forEach(unsubscribe => unsubscribe())
+  }
 }
+
+export default { render }

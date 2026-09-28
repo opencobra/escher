@@ -9,14 +9,15 @@ from escher.plots import (
 from escher.urls import get_url
 
 import base64
-import re
 import os
 import sys
 from os.path import join, basename
 import json
+import re
 from pytest import raises, mark, param
 from urllib.error import URLError
 import pandas as pd
+import cobra
 
 
 @mark.web
@@ -151,6 +152,58 @@ def test_handling_cobra_fluxes(data, expected):
     b = Builder(reaction_data=data,
                 gene_data=data,
                 metabolite_data=data)
-    assert json.loads(b.reaction_data) == expected
-    assert json.loads(b.gene_data) == expected
-    assert json.loads(b.metabolite_data) == expected
+    assert b.reaction_data == expected
+    assert b.gene_data == expected
+    assert b.metabolite_data == expected
+
+
+def test_widget_bundle():
+    import escher.plots
+    bundle = join(os.path.dirname(escher.plots.__file__), 'static',
+                  'escher-widget.js')
+    assert os.path.isfile(bundle)
+    assert 'render' in str(Builder()._esm)
+
+
+def test_option_names():
+    b = Builder()
+    assert b._option_names == sorted(b.traits(option=True))
+    assert 'reaction_data' in b._option_names
+    assert 'full_screen_button' in b._option_names
+    assert 'map_json' not in b._option_names
+
+
+def test_selection_traits():
+    b = Builder()
+    assert b.selected_reaction == ''
+    assert b.selected_metabolite == ''
+    assert b.selected_reaction_event == {}
+    assert b.selected_metabolite_event == {}
+
+
+def test_data_reads_back_as_python_objects():
+    b = Builder(reaction_data={'PGI': 1.0})
+    assert b.reaction_data == {'PGI': 1.0}
+    b.reaction_data = None
+    assert b.reaction_data is None
+
+
+def test_model_and_names_read_back():
+    model = cobra.Model('test_model')
+    b = Builder(model=model, map_json='"a_map"')
+    assert b.model is model
+    assert json.loads(b._loaded_model_json)['id'] == 'test_model'
+    b.model_name = None
+    assert b.map_name is None
+
+
+def test_save_html_uses_current_model_and_css(tmpdir):
+    b = Builder(map_json='"a_map"', model_json='"first_model"')
+    b.model_json = '"second_model"'
+    b.embedded_css = 'new_css'
+    filepath = join(str(tmpdir), 'builder.html')
+    b.save_html(filepath)
+    with open(filepath, 'r') as f:
+        html = f.read()
+    assert base64.b64encode(b'"second_model"').decode() in html
+    assert base64.b64encode(b'new_css').decode() in html
