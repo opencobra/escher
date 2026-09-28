@@ -192,9 +192,16 @@ def test_model_and_names_read_back():
     model = cobra.Model('test_model')
     b = Builder(model=model, map_json='"a_map"')
     assert b.model is model
-    assert json.loads(b._loaded_model_json)['id'] == 'test_model'
-    b.model_name = None
+    assert b.map_json == '"a_map"'
+    assert b.model_name is None
     assert b.map_name is None
+    assert json.loads(b._loaded_model_json)['id'] == 'test_model'
+    assert json.loads(b._loaded_map_json) == 'a_map'
+
+    b.model = None
+    assert b._loaded_model_json is None
+    b.map_json = None
+    assert b._loaded_map_json is None
 
 
 def test_save_html_uses_current_model_and_css(tmpdir):

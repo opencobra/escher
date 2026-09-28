@@ -35,6 +35,7 @@ const parseJson = json => json ? JSON.parse(json) : null
  */
 function render ({ model, el }) {
   // everything to undo when the view is removed
+  let removed = false
   const listeners = []
   const unsubscribers = []
   const listen = (eventName, callback) => {
@@ -93,7 +94,13 @@ function render ({ model, el }) {
       })
   }
 
+  // values used to create the Builder, to catch up on later changes
+  const initialMapJson = model.get('_loaded_map_json')
+  const initialModelJson = model.get('_loaded_model_json')
+
   const firstLoad = builder => {
+    // the view may have been removed while the map was loading
+    if (removed) return
     const map = builder.map
 
     // Zoom to fit once the browser has laid out the container. During
@@ -144,6 +151,15 @@ function render ({ model, el }) {
     listen('change:_loaded_model_json', () => {
       builder.load_model(parseJson(model.get('_loaded_model_json')))
     })
+
+    // catch up on changes made in Python while the map was loading
+    setHeight()
+    if (model.get('_loaded_model_json') !== initialModelJson) {
+      builder.load_model(parseJson(model.get('_loaded_model_json')))
+    }
+    if (model.get('_loaded_map_json') !== initialMapJson) {
+      builder.load_map(parseJson(model.get('_loaded_map_json')))
+    }
 
     // apply an option set in Python
     const applyOption = key => {
@@ -198,6 +214,7 @@ function render ({ model, el }) {
   )
 
   return () => {
+    removed = true
     listeners.forEach(([eventName, callback]) => model.off(eventName, callback))
     unsubscribers.forEach(unsubscribe => unsubscribe())
   }
