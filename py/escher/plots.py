@@ -6,8 +6,10 @@ from escher import rc
 import cobra
 from cobra import Model
 import pandas as pd
-import ipywidgets as widgets
-from traitlets import Unicode, Int, Instance, Any, observe, validate, default
+import anywidget
+from traitlets import (Unicode, Int, Instance, Any, Dict, List, observe,
+                       validate, default)
+import pathlib
 import os
 from os.path import join, isfile, expanduser
 from warnings import warn
@@ -155,14 +157,15 @@ def convert_data(data):
     raise Exception
 
 
-class Builder(widgets.DOMWidget):
+class Builder(anywidget.AnyWidget):
     """A Python wrapper for the Escher metabolic map.
 
     This map will also show data on reactions, metabolites, or genes.
 
-    The Builder is a Jupyter widget that can be viewed in a Jupyter notebook or
-    in Jupyter Lab. It can also be used to create a standalone HTML file for
-    the map with the save_html() function.
+    The Builder is a Jupyter widget (built on anywidget) that can be viewed in
+    JupyterLab, Jupyter Notebook, VS Code, Google Colab, and other notebook
+    environments without installing an extension. It can also be used to create
+    a standalone HTML file for the map with the save_html() function.
 
     Maps are downloaded from the Escher website if found by name.
 
@@ -285,18 +288,32 @@ class Builder(widgets.DOMWidget):
 
     """
 
-    # widget info traitlets
+    # widget front end, built from src/escher-widget.js
 
-    _view_name = Unicode('EscherMapView').tag(sync=True)
-    _model_name = Unicode('EscherMapModel').tag(sync=True)
-    _view_module = Unicode('escher').tag(sync=True)
-    _model_module = Unicode('escher').tag(sync=True)
-    _view_module_version = Unicode(__version__).tag(sync=True)
-    _model_module_version = Unicode(__version__).tag(sync=True)
+    _esm = pathlib.Path(__file__).parent / 'static' / 'escher-widget.js'
 
     # Python package options
 
     height = Int(500).tag(sync=True)
+
+    # Names of the traits below that are passed to the JavaScript Builder as
+    # options, so the widget knows which options to sync.
+    _option_names = List(Unicode()).tag(sync=True)
+
+    @default('_option_names')
+    def _default_option_names(self):
+        return sorted(self.traits(option=True))
+
+    # Selections made in the map. selected_reaction and selected_metabolite
+    # hold the BiGG ID of the last reaction or metabolite that was hovered or
+    # clicked. The *_event versions only change on click, and include an
+    # increasing event_id, so observers fire once per click even when the same
+    # item is clicked twice.
+
+    selected_reaction = Unicode('').tag(sync=True)
+    selected_metabolite = Unicode('').tag(sync=True)
+    selected_reaction_event = Dict().tag(sync=True)
+    selected_metabolite_event = Dict().tag(sync=True)
 
     embedded_css = Unicode(None, allow_none=True).tag(sync=True)
 

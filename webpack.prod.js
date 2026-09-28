@@ -28,6 +28,5 @@ module.exports = merge(common, {
       })
     ]
   },
-  // plugins: [new BundleAnalyzerPlugin()],
-  externals: ['@jupyter-widgets/base']
+  // plugins: [new BundleAnalyzerPlugin()]
 })

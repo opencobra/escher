@@ -13,9 +13,11 @@ import os
 import sys
 from os.path import join, basename
 import json
+import re
 from pytest import raises, mark, param
 from urllib.error import URLError
 import pandas as pd
+import cobra
 
 
 @mark.web
@@ -98,6 +100,23 @@ def test_save_html(tmpdir):
     assert 'embedded_css =' not in html
 
 
+def test_save_html_includes_data_and_options(tmpdir):
+    b = Builder(reaction_data={'GAPD': 10}, hide_secondary_metabolites=True)
+    b.gene_data = {'b1779': 2}
+    filepath = join(str(tmpdir), 'builder.html')
+    b.save_html(filepath)
+    with open(filepath, 'r') as f:
+        html = f.read()
+
+    match = re.search(r"newOptions = JSON.parse\(b64DecodeUnicode\('([^']*)'\)\)",
+                      html)
+    options = json.loads(base64.b64decode(match.group(1)))
+    assert options['reaction_data'] == {'GAPD': 10}
+    assert options['gene_data'] == {'b1779': 2}
+    assert 'metabolite_data' not in options
+    assert options['hide_secondary_metabolites'] is True
+
+
 def test_save_html_embedded_css(tmpdir):
     # ok with embedded_css arg
     b = Builder(embedded_css='useless_css')
@@ -136,3 +155,62 @@ def test_handling_cobra_fluxes(data, expected):
     assert b.reaction_data == expected
     assert b.gene_data == expected
     assert b.metabolite_data == expected
+
+
+def test_widget_bundle():
+    import escher.plots
+    bundle = join(os.path.dirname(escher.plots.__file__), 'static',
+                  'escher-widget.js')
+    assert os.path.isfile(bundle)
+    assert 'render' in str(Builder()._esm)
+
+
+def test_option_names():
+    b = Builder()
+    assert b._option_names == sorted(b.traits(option=True))
+    assert 'reaction_data' in b._option_names
+    assert 'full_screen_button' in b._option_names
+    assert 'map_json' not in b._option_names
+
+
+def test_selection_traits():
+    b = Builder()
+    assert b.selected_reaction == ''
+    assert b.selected_metabolite == ''
+    assert b.selected_reaction_event == {}
+    assert b.selected_metabolite_event == {}
+
+
+def test_data_reads_back_as_python_objects():
+    b = Builder(reaction_data={'PGI': 1.0})
+    assert b.reaction_data == {'PGI': 1.0}
+    b.reaction_data = None
+    assert b.reaction_data is None
+
+
+def test_model_and_names_read_back():
+    model = cobra.Model('test_model')
+    b = Builder(model=model, map_json='"a_map"')
+    assert b.model is model
+    assert b.map_json == '"a_map"'
+    assert b.model_name is None
+    assert b.map_name is None
+    assert json.loads(b._loaded_model_json)['id'] == 'test_model'
+    assert json.loads(b._loaded_map_json) == 'a_map'
+
+    b.model = None
+    assert b._loaded_model_json is None
+    b.map_json = None
+    assert b._loaded_map_json is None
+
+
+def test_save_html_uses_current_model_and_css(tmpdir):
+    b = Builder(map_json='"a_map"', model_json='"first_model"')
+    b.model_json = '"second_model"'
+    b.embedded_css = 'new_css'
+    filepath = join(str(tmpdir), 'builder.html')
+    b.save_html(filepath)
+    with open(filepath, 'r') as f:
+        html = f.read()
+    assert base64.b64encode(b'"second_model"').decode() in html
+    assert base64.b64encode(b'new_css').decode() in html

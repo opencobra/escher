@@ -31,26 +31,11 @@ setup(
     ],
     packages=find_packages(),
     include_package_data=True,
-    data_files=[
-        (
-            'share/jupyter/nbextensions/escher',
-            [
-                'escher/static/extension.js',
-                'escher/static/escher.min.js',
-                'escher/static/escher.min.js.map',
-            ]
-        ),
-        (
-            'etc/jupyter/nbconfig/notebook.d',
-            ['escher.json'],
-        )
-    ],
     install_requires=[
         'Jinja2>=3.0.3,<4',
-        'pytest>=6.0.0,<9',
         'cobra>=0.5.0',
         'jsonschema>=4.17.3,<5',
-        'ipywidgets>=7.7.0,<8',
+        'anywidget>=0.9',
         'pandas>=0.18'
     ],
     extras_require={
@@ -61,10 +46,6 @@ setup(
             'sphinx>=8.1.3,<9',
             'sphinx-rtd-theme>=3.0.1,<4',
             'nbsphinx>=0.9.5,<1',
-        ],
-        'jupyter': [
-            'jupyterlab-widgets==1.1.1',
-            'jupyterlab==3.6.3',
         ],
     },
 )

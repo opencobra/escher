@@ -13,12 +13,3 @@ from escher.plots import (
     list_available_maps,
     list_available_models,
 )
-
-
-def _jupyter_nbextension_paths():
-    return [{
-        'section': 'notebook',
-        'src': 'static',
-        'dest': 'escher',
-        'require': 'escher/extension'
-    }]

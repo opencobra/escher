@@ -1,3 +1,2 @@
 graft escher/static
 graft escher/templates
-include escher.json
