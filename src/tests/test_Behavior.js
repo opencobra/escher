@@ -1,5 +1,5 @@
 import Behavior from '../Behavior'
-import { describe, it, beforeEach } from 'vitest'
+import { describe, it, beforeEach, afterEach } from 'vitest'
 import { assert } from 'chai'
 import d3Body from './helpers/d3Body'
 
@@ -118,5 +118,40 @@ describe('Behavior', () => {
     assertObjectMouseoverAttrsOn(behavior)
     behavior.toggleObjectMouseover(false)
     assertObjectMouseoverAttrsOff(behavior)
+  })
+
+  describe('getSelectableDrag', () => {
+    let svg
+
+    beforeEach(() => {
+      svg = d3Body.append('svg')
+      const nodes = [
+        { node_id: '1', bigg_id: 'atp_c' },
+        { node_id: '2', bigg_id: 'atp_c' },
+        { node_id: '3', bigg_id: 'adp_c' }
+      ]
+      svg.selectAll('.node')
+        .data(nodes)
+        .enter()
+        .append('g')
+        .attr('class', 'node')
+        .append('circle')
+        .attr('class', 'node-circle metabolite-circle')
+    })
+
+    afterEach(() => { svg.remove() })
+
+    it('marks a matching metabolite for combining when dragged over it', () => {
+      const drag = behavior.getSelectableDrag({ sel: svg }, null)
+      const circles = svg.selectAll('.metabolite-circle').nodes()
+      const startEvent = { x: 0, y: 0, sourceEvent: { stopPropagation: () => {} } }
+      drag.on('start').call(circles[0], startEvent)
+
+      const mouseover = el => el.dispatchEvent(new window.MouseEvent('mouseover'))
+      mouseover(circles[1])
+      mouseover(circles[2])
+      assert.isTrue(circles[1].classList.contains('node-to-combine'))
+      assert.isFalse(circles[2].classList.contains('node-to-combine'))
+    })
   })
 })

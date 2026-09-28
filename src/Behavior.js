@@ -521,8 +521,11 @@ export default class Behavior {
       this.dragging = onOff
     }
 
+    let lastX, lastY
     behavior.on('start', function (e) {
       setDragging(true)
+      lastX = e.x
+      lastY = e.y
 
       // silence other listeners (e.g. nodes BELOW this one)
       e.sourceEvent.stopPropagation()
@@ -557,11 +560,7 @@ export default class Behavior {
       }
     })
 
-    let lastX, lastY
-    behavior.on('start', (e) => {
-      lastX = e.x
-      lastY = e.y
-    }).on('drag', function (e, d) {
+    behavior.on('drag', function (e, d) {
       // if this node is not already selected, then select this one and
       // deselect all other nodes. Otherwise, leave the selection alone.
       if (!d3Select(this.parentNode).classed('selected')) {
