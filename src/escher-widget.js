@@ -26,6 +26,7 @@ const WITH_API_FUNCTIONS = {
 }
 
 const parseJson = json => json ? JSON.parse(json) : null
+const copy = data => data ? JSON.parse(JSON.stringify(data)) : data
 
 /**
  * anywidget front end for the Escher Builder (see py/escher/plots.py).
@@ -58,7 +59,7 @@ function render ({ model, el }) {
   const options = {}
   optionNames.forEach(key => {
     const val = model.get(key)
-    if (val !== null && val !== undefined) options[key] = val
+    if (val !== null && val !== undefined) options[key] = copy(val)
   })
 
   // Hover and click update selected_*; only clicks update selected_*_event.
@@ -167,9 +168,17 @@ function render ({ model, el }) {
       // stop if hasn't changed
       if (_.isEqual(val, builder.settings.get(key))) return
       if (key in WITH_API_FUNCTIONS) {
-        builder[WITH_API_FUNCTIONS[key]](val)
+        // pass a copy, because the Builder modifies data in place
+        builder[WITH_API_FUNCTIONS[key]](copy(val))
       } else {
         builder.settings.set(key, val)
+      }
+      // these options are only read when the map loads, so apply them here
+      if (key === 'reaction_data_threshold') {
+        builder.set_reaction_data(copy(model.get('reaction_data')))
+      } else if (key === 'background_image_url') {
+        if (val) builder.map.import_background(val)
+        else builder.map.clear_background()
       }
       // default to drawing everything, unless it's a common option where
       // that's not necessary
