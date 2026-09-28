@@ -20,8 +20,7 @@
   "repository": "https://github.com/zakandrewking/escher",
   "bugs": "https://github.com/zakandrewking/escher/issues",
   "files": [
-    "dist/*",
-    "jupyter/*"
+    "dist/*"
   ],
   "main": "dist/escher.js",
   "engines": {
@@ -78,12 +77,12 @@
     "vkbeautify": "^0.99.1"
   },
   "scripts": {
-    "build": "./node_modules/.bin/webpack --config webpack.prod.js",
+    "build": "./node_modules/.bin/webpack --config webpack.prod.js && ./node_modules/.bin/webpack --config webpack.widget.js",
     "watch": "./node_modules/.bin/webpack --config webpack.prod.js --watch",
     "start": "./node_modules/.bin/webpack-dev-server --config webpack.dev.js",
     "clean": "rm -r dist/*; rm -r py/escher/static/*",
     "test": "VITE_ESCHER_VERSION=$(npm pkg get version | tr -d '\"') vitest run src/tests/*.js",
-    "copy": "cp dist/escher.min.js dist/index.js && cp package.json py/escher/static/ && cp jupyter/notebook-extension.js py/escher/static/extension.js && cp dist/escher.min.* py/escher/static/ && mkdir -p py/escher/static/jsonschema; cp jsonschema/* py/escher/static/jsonschema/",
+    "copy": "cp dist/escher.min.js dist/index.js && cp package.json py/escher/static/ && cp dist/escher.min.* py/escher/static/ && mkdir -p py/escher/static/jsonschema; cp jsonschema/* py/escher/static/jsonschema/",
     "coverage": "vitest run --coverage && cat ./coverage/lcov.info | coveralls"
   },
   "nyc": {

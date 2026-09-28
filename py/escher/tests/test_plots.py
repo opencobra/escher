@@ -9,6 +9,7 @@ from escher.plots import (
 from escher.urls import get_url
 
 import base64
+import re
 import os
 import sys
 from os.path import join, basename
@@ -98,6 +99,23 @@ def test_save_html(tmpdir):
     assert 'embedded_css =' not in html
 
 
+def test_save_html_includes_data_and_options(tmpdir):
+    b = Builder(reaction_data={'GAPD': 10}, hide_secondary_metabolites=True)
+    b.gene_data = {'b1779': 2}
+    filepath = join(str(tmpdir), 'builder.html')
+    b.save_html(filepath)
+    with open(filepath, 'r') as f:
+        html = f.read()
+
+    match = re.search(r"newOptions = JSON.parse\(b64DecodeUnicode\('([^']*)'\)\)",
+                      html)
+    options = json.loads(base64.b64decode(match.group(1)))
+    assert options['reaction_data'] == {'GAPD': 10}
+    assert options['gene_data'] == {'b1779': 2}
+    assert 'metabolite_data' not in options
+    assert options['hide_secondary_metabolites'] is True
+
+
 def test_save_html_embedded_css(tmpdir):
     # ok with embedded_css arg
     b = Builder(embedded_css='useless_css')
@@ -133,6 +151,6 @@ def test_handling_cobra_fluxes(data, expected):
     b = Builder(reaction_data=data,
                 gene_data=data,
                 metabolite_data=data)
-    assert b.reaction_data == expected
-    assert b.gene_data == expected
-    assert b.metabolite_data == expected
+    assert json.loads(b.reaction_data) == expected
+    assert json.loads(b.gene_data) == expected
+    assert json.loads(b.metabolite_data) == expected

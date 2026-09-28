@@ -87,29 +87,12 @@ You can install it with pip:
 pip install escher
 ```
 
-## Jupyter extensions
+## Jupyter
 
-When you `pip install escher`, the Jupyter notebook extension should be
-installed automatically. If that doesn't work, try:
-
-```bash
-# The notebook extenstion should install automatically. You can check by running:
-jupyter nbextension list
-# Make sure you have version >=5 of the `notebook` package
-pip install "notebook>=5"
-# To manually install the extension
-jupyter nbextension install --py escher
-jupyter nbextension enable --py escher
-# depending on you environment, you might need the `--sysprefix` flag with those commands
-```
-
-To install the Jupyter lab extension, simply install Escher with `pip install escher` then
-install the extension:
-
-```bash
-jupyter labextension install @jupyter-widgets/jupyterlab-manager
-jupyter labextension install escher
-```
+The Escher widget works in JupyterLab, Jupyter Notebook 7, VS Code, Google
+Colab, and other environments that support
+[anywidget](https://anywidget.dev). No Jupyter extension needs to be installed
+or enabled.
 
 ## Python/Jupyter Development
 
@@ -129,12 +112,6 @@ cd py
 pip install -r requirements.txt
 ```
 
-To use the widgets within notebooks from jupyterlab, you also need to run the following from the escher root directory:
-```bash
-jupyter labextension install @jupyter-widgets/jupyterlab-manager
-jupyter labextension install escher
-```
-
 For Python testing, run this in the `py` directory:
 
 ```
@@ -142,36 +119,10 @@ cd py
 pytest
 ```
 
-To develop the Jupyter notebook and Jupyter Lab extensions, you will need
-install them with symlinks.
-
-First, install the Python package for development as described above.
-
-For the Jupyter notebooks, run:
-
-```
-cd py
-jupyter nbextension install --py --symlink escher
-jupyter nbextension enable --py escher
-```
-
-If you are using virtualenv or conda, you can add the `--sys-prefix` flag to
-those commands to keep your environment isolated and reproducible.
-
-When you make changes, you will need to `yarn build && yarn copy` and refresh
-notebook browser tab.
-
-For Jupyter Lab, run (in the root directory):
-
-```
-yarn watch # keep this running as a separate process
-jupyter labextension install @jupyter-widgets/jupyterlab-manager
-jupyter labextension link
-jupyter lab --watch
-```
-
-If you don't see changes when you edit the code, try refreshing or restarting
-`jupyter lab --watch`.
+The Jupyter widget is built from `src/escher-widget.js` into
+`py/escher/static/escher-widget.js` by `yarn build`. After changing the
+JavaScript, run `yarn build && yarn copy` and restart the notebook kernel to
+pick up the new bundle.
 
 ## Docs
 
