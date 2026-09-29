@@ -29,13 +29,12 @@ import {
 // Include custom font set for icons
 import '../icons/css/fontello.css'
 
-// Include GUI CSS normally with webpack
+// Include GUI CSS (injected into the page by the bundle)
 import './Builder.css'
 
 // Import CSS as a string to embed. This also works from lib because css/src get
 // uploaded to NPM.
-// eslint-disable-next-line import/no-webpack-loader-syntax
-import builderEmbed from '!!raw-loader!./Builder-embed.css'
+import builderEmbed from './Builder-embed.css?raw'
 
 class Builder {
   constructor(mapData, modelData, embeddedCss, selection, options) {
@@ -305,7 +304,7 @@ class Builder {
       this.selection.append('div').attr('id', 'legend-config-modal-overlay')
     }
 
-    // Need to defer map loading to let webpack CSS load properly. Hack:
+    // Need to defer map loading to let the injected CSS load properly. Hack:
     // Delaying 50ms to make sure the css calculations on map size take
     // place.
     _.delay(() => {

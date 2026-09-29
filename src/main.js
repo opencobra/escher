@@ -28,7 +28,7 @@
 * THE SOFTWARE.
 */
 
-// ESCHER_VERSION provided by webpack plugin or main-node
+// ESCHER_VERSION is defined at build time in vite.config.js
 /* global ESCHER_VERSION */
 
 import underscore from 'underscore'

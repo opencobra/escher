@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+### Changed
+- The JavaScript is built with Vite instead of webpack and Babel. `dist/escher.js`, `dist/escher.min.js` and the `escher` global are unchanged, and CSS is still injected by the script. The output targets ES2015, which the webpack bundle already required through its dependencies.
+- Building from source requires Node.js 18 or later.
+
 ## [1.8.2] - 2025-10-27
 ### Changed
 - Updated the `sbml2escher.py` script to use the latest version of the documentation.

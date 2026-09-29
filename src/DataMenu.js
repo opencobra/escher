@@ -2,7 +2,7 @@
 
 import utils from './utils';
 
-var d3_json = require('d3-request').json
+import { json as d3_json } from 'd3-request'
 
 export default function(options) {
     var o = utils.set_options(options, {
