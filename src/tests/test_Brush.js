@@ -1,47 +1,36 @@
-import { describe, it} from "vitest";
+import { describe, it, beforeEach, afterEach } from 'vitest'
 import { assert } from 'chai'
+import 'intersection-observer'
+import Brush from '../Brush'
 import d3Body from './helpers/d3Body'
-import get_map from "./helpers/get_map";
-import Brush from "../Brush";
-import Map from "../Map";
-import Settings from "../Settings";
+import makeMap from './helpers/make_map'
 
-function getMap () {
-  const svg = d3Body.append('svg')
-  const sel = svg.append('g')
-  // streams are required for these options
-  const required_options = { reaction_scale: [],
-                             metabolite_scale: [],
-                             reaction_styles: [],
-                             reaction_compare_style: 'diff',
-                             metabolite_styles: [],
-                             metabolite_compare_style: 'diff',
-                             cofactors: [], }
-  const required_conditional_options = [ 'reaction_scale',
-                                         'metabolite_scale', ]
-  const set_option = (key, val) => { required_options[key] = val }
-  const get_option = (key) => required_options[key]
+describe('Brush', () => {
+  let svg, map
 
-  return Map.from_data(get_map(), svg, null, sel, null,
-                       new Settings(set_option, get_option,
-                                    Object.keys(required_options),
-                                    required_conditional_options),
-                       null, true)
-}
+  beforeEach(() => {
+    ({ svg, map } = makeMap())
+  })
 
-// waiting on fix for d3 + jsdom issue
-// describe('Brush', () => {
-//   it('d3 + jsdom issue', () => {
-//     // throws syntax error
-//     d3Body.select(d3Body.append('div').node())
-//   })
+  afterEach(() => {
+    d3Body.selectAll('*').remove()
+  })
 
-//   it('initializes', () => {
-//     const svg = d3Body.append('svg')
-//     const g = svg.append('g')
-//     svg.append('g')
-//     const map = getMap()
-//     const brush = Brush(svg, true, map, g)
-//     brush.toggle(true)
-//   })
-// })
+  it('inserts its container right after the canvas group', () => {
+    const brush = new Brush(svg, false, map, '.canvas-group')
+    const canvasGroup = svg.select('.canvas-group').node()
+    assert.strictEqual(canvasGroup.nextSibling, brush.brushSel.node())
+    assert.strictEqual(brush.brushSel.attr('id'), 'brush-container')
+  })
+
+  it('toggles the brush on and off', () => {
+    const brush = new Brush(svg, false, map, '.canvas-group')
+    assert.isTrue(brush.brushSel.select('.overlay').empty())
+
+    brush.toggle(true)
+    assert.isFalse(brush.brushSel.select('.overlay').empty())
+
+    brush.toggle(false)
+    assert.isTrue(brush.brushSel.selectAll('*').empty())
+  })
+})
