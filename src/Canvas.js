@@ -77,6 +77,7 @@ export default class Canvas {
     // Set the background of the canvas using an uploaded image, allowing users to simulate different compartments.
     const background = newSel.append('image')
       .attr('id', 'canvas-background')
+      .attr('pointer-events', 'none')
       .attr(
       'xlink:href', ''
     ).attr('width', this.width).attr('height', this.height).attr('transform', 'translate(' + [ this.x, this.y ] + ')')
