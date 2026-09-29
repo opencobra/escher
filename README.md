@@ -167,12 +167,15 @@ npm run build
 npm run copy
 ```
 
-Then in the `py` directory, install the Python package:
+Then in the `py` directory, install the Python package in editable mode with
+the test dependencies:
 
 ```
 cd py
-pip install -r requirements.txt
+pip install -e ".[test]"
 ```
+
+(Use `".[test,docs]"` to also install the dependencies for building the docs.)
 
 For Python testing, run this in the `py` directory:
 
@@ -180,6 +183,11 @@ For Python testing, run this in the `py` directory:
 cd py
 pytest
 ```
+
+If you use [uv](https://docs.astral.sh/uv/), `uv run --extra test pytest`
+creates the environment from the lockfile (`py/uv.lock`) and runs the tests in
+one step. After changing dependencies in `py/pyproject.toml`, run `uv lock` to
+update the lockfile.
 
 The Jupyter widget is built from `src/escher-widget.js` into
 `py/escher/static/escher-widget.js` by `yarn build`. After changing the

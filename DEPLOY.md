@@ -18,9 +18,9 @@ npm publish
 after the above
 ```
 cd py
-pip install -U pip setuptools wheel twine
+pip install -U build twine
 rm -rf dist build
-python setup.py sdist bdist_wheel
+python -m build   # or: uv build
 twine upload --repository-url https://test.pypi.org/legacy/ dist/*
 cd ~/new-directory
 virtualenv env

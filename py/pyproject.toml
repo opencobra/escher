@@ -1,0 +1,62 @@
+# Build the JavaScript first (`npm run build && npm run copy` in the repo root)
+# so that escher/static/ is populated; the version is read from
+# escher/static/package.json (shipped in the sdist via MANIFEST.in). The other
+# metadata below mirrors package.json; keep the two in sync.
+
+[build-system]
+requires = ["setuptools>=77"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "Escher"
+dynamic = ["version"]
+description = "Escher: A Web Application for Building, Sharing, and Embedding Data-Rich Visualizations of Metabolic Pathways"
+authors = [{ name = "Zachary King" }]
+license = "MIT"
+keywords = [
+    "visualization",
+    "pathway map",
+    "metabolism",
+    "genome-scale-model",
+    "web application",
+    "D3.js",
+    "biojs",
+]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Topic :: Scientific/Engineering",
+    "Topic :: Scientific/Engineering :: Visualization",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Operating System :: OS Independent",
+]
+requires-python = ">=3.10"
+dependencies = [
+    "Jinja2>=3.0.3,<4",
+    "cobra>=0.5.0",
+    "jsonschema>=4.17.3,<5",
+    "anywidget>=0.9",
+    "pandas>=0.18",
+]
+
+[project.urls]
+Homepage = "https://escher.github.io"
+Source = "https://github.com/opencobra/escher"
+Issues = "https://github.com/opencobra/escher/issues"
+
+[project.optional-dependencies]
+test = ["pytest>=6.0.0,<9"]
+docs = [
+    "sphinx>=8.1.3,<9",
+    "sphinx-rtd-theme>=3.0.1,<4",
+    "nbsphinx>=0.9.5,<1",
+]
+
+[tool.setuptools.dynamic]
+version = { attr = "escher.version.__full_version__" }
+
+[tool.setuptools.packages.find]
+include = ["escher*"]
+exclude = ["escher.tests*"]
