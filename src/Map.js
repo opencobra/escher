@@ -10,7 +10,6 @@ import Canvas from './Canvas'
 import dataStyles from './dataStyles'
 import SearchIndex from './SearchIndex'
 
-import bacon from 'baconjs'
 import _ from 'underscore'
 import { select as d3Select } from 'd3-selection'
 

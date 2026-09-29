@@ -53,17 +53,18 @@ First, install dependencies with [npm](https://www.npmjs.com) (or you can use
 npm install
 ```
 
-Escher uses webpack to manage the build process. To run typical build steps, just run:
+Escher uses [Vite](https://vite.dev) to manage the build process. To build
+`dist/escher.js`, `dist/escher.min.js` and the Jupyter widget bundle, run:
 
 ```
 npm run build
 ```
 
-You can run a development server with:
+You can run a development server (http://localhost:7621) with:
 
 ```
 npm run start
-# or for live updates when the source code changes:
+# or to rebuild dist/escher.js when the source code changes:
 npm run watch
 ```
 
@@ -190,8 +191,8 @@ one step. After changing dependencies in `py/pyproject.toml`, run `uv lock` to
 update the lockfile.
 
 The Jupyter widget is built from `src/escher-widget.js` into
-`py/escher/static/escher-widget.js` by `yarn build`. After changing the
-JavaScript, run `yarn build && yarn copy` and restart the notebook kernel to
+`py/escher/static/escher-widget.js` by `npm run build`. After changing the
+JavaScript, run `npm run build && npm run copy` and restart the notebook kernel to
 pick up the new bundle.
 
 ## Docs
