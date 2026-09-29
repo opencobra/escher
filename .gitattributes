@@ -1,0 +1,2 @@
+# Build artifact checked by CI against a fresh build; keep it byte-for-byte.
+py/escher/static/escher-widget.js -text
