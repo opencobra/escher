@@ -108,6 +108,7 @@ export default defineConfig(({ mode }) => {
       globals: true,
       environment: 'jsdom',
       include: ['src/tests/*.js'],
+      setupFiles: ['src/tests/helpers/setup.js'],
       coverage: {
         provider: 'v8',
         reporter: ['text', 'lcov'], // Output both text and lcov for Coveralls
