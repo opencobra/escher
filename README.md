@@ -94,6 +94,68 @@ Colab, and other environments that support
 [anywidget](https://anywidget.dev). No Jupyter extension needs to be installed
 or enabled.
 
+```python
+import escher
+
+# Display a map in a notebook
+builder = escher.Builder(map_name='e_coli_core.Core metabolism')
+builder
+```
+
+The displayed map updates when its traits change, for example in a later cell:
+
+```python
+builder.reaction_data = {'PFK': 1.5, 'PYK': 0.8}
+```
+
+Map names must match the names in the Escher map index. To see the available
+maps, run `escher.list_available_maps()`.
+
+To overlay fluxes from a [COBRApy](https://github.com/opencobra/cobrapy) model:
+
+```python
+import cobra
+import escher
+
+model = cobra.io.load_model('textbook')
+solution = model.optimize()
+
+builder = escher.Builder(
+    map_name='e_coli_core.Core metabolism',
+    model=model,
+    reaction_data=solution.fluxes.to_dict(),
+)
+builder
+```
+
+To react to clicks in the map, observe `selected_reaction_event` or
+`selected_metabolite_event`. Their values look like
+`{'bigg_id': 'PFK', 'event_id': 3}`; `event_id` increases with every click, so
+observers fire even when the same item is clicked twice.
+
+- Reaction clicks are reported in any mode.
+- Metabolite clicks are reported when a node is selected, which happens in
+  select or build mode (for example, the arrow tool in the left toolbar).
+- `selected_reaction` and `selected_metabolite` hold the latest BiGG ID. With
+  `enable_tooltips` on, hovering over a reaction also updates
+  `selected_reaction`.
+
+Callbacks run outside the cell that displayed the map, so send their output to
+an `Output` widget:
+
+```python
+import ipywidgets as widgets
+
+out = widgets.Output()
+display(out)
+
+def on_reaction_click(change):
+    with out:
+        print(change['new']['bigg_id'])
+
+builder.observe(on_reaction_click, names='selected_reaction_event')
+```
+
 ## Python/Jupyter Development
 
 For development of the Python package, first build the JavaScript package and
@@ -126,12 +188,18 @@ pick up the new bundle.
 
 ## Docs
 
-Build and run the docs::
+The docs are built with Sphinx and nbsphinx from the requirements in
+`docs/requirements.txt`, the same ones Read the Docs uses. If
+[uv](https://docs.astral.sh/uv/) is installed, `build_docs` runs Sphinx in a
+temporary environment with those requirements; otherwise install them first
+with `pip install -r docs/requirements.txt`. nbsphinx also needs
+[Pandoc](https://pandoc.org/installing.html) (`brew install pandoc` on macOS).
+
+Build and view the docs (on Windows, run `python build_docs`):
 
 ```
 cd docs
 ./build_docs
 cd _build/html
-python -m SimpleHTTPServer # python 2
-python -m http.server # python 3
+python -m http.server
 ```
