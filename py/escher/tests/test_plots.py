@@ -230,9 +230,11 @@ def test_python_options_match_javascript_builder():
         skip('JavaScript source not available')
     with open(builder_jsx) as f:
         source = f.read()
+    # the defaults are the first object passed to utils.set_options, which
+    # ends where the second object (options that must be numbers) begins
     defaults = source.split('const optionsWithDefaults = utils.set_options(')[1]
-    defaults = defaults.split('\n    })')[0]
-    js_options = set(re.findall(r'^      ([a-z_0-9]+):', defaults, re.M))
+    defaults = defaults.split('\n    }, {')[0]
+    js_options = set(re.findall(r'^\s+([a-z_0-9]+):', defaults, re.M))
     assert js_options, 'could not parse options from Builder.jsx'
     python_options = set(Builder().traits(option=True))
     assert js_options - UNAVAILABLE_OPTIONS == python_options

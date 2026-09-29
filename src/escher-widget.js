@@ -163,7 +163,20 @@ function render ({ model, el }) {
     }
 
     // apply an option set in Python
+    // true while a change from Python is applied, so the resulting settings
+    // changes (e.g. filtered reaction data) are not sent back to Python
+    let applyingFromPython = false
+
     const applyOption = key => {
+      applyingFromPython = true
+      try {
+        applyOptionToBuilder(key)
+      } finally {
+        applyingFromPython = false
+      }
+    }
+
+    const applyOptionToBuilder = key => {
       const val = model.get(key)
       // stop if hasn't changed
       if (_.isEqual(val, builder.settings.get(key))) return
@@ -205,6 +218,7 @@ function render ({ model, el }) {
       listen(`change:${key}`, () => applyOption(key))
 
       unsubscribers.push(stream.onValue(val => {
+        if (applyingFromPython) return
         // avoid a loop with a deep comparison
         if (!_.isEqual(val, model.get(key))) {
           model.set(key, val)
