@@ -1,9 +1,30 @@
-#! /usr/bin/env python
+#! /usr/bin/env python3
+"""Build the HTML docs into docs/_build/html.
 
-import platform
+If uv is installed, Sphinx runs in a temporary environment made from
+docs/requirements.txt (the same requirements Read the Docs uses). Otherwise,
+install those requirements yourself so that sphinx-build is on the PATH.
+"""
+
+import shutil
+import sys
+from pathlib import Path
 from subprocess import call
 
-if platform.system() == 'Windows':
-    call('make.bat html', shell=True)
+DOCS_DIR = Path(__file__).resolve().parent
+
+if not shutil.which('pandoc'):
+    sys.exit('Pandoc is required to build the notebooks in the docs. Install it '
+             'with `brew install pandoc` on macOS, or see '
+             'https://pandoc.org/installing.html.')
+
+if shutil.which('uv'):
+    sphinx_build = ['uv', 'run', '--no-project', '--with-requirements',
+                    str(DOCS_DIR / 'requirements.txt'), 'sphinx-build']
+elif shutil.which('sphinx-build'):
+    sphinx_build = ['sphinx-build']
 else:
-    call(['make', 'html'])
+    sys.exit('sphinx-build not found. Install uv, or run '
+             '`pip install -r docs/requirements.txt`.')
+
+sys.exit(call(sphinx_build + ['-b', 'html', '.', '_build/html'], cwd=DOCS_DIR))

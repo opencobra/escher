@@ -305,8 +305,8 @@ class Builder(anywidget.AnyWidget):
         return sorted(self.traits(option=True))
 
     # Selections made in the map. selected_reaction and selected_metabolite
-    # hold the BiGG ID of the last reaction or metabolite that was hovered or
-    # clicked. The *_event versions only change on click, and include an
+    # hold the BiGG ID of the last reaction or metabolite that was clicked (or,
+    # with enable_tooltips on, hovered over for reactions). The *_event versions only change on click, and include an
     # increasing event_id, so observers fire once per click even when the same
     # item is clicked twice.
 
