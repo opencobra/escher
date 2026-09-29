@@ -2438,14 +2438,17 @@ export default class Map {
    */
   import_background(input) {
     this.callback_manager.run('before_import_background');
+    // look up the background in this map, not the whole page, in case there
+    // is more than one map on the page
+    const background = this.svg.select('#canvas-background').node();
 
     // If input is a file (File object)
     if (input instanceof File) {
       const reader = new FileReader();
       reader.onload = (e) => {
         const imageUrl = e.target.result;
-        document.getElementById('canvas-background').setAttribute('href', imageUrl);
-        document.getElementById('canvas-background').setAttribute('display', '');
+        background.setAttribute('href', imageUrl);
+        background.setAttribute('display', '');
         // Run after_import_background only after the image has been successfully loaded
         this.callback_manager.run('after_import_background');
       };
@@ -2459,8 +2462,8 @@ export default class Map {
           const reader = new FileReader();
           reader.onloadend = () => {
             const base64data = reader.result;
-            document.getElementById('canvas-background').setAttribute('href', base64data);
-            document.getElementById('canvas-background').setAttribute('display', '');
+            background.setAttribute('href', base64data);
+            background.setAttribute('display', '');
             // Run after_import_background only after the image has been successfully loaded
             this.callback_manager.run('after_import_background');
           };
@@ -2478,9 +2481,10 @@ export default class Map {
    */
   clear_background () {
     this.callback_manager.run('before_clear_background')
-    document.getElementById('canvas-background').setAttribute('href', '');
+    const background = this.svg.select('#canvas-background').node()
+    background.setAttribute('href', '');
     // clear the background
-    document.getElementById('canvas-background').setAttribute('display', 'none');
+    background.setAttribute('display', 'none');
     this.callback_manager.run('after_clear_background')
   }
 }

@@ -275,6 +275,16 @@ class Builder(anywidget.AnyWidget):
         - gene_font_size
         - reaction_no_data_size
         - metabolite_no_data_size
+        - reaction_font_size
+        - node_font_size
+        - text_label_font_size
+        - hide_no_data_reaction
+        - reaction_data_threshold
+        - show_reaction_data_animation
+        - animation_line_style
+        - background_image_url
+        - open_in_vmh
+        - vmh_basic_url
 
     If any of these is set to None, the default (or most-recent) value is used.
     To turn off a setting, use False instead.
@@ -535,6 +545,26 @@ class Builder(anywidget.AnyWidget):
     reaction_no_data_size = Any(None, allow_none=True)\
         .tag(sync=True, option=True)
     metabolite_no_data_size = Any(None, allow_none=True)\
+        .tag(sync=True, option=True)
+    reaction_font_size = Any(None, allow_none=True)\
+        .tag(sync=True, option=True)
+    node_font_size = Any(None, allow_none=True)\
+        .tag(sync=True, option=True)
+    text_label_font_size = Any(None, allow_none=True)\
+        .tag(sync=True, option=True)
+    hide_no_data_reaction = Any(None, allow_none=True)\
+        .tag(sync=True, option=True)
+    reaction_data_threshold = Any(None, allow_none=True)\
+        .tag(sync=True, option=True)
+    show_reaction_data_animation = Any(None, allow_none=True)\
+        .tag(sync=True, option=True)
+    animation_line_style = Any(None, allow_none=True)\
+        .tag(sync=True, option=True)
+    background_image_url = Any(None, allow_none=True)\
+        .tag(sync=True, option=True)
+    open_in_vmh = Any(None, allow_none=True)\
+        .tag(sync=True, option=True)
+    vmh_basic_url = Any(None, allow_none=True)\
         .tag(sync=True, option=True)
 
     def __init__(

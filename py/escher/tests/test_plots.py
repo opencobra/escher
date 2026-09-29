@@ -14,7 +14,7 @@ import sys
 from os.path import join, basename
 import json
 import re
-from pytest import raises, mark, param
+from pytest import raises, mark, param, skip
 from urllib.error import URLError
 import pandas as pd
 import cobra
@@ -214,3 +214,45 @@ def test_save_html_uses_current_model_and_css(tmpdir):
         html = f.read()
     assert base64.b64encode(b'"second_model"').decode() in html
     assert base64.b64encode(b'new_css').decode() in html
+
+
+# JavaScript Builder options that are deliberately not available in Python
+UNAVAILABLE_OPTIONS = {
+    'fill_screen', 'tooltip_component', 'first_load_callback',
+    'unique_map_id', 'ignore_bootstrap',
+}
+
+
+def test_python_options_match_javascript_builder():
+    builder_jsx = join(os.path.dirname(__file__), '..', '..', '..', 'src',
+                       'Builder.jsx')
+    if not os.path.isfile(builder_jsx):
+        skip('JavaScript source not available')
+    with open(builder_jsx) as f:
+        source = f.read()
+    # the defaults are the first object passed to utils.set_options, which
+    # ends where the second object (options that must be numbers) begins
+    defaults = source.split('const optionsWithDefaults = utils.set_options(')[1]
+    defaults = defaults.split('\n    }, {')[0]
+    js_options = set(re.findall(r'^\s+([a-z_0-9]+):', defaults, re.M))
+    assert js_options, 'could not parse options from Builder.jsx'
+    python_options = set(Builder().traits(option=True))
+    assert js_options - UNAVAILABLE_OPTIONS == python_options
+
+
+def test_newer_options(tmpdir):
+    b = Builder(reaction_font_size=40, show_reaction_data_animation=True,
+                open_in_vmh=True)
+    b.background_image_url = 'https://example.com/background.png'
+    filepath = join(str(tmpdir), 'builder.html')
+    b.save_html(filepath)
+    with open(filepath, 'r') as f:
+        html = f.read()
+    match = re.search(r"newOptions = JSON.parse\(b64DecodeUnicode\('([^']*)'\)\)",
+                      html)
+    options = json.loads(base64.b64decode(match.group(1)))
+    assert options['reaction_font_size'] == 40
+    assert options['show_reaction_data_animation'] is True
+    assert options['open_in_vmh'] is True
+    assert options['background_image_url'] == \
+        'https://example.com/background.png'

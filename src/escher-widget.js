@@ -26,6 +26,7 @@ const WITH_API_FUNCTIONS = {
 }
 
 const parseJson = json => json ? JSON.parse(json) : null
+const copy = data => data ? JSON.parse(JSON.stringify(data)) : data
 
 /**
  * anywidget front end for the Escher Builder (see py/escher/plots.py).
@@ -58,7 +59,7 @@ function render ({ model, el }) {
   const options = {}
   optionNames.forEach(key => {
     const val = model.get(key)
-    if (val !== null && val !== undefined) options[key] = val
+    if (val !== null && val !== undefined) options[key] = copy(val)
   })
 
   // Hover and click update selected_*; only clicks update selected_*_event.
@@ -162,14 +163,35 @@ function render ({ model, el }) {
     }
 
     // apply an option set in Python
+    // true while a change from Python is applied, so the resulting settings
+    // changes (e.g. filtered reaction data) are not sent back to Python
+    let applyingFromPython = false
+
     const applyOption = key => {
+      applyingFromPython = true
+      try {
+        applyOptionToBuilder(key)
+      } finally {
+        applyingFromPython = false
+      }
+    }
+
+    const applyOptionToBuilder = key => {
       const val = model.get(key)
       // stop if hasn't changed
       if (_.isEqual(val, builder.settings.get(key))) return
       if (key in WITH_API_FUNCTIONS) {
-        builder[WITH_API_FUNCTIONS[key]](val)
+        // pass a copy, because the Builder modifies data in place
+        builder[WITH_API_FUNCTIONS[key]](copy(val))
       } else {
         builder.settings.set(key, val)
+      }
+      // these options are only read when the map loads, so apply them here
+      if (key === 'reaction_data_threshold') {
+        builder.set_reaction_data(copy(model.get('reaction_data')))
+      } else if (key === 'background_image_url') {
+        if (val) builder.map.import_background(val)
+        else builder.map.clear_background()
       }
       // default to drawing everything, unless it's a common option where
       // that's not necessary
@@ -196,6 +218,7 @@ function render ({ model, el }) {
       listen(`change:${key}`, () => applyOption(key))
 
       unsubscribers.push(stream.onValue(val => {
+        if (applyingFromPython) return
         // avoid a loop with a deep comparison
         if (!_.isEqual(val, model.get(key))) {
           model.set(key, val)
